@@ -40,6 +40,84 @@
             color: #3b82f6;
             background-color: #eff6ff;
         }
+
+        /* Styles from Mendel's Experiment App */
+        .concept-box {
+            background-color: #e0f2fe;
+            border-left: 4px solid #0ea5e9;
+        }
+        .code-box {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .code-box .comment {
+            color: #94a3b8;
+        }
+        .pea {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+        }
+        .pea:hover {
+            transform: scale(1.05);
+        }
+        .pea-round {
+            background: radial-gradient(circle at 30% 30%, #a7f3d0, #16a34a);
+        }
+        .pea-wrinkled {
+            background: radial-gradient(circle at 30% 30%, #fef08a, #ca8a04);
+        }
+        .genotype {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .phenotype {
+            font-size: 0.9rem;
+        }
+        .step-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .custom-btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .custom-btn:hover {
+            background-color: #1d4ed8;
+        }
+        .custom-btn:active {
+            transform: scale(0.98);
+        }
+        .hidden-section {
+            display: none;
+        }
+        .arrow {
+            font-size: 2rem;
+            color: #94a3b8;
+        }
     </style>
 </head>
 
@@ -90,13 +168,13 @@
                  </div>
                  <div class="md:w-2/3">
                      <p class="mb-4">
-                          Hello! I'm [Your Name], a quantitative researcher passionate about uncovering insights from complex data. My journey began in astrochemistry, where I developed sophisticated models to understand molecular evolution in interstellar space. This work honed my skills in computational simulation, statistical analysis, and handling vast datasets.
+                           Hello! I'm [Your Name], a quantitative researcher passionate about uncovering insights from complex data. My journey began in astrochemistry, where I developed sophisticated models to understand molecular evolution in interstellar space. This work honed my skills in computational simulation, statistical analysis, and handling vast datasets.
                      </p>
                      <p class="mb-4">
-                          I then transitioned to modeling marine ecosystems, applying similar principles to understand biological systems' dynamics. This experience solidified my passion for using computational methods to answer fundamental biological questions.
+                           I then transitioned to modeling marine ecosystems, applying similar principles to understand biological systems' dynamics. This experience solidified my passion for using computational methods to answer fundamental biological questions.
                      </p>
                       <p>
-                          Now, I'm excited to apply my analytical expertise to the fields of bioinformatics and biostatistics. I am a fast learner, adept at mastering new programming languages and technologies, and I am driven by a desire to contribute to impactful biomedical research. I believe my unique background provides a fresh perspective on tackling challenges in genomics, proteomics, and clinical trial data.
+                           Now, I'm excited to apply my analytical expertise to the fields of bioinformatics and biostatistics. I am a fast learner, adept at mastering new programming languages and technologies, and I am driven by a desire to contribute to impactful biomedical research. I believe my unique background provides a fresh perspective on tackling challenges in genomics, proteomics, and clinical trial data.
                       </p>
                  </div>
              </div>
@@ -109,34 +187,34 @@
                     <div>
                         <h3 class="text-xl font-semibold mb-3 text-gray-800">Bioinformatics & Biostatistics</h3>
                         <div class="flex flex-wrap">
-                           <span class="skill-tag">Genomic Data Analysis (NGS)</span>
-                           <span class="skill-tag">Statistical Genetics</span>
-                           <span class="skill-tag">R & Bioconductor</span>
-                           <span class="skill-tag">Clinical Trial Design</span>
-                           <span class="skill-tag">Survival Analysis</span>
-                           <span class="skill-tag">Python (Pandas, NumPy)</span>
+                            <span class="skill-tag">Genomic Data Analysis (NGS)</span>
+                            <span class="skill-tag">Statistical Genetics</span>
+                            <span class="skill-tag">R & Bioconductor</span>
+                            <span class="skill-tag">Clinical Trial Design</span>
+                            <span class="skill-tag">Survival Analysis</span>
+                            <span class="skill-tag">Python (Pandas, NumPy)</span>
                         </div>
                     </div>
                      <div>
                         <h3 class="text-xl font-semibold mb-3 text-gray-800">Computational & Modeling</h3>
                         <div class="flex flex-wrap">
-                           <span class="skill-tag">Differential Equations</span>
-                           <span class="skill-tag">Bayesian Statistics</span>
-                           <span class="skill-tag">Monte Carlo Simulations</span>
-                           <span class="skill-tag">High-Performance Computing</span>
-                           <span class="skill-tag">Fortran / C++</span>
-                           <span class="skill-tag">Data Visualization</span>
+                            <span class="skill-tag">Differential Equations</span>
+                            <span class="skill-tag">Bayesian Statistics</span>
+                            <span class="skill-tag">Monte Carlo Simulations</span>
+                            <span class="skill-tag">High-Performance Computing</span>
+                            <span class="skill-tag">Fortran / C++</span>
+                            <span class="skill-tag">Data Visualization</span>
                         </div>
                     </div>
                     <div>
                         <h3 class="text-xl font-semibold mb-3 text-gray-800">Transferable Skills</h3>
                         <div class="flex flex-wrap">
-                           <span class="skill-tag">Problem Solving</span>
-                           <span class="skill-tag">Project Management</span>
-                           <span class="skill-tag">Scientific Writing</span>
-                           <span class="skill-tag">Cross-disciplinary Collaboration</span>
-                           <span class="skill-tag">Data Interpretation</span>
-                           <span class="skill-tag">Critical Thinking</span>
+                            <span class="skill-tag">Problem Solving</span>
+                            <span class="skill-tag">Project Management</span>
+                            <span class="skill-tag">Scientific Writing</span>
+                            <span class="skill-tag">Cross-disciplinary Collaboration</span>
+                            <span class="skill-tag">Data Interpretation</span>
+                            <span class="skill-tag">Critical Thinking</span>
                         </div>
                     </div>
                 </div>
@@ -151,7 +229,7 @@
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Genomic Variant Analysis Pipeline</h3>
                         <p class="text-gray-600 mb-4">Developed a Python pipeline to analyze Next-Generation Sequencing (NGS) data, identify genetic variants, and annotate their potential clinical significance.</p>
-                        <a href="https://github.com/thejusmahajan" target="_blank" class="text-sky-600 font-semibold hover:underline">View on GitHub &rarr;</a>
+                        <a href="https://github.com/goodmantom" target="_blank" class="text-sky-600 font-semibold hover:underline">View on GitHub &rarr;</a>
                     </div>
                 </div>
                 <div class="project-card">
@@ -171,12 +249,21 @@
                     </div>
                 </div>
                  <!-- New Project Card for Protein Folder -->
+                 <div class="project-card">
+                     <img src="https://placehold.co/600x400/10b981/ffffff?text=Protein+Folder" alt="Protein Folding App" class="w-full h-48 object-cover">
+                     <div class="p-6">
+                         <h3 class="text-xl font-bold mb-2">Interactive Protein Folding App</h3>
+                         <p class="text-gray-600 mb-4">An interactive tool to predict and visualize 3D protein structures using ESMFold and ColabFold, rendered with 3Dmol.js.</p>
+                         <button id="launchAppButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
+                     </div>
+                 </div>
+                 <!-- New Project Card for Mendel's Experiment -->
                 <div class="project-card">
-                    <img src="https://placehold.co/600x400/10b981/ffffff?text=Protein+Folder" alt="Protein Folding App" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/4ade80/ffffff?text=Mendel's+Peas" alt="Mendel's Experiment App" class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Interactive Protein Folding App</h3>
-                        <p class="text-gray-600 mb-4">An interactive tool to predict and visualize 3D protein structures using ESMFold and ColabFold, rendered with 3Dmol.js.</p>
-                        <button id="launchAppButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
+                        <h3 class="text-xl font-bold mb-2">Interactive Mendel's Experiment</h3>
+                        <p class="text-gray-600 mb-4">An interactive, step-by-step guide to Gregor Mendel's classic pea plant experiments, explaining the Law of Segregation.</p>
+                        <button id="launchMendelButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
                     </div>
                 </div>
             </div>
@@ -212,7 +299,7 @@
                 <a href="https://www.linkedin.com/in/yourprofile" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
                     LinkedIn
                 </a>
-                <a href="https://github.com/thejusmahajan" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
+                <a href="https://github.com/goodmantom" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
                     GitHub
                 </a>
             </div>
@@ -281,13 +368,200 @@
                 <footer class="text-center text-gray-500 text-sm mt-6">
                     <p>Powered by <a href="https://github.com/sokrypton/ColabFold" target="_blank" class="text-blue-500 hover:underline">ColabFold</a>, <a href="https://github.com/facebookresearch/esm" target="_blank" class="text-blue-500 hover:underline">ESMFold</a>, & <a href="https://3dmol.csb.pitt.edu/" target="_blank" class="text-blue-500 hover:underline">3Dmol.js</a>.</p>
                 </footer>
-                <!-- Embedded App Content Ends Here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for Mendel's Experiment App -->
+    <div id="mendelModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-50 rounded-xl shadow-2xl w-full max-w-4xl h-full max-h-[95vh] overflow-hidden relative flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-4 border-b flex justify-between items-center bg-white flex-shrink-0">
+                <h2 class="text-xl font-bold text-gray-800">Mendel's Experiment: An Interactive Guide</h2>
+                <button id="closeMendelModalButton" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 flex-grow overflow-y-auto">
+                <!-- Mendel App Content Starts Here -->
+                 <div class="max-w-4xl mx-auto">
+                    <!-- Core Concepts -->
+                    <div class="concept-box p-4 mb-8 rounded-lg">
+                        <h3 class="text-lg font-bold text-sky-800 mb-2">Core Concepts for a Programmer</h3>
+                        <ul class="list-disc list-inside text-sky-700">
+                            <li><strong>Gene:</strong> A variable for a trait (e.g., `pea_shape`).</li>
+                            <li><strong>Allele:</strong> The value of that variable. `'A'` for round (dominant), `'a'` for wrinkled (recessive).</li>
+                            <li><strong>Genotype:</strong> The pair of alleles an organism has (e.g., `['A', 'a']`).</li>
+                            <li><strong>Phenotype:</strong> The visible outcome (e.g., if `'A'` is present, phenotype is "Round").</li>
+                        </ul>
+                    </div>
+            
+                    <!-- Step 1: P Generation -->
+                    <div class="step-card">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Step 1: The P (Parental) Generation</h2>
+                        <p class="text-slate-600 mb-6">Mendel started with two "purebred" plants. One only ever produced round peas, and the other only ever produced wrinkled peas. This means their genotypes were fixed.</p>
+                        <div class="flex items-center justify-center space-x-4 md:space-x-8">
+                            <div class="text-center">
+                                <div class="pea pea-round mx-auto"><span class="genotype">AA</span><span class="phenotype">Round</span></div>
+                                <p class="mt-2 font-semibold text-slate-700">Parent 1</p>
+                            </div>
+                            <div class="arrow">+</div>
+                            <div class="text-center">
+                                <div class="pea pea-wrinkled mx-auto"><span class="genotype">aa</span><span class="phenotype">Wrinkled</span></div>
+                                <p class="mt-2 font-semibold text-slate-700">Parent 2</p>
+                            </div>
+                        </div>
+                        <div class="mt-8 text-center"><button id="crossP" class="custom-btn">Cross the P Generation</button></div>
+                    </div>
+            
+                    <!-- Step 2: F1 Generation -->
+                    <div id="f1-section" class="step-card hidden-section">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Result: The F1 (First Filial) Generation</h2>
+                        <p class="text-slate-600 mb-6">When the purebred parents are crossed, every single offspring receives one allele from each parent (`'A'` from the first, `'a'` from the second). This results in a uniform generation.</p>
+                        <div class="flex items-center justify-center space-x-4">
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                        </div>
+                        <div class="concept-box p-4 my-6 rounded-lg">
+                            <h3 class="font-bold text-sky-800">Biological Insight: The Wrinkled Trait Vanished!</h3>
+                            <p class="text-sky-700">This was Mendel's first major discovery. Even though all F1 plants carry the allele for wrinkled (`a`), they all appear round. The round allele (`A`) is **dominant**.</p>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Programmer's View: The Simulation Logic</h3>
+                        <p class="text-slate-600 mb-4">A simple nested loop simulates this cross perfectly.</p>
+                        <div class="code-box"><pre><code><span class="comment"># Define the alleles for each "purebred" parent.</span>
+parent_1 = ['A', 'A']
+parent_2 = ['a', 'a']
+
+<span class="comment"># Create an empty list to store the offspring genotypes.</span>
+f1_offspring = []
+
+<span class="comment"># For each allele from parent 1...</span>
+for allele1 in parent_1:
+    <span class="comment"># ...combine it with each allele from parent 2.</span>
+    for allele2 in parent_2:
+        f1_offspring.append(allele1 + allele2)
+
+<span class="comment"># Result: f1_offspring is ['Aa', 'Aa', 'Aa', 'Aa']</span></code></pre></div>
+                        <div class="mt-8 text-center"><button id="crossF1" class="custom-btn">Self-Cross the F1 Generation</button></div>
+                    </div>
+                    
+                    <!-- Step 3: F2 Generation -->
+                    <div id="f2-section" class="step-card hidden-section">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Result: The F2 (Second Filial) Generation</h2>
+                        <p class="text-slate-600 mb-6">Mendel then crossed two plants from the F1 generation (`Aa` x `Aa`). This is where the "vanished" wrinkled trait made a surprising comeback.</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
+                            <div class="pea pea-round"><span class="genotype">AA</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">aA</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-wrinkled"><span class="genotype">aa</span><span class="phenotype">Wrinkled</span></div>
+                        </div>
+                        <div class="concept-box p-4 my-6 rounded-lg">
+                            <h3 class="font-bold text-sky-800">Biological Insight: The Famous 3:1 Ratio</h3>
+                            <p class="text-sky-700">The results weren't random. For every 4 offspring, there were statistically 3 round peas for every 1 wrinkled pea. This predictable ratio proved that inheritance followed specific rules.</p>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Statistical Summary</h3>
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="flex-1 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold">Genotype Ratio</h4>
+                                <p class="font-mono">1 AA : 2 Aa : 1 aa</p>
+                            </div>
+                            <div class="flex-1 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold">Phenotype Ratio</h4>
+                                <p class="font-mono">3 Round : 1 Wrinkled</p>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Statistical Analysis with Code (Pandas)</h3>
+                        <p class="text-slate-600 mb-4">While we can see the ratios by eye in this small sample, a tool like Pandas is essential for analyzing larger datasets. It can automatically group and count the results for us.</p>
+                        <div class="code-box"><pre><code><span class="comment"># First, we need the pandas library.</span>
+import pandas as pd
+
+<span class="comment"># The results from our simulation.</span>
+f2_offspring = ['AA', 'Aa', 'aA', 'aa']
+
+<span class="comment"># Create a DataFrame to organize the data.</span>
+df = pd.DataFrame({'Genotype': f2_offspring})
+
+<span class="comment"># Determine the Phenotype for each row.</span>
+df['Phenotype'] = df['Genotype'].apply(
+    lambda genotype: 'Round' if 'A' in genotype else 'Wrinkled'
+)
+
+<span class="comment"># Use .value_counts() to get the final statistics.</span>
+genotype_stats = df['Genotype'].value_counts()
+phenotype_stats = df['Phenotype'].value_counts()
+
+print(phenotype_stats)
+<span class="comment"># Output:
+# Round     3
+# Wrinkled  1</span></code></pre></div>
+                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Programmer's View: The Simulation Logic</h3>
+                         <p class="text-slate-600 mb-4">The exact same logic works, just with different parent inputs.</p>
+                        <div class="code-box"><pre><code><span class="comment"># The parents are now from the F1 generation.</span>
+f1_parent_1 = ['A', 'a']
+f1_parent_2 = ['A', 'a']
+
+f2_offspring = []
+
+for allele1 in f1_parent_1:
+    for allele2 in f1_parent_2:
+        f2_offspring.append(allele1 + allele2)
+
+<span class="comment"># Result: f2_offspring is ['AA', 'Aa', 'aA', 'aa']</span></code></pre></div>
+                        <div class="mt-8 text-center"><button id="crossF2" class="custom-btn">Investigate the F2 Generation (Create F3)</button></div>
+                    </div>
+            
+                    <!-- Step 4: F3 Generation -->
+                    <div id="f3-section" class="step-card hidden-section">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Step 3: Proving the Theory (F3 Generation)</h2>
+                        <p class="text-slate-600 mb-6">Mendel's genius was his next question: "Are all the round F2 peas genetically the same?" To find out, he self-pollinated plants from the F2 generation. He discovered there were three distinct groups.</p>
+                        <div class="space-y-8">
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Test 1: Self-crossing a purebred round (`AA`) pea</h3>
+                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
+                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
+                                    <div class="arrow">⟶</div>
+                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
+                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
+                                </div>
+                                <p class="text-sm text-slate-600 mt-2">Result: All offspring are purebred round. This group is "true-breeding".</p>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Test 2: Self-crossing a hybrid round (`Aa`) pea</h3>
+                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
+                                    <div class="pea pea-round"><span class="genotype">Aa</span></div>
+                                    <div class="arrow">⟶</div>
+                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
+                                    <div class="pea pea-round"><span class="genotype">Aa</span></div>
+                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
+                                </div>
+                                 <p class="text-sm text-slate-600 mt-2">Result: Produces round AND wrinkled offspring, in the familiar 3:1 ratio. This group was not "true-breeding".</p>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Test 3: Self-crossing a wrinkled (`aa`) pea</h3>
+                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
+                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
+                                    <div class="arrow">⟶</div>
+                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
+                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
+                                </div>
+                                <p class="text-sm text-slate-600 mt-2">Result: All offspring are wrinkled. This group is also "true-breeding".</p>
+                            </div>
+                        </div>
+                        <div class="concept-box p-4 my-8 rounded-lg">
+                            <h3 class="font-bold text-sky-800 text-xl">Conclusion: The Law of Segregation</h3>
+                            <p class="text-sky-700">This was the proof! The 3:1 phenotype ratio in the F2 generation was hiding a more fundamental **1:2:1 genotype ratio** (1 `AA` : 2 `Aa` : 1 `aa`). This showed that the two alleles for a trait (`A` and `a`) are discrete units. They don't blend. They separate—or **segregate**—from each other during the formation of reproductive cells, and then recombine in the offspring. This is the cornerstone of modern genetics.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mendel App Content Ends Here -->
             </div>
         </div>
     </div>
 
+
     <script>
-        // --- Modal Control ---
+        // --- Modal Control (Protein App)---
         const launchAppButton = document.getElementById('launchAppButton');
         const appModal = document.getElementById('appModal');
         const closeModalButton = document.getElementById('closeModalButton');
@@ -305,6 +579,52 @@
                 appModal.classList.add('hidden');
             }
         });
+
+        // --- Modal Control (Mendel App) ---
+        const launchMendelButton = document.getElementById('launchMendelButton');
+        const mendelModal = document.getElementById('mendelModal');
+        const closeMendelModalButton = document.getElementById('closeMendelModalButton');
+
+        if (launchMendelButton) {
+            launchMendelButton.addEventListener('click', () => {
+                mendelModal.classList.remove('hidden');
+            });
+        }
+        if(closeMendelModalButton) {
+            closeMendelModalButton.addEventListener('click', () => {
+                mendelModal.classList.add('hidden');
+            });
+        }
+        if(mendelModal){
+             mendelModal.addEventListener('click', (event) => {
+                if (event.target === mendelModal) {
+                    mendelModal.classList.add('hidden');
+                }
+            });
+        }
+        
+        // --- Mendel App Logic ---
+        document.getElementById('crossP').addEventListener('click', function() {
+            const f1Section = document.getElementById('f1-section');
+            f1Section.style.display = 'block';
+            f1Section.scrollIntoView({ behavior: 'smooth' });
+            this.style.display = 'none';
+        });
+
+        document.getElementById('crossF1').addEventListener('click', function() {
+            const f2Section = document.getElementById('f2-section');
+            f2Section.style.display = 'block';
+            f2Section.scrollIntoView({ behavior: 'smooth' });
+            this.style.display = 'none';
+        });
+
+        document.getElementById('crossF2').addEventListener('click', function() {
+            const f3Section = document.getElementById('f3-section');
+            f3Section.style.display = 'block';
+            f3Section.scrollIntoView({ behavior: 'smooth' });
+            this.style.display = 'none';
+        });
+
 
         // --- Portfolio Mobile menu toggle ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
