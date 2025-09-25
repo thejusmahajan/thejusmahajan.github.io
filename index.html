@@ -623,6 +623,11 @@ for allele1 in f1_parent_1:
                                 <input type="password" id="github-pat" placeholder="Personal Access Token (PAT)" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <input type="text" id="github-folder" placeholder="Folder for Decks (e.g., flashcards)" value="flashcards" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
+                            <div class="mt-4 pt-4 border-t">
+                                <label for="gemini-api-key" class="block text-sm font-medium text-gray-700">Gemini API Key (for AI Features)</label>
+                                <input type="password" id="gemini-api-key" placeholder="Enter your key here" class="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <p class="text-xs text-gray-500 mt-1">AI features require a Gemini API key. Get a free one from <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 hover:underline">Google AI Studio</a>.</p>
+                            </div>
                             <button id="login-btn" class="mt-6 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 font-semibold transition-colors">Connect</button>
                             <p id="login-error" class="text-red-500 text-sm mt-4 text-center"></p>
                         </div>
@@ -1020,7 +1025,7 @@ for allele1 in f1_parent_1:
             
             // --- STATE MANAGEMENT ---
             let state = {
-                github: { username: '', repo: '', pat: '', folder: 'flashcards', },
+                github: { username: '', repo: '', pat: '', folder: 'flashcards', geminiApiKey: '' },
                 decks: [], 
                 currentDeck: null, 
                 studySession: { dueCards: [], currentIndex: 0, completed: false },
@@ -1044,7 +1049,11 @@ for allele1 in f1_parent_1:
 
             // --- GEMINI API HELPER ---
             async function callGemini(prompt, isJson = false) {
-                const apiKey = ""; // Canvas will provide this
+                const apiKey = state.github.geminiApiKey || "";
+                if (!apiKey) {
+                    alert("A Gemini API Key is required for this feature. Please log out and add your key on the login screen.");
+                    return null;
+                }
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: [{ text: prompt }] }], };
                 if (isJson) {
@@ -1232,8 +1241,9 @@ for allele1 in f1_parent_1:
                 const repo = flashcardAppContainer.querySelector('#github-repo').value.trim();
                 const pat = flashcardAppContainer.querySelector('#github-pat').value.trim();
                 const folder = flashcardAppContainer.querySelector('#github-folder').value.trim() || 'flashcards';
+                const geminiApiKey = flashcardAppContainer.querySelector('#gemini-api-key').value.trim();
                 if (!username || !repo || !pat) { flashcardAppContainer.querySelector('#login-error').textContent = 'All fields are required.'; return; }
-                state.github = { username, repo, pat, folder };
+                state.github = { username, repo, pat, folder, geminiApiKey };
                 const repoData = await githubRequest(`/repos/${username}/${repo}`);
                 if(repoData) {
                     localStorage.setItem('git-spaced-flashcards', JSON.stringify(state.github));
@@ -1246,13 +1256,25 @@ for allele1 in f1_parent_1:
                 const files = await githubRequest(`/repos/${state.github.username}/${state.github.repo}/contents/${state.github.folder}`);
                 if (files && Array.isArray(files)) {
                     const deckPromises = files.filter(file => file.name.endsWith('.json')).map(async file => {
-                        const deckData = await getFile(file.path);
-                        const today = new Date().toISOString().split('T')[0];
-                        const dueCardCount = deckData.content.filter(card => (card.dueDate || today) <= today).length;
-                        return { name: file.name, path: file.path, sha: file.sha, dueCardCount };
+                        try {
+                            const deckData = await getFile(file.path);
+                            if (!deckData || !deckData.content) {
+                                console.warn(`Could not load deck content for: ${file.path}. Skipping.`);
+                                return null;
+                            }
+                            const today = new Date().toISOString().split('T')[0];
+                            const dueCardCount = deckData.content.filter(card => (card.dueDate || today) <= today).length;
+                            return { name: file.name, path: file.path, sha: file.sha, dueCardCount };
+                        } catch (error) {
+                            console.error(`Failed to load or process deck: ${file.path}`, error);
+                            return null; // Return null if fetching or processing a single deck fails
+                        }
                     });
-                    state.decks = await Promise.all(deckPromises);
-                } else { state.decks = []; }
+                    const loadedDecks = await Promise.all(deckPromises);
+                    state.decks = loadedDecks.filter(deck => deck !== null); // Filter out any decks that failed to load
+                } else { 
+                    state.decks = []; 
+                }
                 renderDeckList();
             }
             async function startStudySession(deckPath) {
@@ -1380,6 +1402,7 @@ for allele1 in f1_parent_1:
                     flashcardAppContainer.querySelector('#github-repo').value = state.github.repo;
                     flashcardAppContainer.querySelector('#github-pat').value = state.github.pat;
                     flashcardAppContainer.querySelector('#github-folder').value = state.github.folder;
+                    flashcardAppContainer.querySelector('#gemini-api-key').value = state.github.geminiApiKey || '';
                     handleLogin();
                 } else { switchScreen('login'); }
             }
@@ -1390,4 +1413,6 @@ for allele1 in f1_parent_1:
 
 </body>
 </html>
+
+
 
