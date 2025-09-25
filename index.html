@@ -2,434 +2,467 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Computational Scientist</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://3dmol.org/build/3Dmol-min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .section-title {
-            @apply text-3xl font-bold text-gray-800 mb-8 text-center;
-        }
-        .skill-tag {
-            @apply bg-sky-100 text-sky-800 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full;
-        }
-        .project-card {
-            @apply bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300;
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .tab-button.active {
-            border-color: #3b82f6;
-            color: #3b82f6;
-            background-color: #eff6ff;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Computational Scientist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://3dmol.org/build/3Dmol-min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .section-title {
+            @apply text-3xl font-bold text-gray-800 mb-8 text-center;
+        }
+        .skill-tag {
+            @apply bg-sky-100 text-sky-800 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full;
+        }
+        .project-card {
+            @apply bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .tab-button.active {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background-color: #eff6ff;
+        }
 
-        /* Styles from Mendel's Experiment App */
-        .concept-box {
-            background-color: #e0f2fe;
-            border-left: 4px solid #0ea5e9;
+        /* Styles from Mendel's Experiment App */
+        .concept-box {
+            background-color: #e0f2fe;
+            border-left: 4px solid #0ea5e9;
+        }
+        .code-box {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .code-box .comment {
+            color: #94a3b8;
+        }
+        .pea {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+        }
+        .pea:hover {
+            transform: scale(1.05);
+        }
+        .pea-round {
+            background: radial-gradient(circle at 30% 30%, #a7f3d0, #16a34a);
+        }
+        .pea-wrinkled {
+            background: radial-gradient(circle at 30% 30%, #fef08a, #ca8a04);
+        }
+        .genotype {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .phenotype {
+            font-size: 0.9rem;
+        }
+        .step-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .custom-btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .custom-btn:hover {
+            background-color: #1d4ed8;
+        }
+        .custom-btn:active {
+            transform: scale(0.98);
+        }
+        .hidden-section {
+            display: none;
+        }
+        .arrow {
+            font-size: 2rem;
+            color: #94a3b8;
+        }
+
+        /* Styles from Flashcard App */
+        .flashcard-app .card {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
         }
-        .code-box {
-            background-color: #1e293b;
-            color: #f8fafc;
-            border-radius: 8px;
-            padding: 1rem;
-            font-family: 'Courier New', Courier, monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        .flashcard-app .card.is-flipped {
+            transform: rotateY(180deg);
         }
-        .code-box .comment {
-            color: #94a3b8;
+        .flashcard-app .card-face {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
-        .pea {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
+        .flashcard-app .card-face-back {
+            transform: rotateY(180deg);
         }
-        .pea:hover {
-            transform: scale(1.05);
+        .flashcard-app .quality-btn {
+            transition: all 0.2s ease-in-out;
         }
-        .pea-round {
-            background: radial-gradient(circle at 30% 30%, #a7f3d0, #16a34a);
+        .flashcard-app .quality-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .pea-wrinkled {
-            background: radial-gradient(circle at 30% 30%, #fef08a, #ca8a04);
-        }
-        .genotype {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-        .phenotype {
-            font-size: 0.9rem;
-        }
-        .step-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .custom-btn {
-            background-color: #2563eb;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
-        }
-        .custom-btn:hover {
-            background-color: #1d4ed8;
-        }
-        .custom-btn:active {
-            transform: scale(0.98);
-        }
-        .hidden-section {
-            display: none;
-        }
-        .arrow {
-            font-size: 2rem;
-            color: #94a3b8;
-        }
-    </style>
+    </style>
 </head>
 
 <body class="bg-gray-50 text-gray-700">
 
-    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-gray-800">Your Name</a>
-            <div class="hidden md:flex space-x-6">
-                <a href="#about" class="text-gray-600 hover:text-sky-600 transition">About</a>
-                <a href="#skills" class="text-gray-600 hover:text-sky-600 transition">Skills</a>
-                <a href="#projects" class="text-gray-600 hover:text-sky-600 transition">Projects</a>
-                <a href="#publications" class="text-gray-600 hover:text-sky-600 transition">Publications</a>
-                <a href="#contact" class="text-gray-600 hover:text-sky-600 transition">Contact</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden flex items-center">
-                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
-            <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
-            <a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-200">Projects</a>
-            <a href="#publications" class="block py-2 px-4 text-sm hover:bg-gray-200">Publications</a>
-            <a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-200">Contact</a>
-        </div>
-    </header>
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-800">Your Name</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#about" class="text-gray-600 hover:text-sky-600 transition">About</a>
+                <a href="#skills" class="text-gray-600 hover:text-sky-600 transition">Skills</a>
+                <a href="#projects" class="text-gray-600 hover:text-sky-600 transition">Projects</a>
+                <a href="#publications" class="text-gray-600 hover:text-sky-600 transition">Publications</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
+            <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
+            <a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-200">Projects</a>
+            <a href="#publications" class="block py-2 px-4 text-sm hover:bg-gray-200">Publications</a>
+            <a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-200">Contact</a>
+        </div>
+    </header>
 
-    <main class="container mx-auto px-6 py-12">
+    <main class="container mx-auto px-6 py-12">
 
-        <section class="text-center py-20">
-            <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
-                From Molecules in Space to Genomes in Cells
-            </h1>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
-                Analytical scientist with a PhD in Astrochemistry, leveraging complex modeling and data analysis skills to solve challenges in bioinformatics and biostatistics.
-            </p>
-            <a href="#contact" class="bg-sky-600 text-white font-bold py-3 px-8 rounded-full hover:bg-sky-700 transition-colors duration-300">
-                Get in Touch
-            </a>
-        </section>
+        <section class="text-center py-20">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
+                From Molecules in Space to Genomes in Cells
+            </h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+                Analytical scientist with a PhD in Astrochemistry, leveraging complex modeling and data analysis skills to solve challenges in bioinformatics and biostatistics.
+            </p>
+            <a href="#contact" class="bg-sky-600 text-white font-bold py-3 px-8 rounded-full hover:bg-sky-700 transition-colors duration-300">
+                Get in Touch
+            </a>
+        </section>
 
-        <section id="about" class="py-16">
-             <h2 class="section-title">About Me</h2>
-             <div class="flex flex-col md:flex-row items-center gap-12">
-                 <div class="md:w-1/3">
-                     <img src="https://placehold.co/400x400/a3e635/ffffff?text=Your+Photo" alt="Your Name" class="rounded-full shadow-lg mx-auto">
-                 </div>
-                 <div class="md:w-2/3">
-                     <p class="mb-4">
-                           Hello! I'm [Your Name], a quantitative researcher passionate about uncovering insights from complex data. My journey began in astrochemistry, where I developed sophisticated models to understand molecular evolution in interstellar space. This work honed my skills in computational simulation, statistical analysis, and handling vast datasets.
-                     </p>
-                     <p class="mb-4">
-                           I then transitioned to modeling marine ecosystems, applying similar principles to understand biological systems' dynamics. This experience solidified my passion for using computational methods to answer fundamental biological questions.
-                     </p>
-                      <p>
-                           Now, I'm excited to apply my analytical expertise to the fields of bioinformatics and biostatistics. I am a fast learner, adept at mastering new programming languages and technologies, and I am driven by a desire to contribute to impactful biomedical research. I believe my unique background provides a fresh perspective on tackling challenges in genomics, proteomics, and clinical trial data.
-                      </p>
-                 </div>
-             </div>
-        </section>
+        <section id="about" class="py-16">
+             <h2 class="section-title">About Me</h2>
+             <div class="flex flex-col md:flex-row items-center gap-12">
+                 <div class="md:w-1/3">
+                     <img src="https://placehold.co/400x400/a3e635/ffffff?text=Your+Photo" alt="Your Name" class="rounded-full shadow-lg mx-auto">
+                 </div>
+                 <div class="md:w-2/3">
+                     <p class="mb-4">
+                           Hello! I'm [Your Name], a quantitative researcher passionate about uncovering insights from complex data. My journey began in astrochemistry, where I developed sophisticated models to understand molecular evolution in interstellar space. This work honed my skills in computational simulation, statistical analysis, and handling vast datasets.
+                     </p>
+                     <p class="mb-4">
+                           I then transitioned to modeling marine ecosystems, applying similar principles to understand biological systems' dynamics. This experience solidified my passion for using computational methods to answer fundamental biological questions.
+                     </p>
+                      <p>
+                           Now, I'm excited to apply my analytical expertise to the fields of bioinformatics and biostatistics. I am a fast learner, adept at mastering new programming languages and technologies, and I am driven by a desire to contribute to impactful biomedical research. I believe my unique background provides a fresh perspective on tackling challenges in genomics, proteomics, and clinical trial data.
+                      </p>
+                 </div>
+             </div>
+        </section>
 
-        <section id="skills" class="py-16 bg-white rounded-xl shadow-md">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title">Skills & Expertise</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Bioinformatics & Biostatistics</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">Genomic Data Analysis (NGS)</span>
-                            <span class="skill-tag">Statistical Genetics</span>
-                            <span class="skill-tag">R & Bioconductor</span>
-                            <span class="skill-tag">Clinical Trial Design</span>
-                            <span class="skill-tag">Survival Analysis</span>
-                            <span class="skill-tag">Python (Pandas, NumPy)</span>
-                        </div>
-                    </div>
-                     <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Computational & Modeling</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">Differential Equations</span>
-                            <span class="skill-tag">Bayesian Statistics</span>
-                            <span class="skill-tag">Monte Carlo Simulations</span>
-                            <span class="skill-tag">High-Performance Computing</span>
-                            <span class="skill-tag">Fortran / C++</span>
-                            <span class="skill-tag">Data Visualization</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Transferable Skills</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">Problem Solving</span>
-                            <span class="skill-tag">Project Management</span>
-                            <span class="skill-tag">Scientific Writing</span>
-                            <span class="skill-tag">Cross-disciplinary Collaboration</span>
-                            <span class="skill-tag">Data Interpretation</span>
-                            <span class="skill-tag">Critical Thinking</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <section id="skills" class="py-16 bg-white rounded-xl shadow-md">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Bioinformatics & Biostatistics</h3>
+                        <div class="flex flex-wrap">
+                            <span class="skill-tag">Genomic Data Analysis (NGS)</span>
+                            <span class="skill-tag">Statistical Genetics</span>
+                            <span class="skill-tag">R & Bioconductor</span>
+                            <span class="skill-tag">Clinical Trial Design</span>
+                            <span class="skill-tag">Survival Analysis</span>
+                            <span class="skill-tag">Python (Pandas, NumPy)</span>
+                        </div>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Computational & Modeling</h3>
+                        <div class="flex flex-wrap">
+                            <span class="skill-tag">Differential Equations</span>
+                            <span class="skill-tag">Bayesian Statistics</span>
+                            <span class="skill-tag">Monte Carlo Simulations</span>
+                            <span class="skill-tag">High-Performance Computing</span>
+                            <span class="skill-tag">Fortran / C++</span>
+                            <span class="skill-tag">Data Visualization</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Transferable Skills</h3>
+                        <div class="flex flex-wrap">
+                            <span class="skill-tag">Problem Solving</span>
+                            <span class="skill-tag">Project Management</span>
+                            <span class="skill-tag">Scientific Writing</span>
+                            <span class="skill-tag">Cross-disciplinary Collaboration</span>
+                            <span class="skill-tag">Data Interpretation</span>
+                            <span class="skill-tag">Critical Thinking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="projects" class="py-16">
-            <h2 class="section-title">Highlighted Projects</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <section id="projects" class="py-16">
+            <h2 class="section-title">Highlighted Projects</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="project-card">
+                    <img src="https://placehold.co/600x400/38bdf8/ffffff?text=Project+1" alt="Project 1" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Genomic Variant Analysis Pipeline</h3>
+                        <p class="text-gray-600 mb-4">Developed a Python pipeline to analyze Next-Generation Sequencing (NGS) data, identify genetic variants, and annotate their potential clinical significance.</p>
+                        <a href="https://github.com/thejusmahajan" target="_blank" class="text-sky-600 font-semibold hover:underline">View on GitHub &rarr;</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://placehold.co/600x400/818cf8/ffffff?text=Project+2" alt="Project 2" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Astrochemical Network Modeling</h3>
+                        <p class="text-gray-600 mb-4">Modeled complex chemical reaction networks in interstellar clouds to predict molecular abundances, involving numerical integration of thousands of coupled differential equations.</p>
+                        <a href="#" class="text-sky-600 font-semibold hover:underline">Read Paper &rarr;</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://placehold.co/600x400/f472b6/ffffff?text=Project+3" alt="Project 3" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Marine Ecosystem Simulation</h3>
+                        <p class="text-gray-600 mb-4">Created a simulation of plankton population dynamics in response to changing environmental factors, applying statistical methods to validate the model against observational data.</p>
+                        <a href="#" class="text-sky-600 font-semibold hover:underline">Learn More &rarr;</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://placehold.co/600x400/10b981/ffffff?text=Protein+Folder" alt="Protein Folding App" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Interactive Protein Folding App</h3>
+                        <p class="text-gray-600 mb-4">An interactive tool to predict and visualize 3D protein structures using ESMFold and ColabFold, rendered with 3Dmol.js.</p>
+                        <button id="launchAppButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://placehold.co/600x400/4ade80/ffffff?text=Mendel's+Peas" alt="Mendel's Experiment App" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Interactive Mendel's Experiment</h3>
+                        <p class="text-gray-600 mb-4">An interactive, step-by-step guide to Gregor Mendel's classic pea plant experiments, explaining the Law of Segregation.</p>
+                        <button id="launchMendelButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
+                    </div>
+                </div>
+                <!-- New Project Card for Flashcard App -->
                 <div class="project-card">
-                    <img src="https://placehold.co/600x400/38bdf8/ffffff?text=Project+1" alt="Project 1" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/f97316/ffffff?text=Flashcard+App" alt="Flashcard App" class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Genomic Variant Analysis Pipeline</h3>
-                        <p class="text-gray-600 mb-4">Developed a Python pipeline to analyze Next-Generation Sequencing (NGS) data, identify genetic variants, and annotate their potential clinical significance.</p>
-                        <a href="https://github.com/thejusmahajan" target="_blank" class="text-sky-600 font-semibold hover:underline">View on GitHub &rarr;</a>
+                        <h3 class="text-xl font-bold mb-2">Git-Spaced Flashcards</h3>
+                        <p class="text-gray-600 mb-4">A spaced repetition learning app, like Anki, that stores its data in your GitHub repository and includes AI-powered features.</p>
+                        <button id="launchFlashcardButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
                     </div>
                 </div>
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/818cf8/ffffff?text=Project+2" alt="Project 2" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Astrochemical Network Modeling</h3>
-                        <p class="text-gray-600 mb-4">Modeled complex chemical reaction networks in interstellar clouds to predict molecular abundances, involving numerical integration of thousands of coupled differential equations.</p>
-                        <a href="#" class="text-sky-600 font-semibold hover:underline">Read Paper &rarr;</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/f472b6/ffffff?text=Project+3" alt="Project 3" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Marine Ecosystem Simulation</h3>
-                        <p class="text-gray-600 mb-4">Created a simulation of plankton population dynamics in response to changing environmental factors, applying statistical methods to validate the model against observational data.</p>
-                        <a href="#" class="text-sky-600 font-semibold hover:underline">Learn More &rarr;</a>
-                    </div>
-                </div>
-                 <!-- New Project Card for Protein Folder -->
-                 <div class="project-card">
-                     <img src="https://placehold.co/600x400/10b981/ffffff?text=Protein+Folder" alt="Protein Folding App" class="w-full h-48 object-cover">
-                     <div class="p-6">
-                         <h3 class="text-xl font-bold mb-2">Interactive Protein Folding App</h3>
-                         <p class="text-gray-600 mb-4">An interactive tool to predict and visualize 3D protein structures using ESMFold and ColabFold, rendered with 3Dmol.js.</p>
-                         <button id="launchAppButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
-                     </div>
-                 </div>
-                 <!-- New Project Card for Mendel's Experiment -->
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/4ade80/ffffff?text=Mendel's+Peas" alt="Mendel's Experiment App" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Interactive Mendel's Experiment</h3>
-                        <p class="text-gray-600 mb-4">An interactive, step-by-step guide to Gregor Mendel's classic pea plant experiments, explaining the Law of Segregation.</p>
-                        <button id="launchMendelButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </div>
+        </section>
 
-        <section id="publications" class="py-16 bg-white rounded-xl shadow-md">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title">Publications</h2>
-                <div class="space-y-6">
-                    <div class="border-l-4 border-sky-500 pl-4">
-                        <p class="font-semibold">Your Name, et al. (2023). "Title of Your Awesome Astrochemistry Paper." <em>Astrophysical Journal</em>.</p>
-                    </div>
-                    <div class="border-l-4 border-sky-500 pl-4">
-                        <p class="font-semibold">Your Name, et al. (2022). "Another Great Paper on Molecular Clouds." <em>Monthly Notices of the Royal Astronomical Society</em>.</p>
-                    </div>
-                    <div class="border-l-4 border-sky-500 pl-4">
-                        <p class="font-semibold">Co-author, et al. (2021). "Paper on Marine Ecosystems Where You Contributed." <em>Journal of Marine Systems</em>.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <section id="publications" class="py-16 bg-white rounded-xl shadow-md">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Publications</h2>
+                <div class="space-y-6">
+                    <div class="border-l-4 border-sky-500 pl-4">
+                        <p class="font-semibold">Your Name, et al. (2023). "Title of Your Awesome Astrochemistry Paper." <em>Astrophysical Journal</em>.</p>
+                    </div>
+                    <div class="border-l-4 border-sky-500 pl-4">
+                        <p class="font-semibold">Your Name, et al. (2022). "Another Great Paper on Molecular Clouds." <em>Monthly Notices of the Royal Astronomical Society</em>.</p>
+                    </div>
+                    <div class="border-l-4 border-sky-500 pl-4">
+                        <p class="font-semibold">Co-author, et al. (2021). "Paper on Marine Ecosystems Where You Contributed." <em>Journal of Marine Systems</em>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    </main>
+    </main>
 
-    <footer id="contact" class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 py-12 text-center">
-            <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
-            <p class="mb-8 max-w-xl mx-auto">I'm currently seeking opportunities in bioinformatics and biostatistics. If you have a project or role where my skills would be a good fit, please don't hesitate to reach out.</p>
-            <div class="flex justify-center space-x-6">
-                <a href="mailto:your.email@example.com" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
-                    your.email@example.com
-                </a>
-                <a href="https://www.linkedin.com/in/yourprofile" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
-                    LinkedIn
-                </a>
-                <a href="https://github.com/thejusmahajan" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
-                    GitHub
-                </a>
-            </div>
-             <p class="mt-10 text-gray-400 text-sm">&copy; 2025 Your Name. All Rights Reserved.</p>
-        </div>
-    </footer>
+    <footer id="contact" class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
+            <p class="mb-8 max-w-xl mx-auto">I'm currently seeking opportunities in bioinformatics and biostatistics. If you have a project or role where my skills would be a good fit, please don't hesitate to reach out.</p>
+            <div class="flex justify-center space-x-6">
+                <a href="mailto:your.email@example.com" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
+                    your.email@example.com
+                </a>
+                <a href="https://www.linkedin.com/in/yourprofile" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
+                    LinkedIn
+                </a>
+                <a href="https://github.com/thejusmahajan" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
+                    GitHub
+                </a>
+            </div>
+             <p class="mt-10 text-gray-400 text-sm">&copy; 2025 Your Name. All Rights Reserved.</p>
+        </div>
+    </footer>
 
-    <!-- Modal for Protein Folding App -->
-    <div id="appModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-gray-50 rounded-xl shadow-2xl w-full max-w-5xl h-full max-h-[95vh] overflow-hidden relative flex flex-col">
-            <!-- Modal Header -->
-            <div class="p-4 border-b flex justify-between items-center bg-white flex-shrink-0">
-                <h2 class="text-xl font-bold text-gray-800">Protein Folding & Viewer</h2>
-                <button id="closeModalButton" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
-            </div>
-            <!-- Modal Body -->
-            <div class="p-6 flex-grow overflow-y-auto">
-                <!-- Embedded App Content Starts Here -->
-                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                    <p class="text-gray-600 mb-6">Predict protein structures or visualize existing PDB data.</p>
-                    <div class="mb-6 border-b border-gray-200">
-                        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                            <button id="tab-visualize" class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                                Visualize PDB (Recommended)
-                            </button>
-                            <button id="tab-predict" class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                Live Predict (Experimental)
-                            </button>
-                        </nav>
-                    </div>
-                    <div id="content-visualize">
-                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-4">
-                            <div class="flex">
-                                <div class="py-1 flex-shrink-0"><svg class="h-5 w-5 text-blue-400 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg></div>
-                                <div>
-                                    <p class="font-bold">How to get PDB data:</p>
-                                    <ol class="list-decimal list-inside text-sm text-gray-700 mt-1">
-                                        <li>Go to <a href="https://colab.research.google.com/github/sokrypton/ColabFold/blob/main/AlphaFold2.ipynb" target="_blank" class="text-blue-600 hover:underline font-medium">Google ColabFold</a>.</li>
-                                        <li>Enter your amino acid sequence and run the prediction.</li>
-                                        <li>When finished, find the `*_unrelaxed_rank_1_*.pdb` file, open it, and copy its contents.</li>
-                                        <li>Paste the PDB text into the text area below.</li>
-                                    </ol>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label for="pdbData" class="block text-sm font-medium text-gray-700 mb-2">Paste PDB File Content</label>
-                            <textarea id="pdbData" rows="8" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="HEADER...&#10;ATOM...&#10;..."></textarea>
-                        </div>
-                        <button id="visualizeButton" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition">
-                            Visualize Structure
-                        </button>
-                    </div>
-                    <div id="content-predict" style="display: none;">
-                        <div class="mb-4">
-                            <label for="sequence" class="block text-sm font-medium text-gray-700 mb-2">Amino Acid Sequence</label>
-                            <textarea id="sequence" rows="8" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., MTEYKLVVVGAGGVGKSALTIQLIQNHFVDEYDPTIEDSYRKQVVIDGETCLLDILDTAGQEEYSAMRDQYMRTGEGFLCVFAINNTKSFEDIHQYREQIKRVKDSDDVPMVLVGNKCDLAARTVESRQAQDLARSYGIPYIETSAKTRQGVEDAFYTLVREIRQH..."></textarea>
-                        </div>
-                        <button id="foldButton" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition">
-                            Fold Protein
-                        </button>
-                    </div>
-                    <div id="status" class="mt-6 text-center"></div>
-                    <div id="viewer-container" class="mt-4 w-full h-96 md:h-[500px] relative border rounded-lg bg-gray-200" style="display: none;"></div>
-                </div>
-                <footer class="text-center text-gray-500 text-sm mt-6">
-                    <p>Powered by <a href="https://github.com/sokrypton/ColabFold" target="_blank" class="text-blue-500 hover:underline">ColabFold</a>, <a href="https://github.com/facebookresearch/esm" target="_blank" class="text-blue-500 hover:underline">ESMFold</a>, & <a href="https://3dmol.csb.pitt.edu/" target="_blank" class="text-blue-500 hover:underline">3Dmol.js</a>.</p>
-                </footer>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal for Mendel's Experiment App -->
-    <div id="mendelModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-gray-50 rounded-xl shadow-2xl w-full max-w-4xl h-full max-h-[95vh] overflow-hidden relative flex flex-col">
-            <!-- Modal Header -->
-            <div class="p-4 border-b flex justify-between items-center bg-white flex-shrink-0">
-                <h2 class="text-xl font-bold text-gray-800">Mendel's Experiment: An Interactive Guide</h2>
-                <button id="closeMendelModalButton" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
-            </div>
-            <!-- Modal Body -->
-            <div class="p-6 flex-grow overflow-y-auto">
-                <!-- Mendel App Content Starts Here -->
-                 <div class="max-w-4xl mx-auto">
-                    <!-- Core Concepts -->
-                    <div class="concept-box p-4 mb-8 rounded-lg">
-                        <h3 class="text-lg font-bold text-sky-800 mb-2">Core Concepts for a Programmer</h3>
-                        <ul class="list-disc list-inside text-sky-700">
-                            <li><strong>Gene:</strong> A variable for a trait (e.g., `pea_shape`).</li>
-                            <li><strong>Allele:</strong> The value of that variable. `'A'` for round (dominant), `'a'` for wrinkled (recessive).</li>
-                            <li><strong>Genotype:</strong> The pair of alleles an organism has (e.g., `['A', 'a']`).</li>
-                            <li><strong>Phenotype:</strong> The visible outcome (e.g., if `'A'` is present, phenotype is "Round").</li>
-                        </ul>
-                    </div>
-            
-                    <!-- Step 1: P Generation -->
-                    <div class="step-card">
-                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Step 1: The P (Parental) Generation</h2>
-                        <p class="text-slate-600 mb-6">Mendel started with two "purebred" plants. One only ever produced round peas, and the other only ever produced wrinkled peas. This means their genotypes were fixed.</p>
-                        <div class="flex items-center justify-center space-x-4 md:space-x-8">
-                            <div class="text-center">
-                                <div class="pea pea-round mx-auto"><span class="genotype">AA</span><span class="phenotype">Round</span></div>
-                                <p class="mt-2 font-semibold text-slate-700">Parent 1</p>
-                            </div>
-                            <div class="arrow">+</div>
-                            <div class="text-center">
-                                <div class="pea pea-wrinkled mx-auto"><span class="genotype">aa</span><span class="phenotype">Wrinkled</span></div>
-                                <p class="mt-2 font-semibold text-slate-700">Parent 2</p>
-                            </div>
-                        </div>
-                        <div class="mt-8 text-center"><button id="crossP" class="custom-btn">Cross the P Generation</button></div>
-                    </div>
-            
-                    <!-- Step 2: F1 Generation -->
-                    <div id="f1-section" class="step-card hidden-section">
-                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Result: The F1 (First Filial) Generation</h2>
-                        <p class="text-slate-600 mb-6">When the purebred parents are crossed, every single offspring receives one allele from each parent (`'A'` from the first, `'a'` from the second). This results in a uniform generation.</p>
-                        <div class="flex items-center justify-center space-x-4">
-                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
-                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
-                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
-                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
-                        </div>
-                        <div class="concept-box p-4 my-6 rounded-lg">
-                            <h3 class="font-bold text-sky-800">Biological Insight: The Wrinkled Trait Vanished!</h3>
-                            <p class="text-sky-700">This was Mendel's first major discovery. Even though all F1 plants carry the allele for wrinkled (`a`), they all appear round. The round allele (`A`) is **dominant**.</p>
-                        </div>
-                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Programmer's View: The Simulation Logic</h3>
-                        <p class="text-slate-600 mb-4">A simple nested loop simulates this cross perfectly.</p>
-                        <div class="code-box"><pre><code><span class="comment"># Define the alleles for each "purebred" parent.</span>
+    <!-- Modal for Protein Folding App -->
+    <div id="appModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-50 rounded-xl shadow-2xl w-full max-w-5xl h-full max-h-[95vh] overflow-hidden relative flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-4 border-b flex justify-between items-center bg-white flex-shrink-0">
+                <h2 class="text-xl font-bold text-gray-800">Protein Folding & Viewer</h2>
+                <button id="closeModalButton" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 flex-grow overflow-y-auto">
+                <!-- Embedded App Content Starts Here -->
+   D             <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <p class="text-gray-600 mb-6">Predict protein structures or visualize existing PDB data.</p>
+                    <div class="mb-6 border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                            <button id="tab-visualize" class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                Visualize PDB (Recommended)
+                            </button>
+                            <button id="tab-predict" class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                Live Predict (Experimental)
+                            </button>
+                        </nav>
+                    </div>
+                    <div id="content-visualize">
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-4">
+                            <div class="flex">
+                                <div class="py-1 flex-shrink-0"><svg class="h-5 w-5 text-blue-400 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg></div>
+                                <div>
+                                    <p class="font-bold">How to get PDB data:</p>
+                                    <ol class="list-decimal list-inside text-sm text-gray-700 mt-1">
+                                        <li>Go to <a href="https://colab.research.google.com/github/sokrypton/ColabFold/blob/main/AlphaFold2.ipynb" target="_blank" class="text-blue-600 hover:underline font-medium">Google ColabFold</a>.</li>
+                                        <li>Enter your amino acid sequence and run the prediction.</li>
+                                        <li>When finished, find the `*_unrelaxed_rank_1_*.pdb` file, open it, and copy its contents.</li>
+                                        <li>Paste the PDB text into the text area below.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="pdbData" class="block text-sm font-medium text-gray-700 mb-2">Paste PDB File Content</label>
+                            <textarea id="pdbData" rows="8" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="HEADER...&#10;ATOM...&#10;..."></textarea>
+                        </div>
+                        <button id="visualizeButton" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition">
+                            Visualize Structure
+                        </button>
+                    </div>
+                    <div id="content-predict" style="display: none;">
+                        <div class="mb-4">
+                            <label for="sequence" class="block text-sm font-medium text-gray-700 mb-2">Amino Acid Sequence</label>
+                            <textarea id="sequence" rows="8" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., MTEYKLVVVGAGGVGKSALTIQLIQNHFVDEYDPTIEDSYRKQVVIDGETCLLDILDTAGQEEYSAMRDQYMRTGEGFLCVFAINNTKSFEDIHQYREQIKRVKDSDDVPMVLVGNKCDLAARTVESRQAQDLARSYGIPYIETSAKTRQGVEDAFYTLVREIRQH..."></textarea>
+                        </div>
+                        <button id="foldButton" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition">
+                            Fold Protein
+                        </button>
+                    </div>
+                    <div id="status" class="mt-6 text-center"></div>
+                    <div id="viewer-container" class="mt-4 w-full h-96 md:h-[500px] relative border rounded-lg bg-gray-200" style="display: none;"></div>
+                </div>
+                <footer class="text-center text-gray-500 text-sm mt-6">
+                    <p>Powered by <a href="https://github.com/sokrypton/ColabFold" target="_blank" class="text-blue-500 hover:underline">ColabFold</a>, <a href="https://github.com/facebookresearch/esm" target="_blank" class="text-blue-500 hover:underline">ESMFold</a>, & <a href="https://3dmol.csb.pitt.edu/" target="_blank" class="text-blue-500 hover:underline">3Dmol.js</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for Mendel's Experiment App -->
+    <div id="mendelModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-50 rounded-xl shadow-2xl w-full max-w-4xl h-full max-h-[95vh] overflow-hidden relative flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-4 border-b flex justify-between items-center bg-white flex-shrink-0">
+                <h2 class="text-xl font-bold text-gray-800">Mendel's Experiment: An Interactive Guide</h2>
+                <button id="closeMendelModalButton" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 flex-grow overflow-y-auto">
+                <!-- Mendel App Content Starts Here -->
+                 <div class="max-w-4xl mx-auto">
+                    <!-- Core Concepts -->
+                    <div class="concept-box p-4 mb-8 rounded-lg">
+                        <h3 class="text-lg font-bold text-sky-800 mb-2">Core Concepts for a Programmer</h3>
+                        <ul class="list-disc list-inside text-sky-700">
+                            <li><strong>Gene:</strong> A variable for a trait (e.g., `pea_shape`).</li>
+                            <li><strong>Allele:</strong> The value of that variable. `'A'` for round (dominant), `'a'` for wrinkled (recessive).</li>
+                            <li><strong>Genotype:</strong> The pair of alleles an organism has (e.g., `['A', 'a']`).</li>
+                            <li><strong>Phenotype:</strong> The visible outcome (e.g., if `'A'` is present, phenotype is "Round").</li>
+                        </ul>
+                    </div>
+            
+                    <!-- Step 1: P Generation -->
+                    <div class="step-card">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Step 1: The P (Parental) Generation</h2>
+                        <p class="text-slate-600 mb-6">Mendel started with two "purebred" plants. One only ever produced round peas, and the other only ever produced wrinkled peas. This means their genotypes were fixed.</p>
+                        <div class="flex items-center justify-center space-x-4 md:space-x-8">
+                            <div class="text-center">
+                                <div class="pea pea-round mx-auto"><span class="genotype">AA</span><span class="phenotype">Round</span></div>
+                                <p class="mt-2 font-semibold text-slate-700">Parent 1</p>
+                            </div>
+                            <div class="arrow">+</div>
+                            <div class="text-center">
+                                <div class="pea pea-wrinkled mx-auto"><span class="genotype">aa</span><span class="phenotype">Wrinkled</span></div>
+                                <p class="mt-2 font-semibold text-slate-700">Parent 2</p>
+                            </div>
+                        </div>
+                        <div class="mt-8 text-center"><button id="crossP" class="custom-btn">Cross the P Generation</button></div>
+                    </div>
+            
+                    <!-- Step 2: F1 Generation -->
+                    <div id="f1-section" class="step-card hidden-section">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Result: The F1 (First Filial) Generation</h2>
+                        <p class="text-slate-600 mb-6">When the purebred parents are crossed, every single offspring receives one allele from each parent (`'A'` from the first, `'a'` from the second). This results in a uniform generation.</p>
+                        <div class="flex items-center justify-center space-x-4">
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                        </div>
+                        <div class="concept-box p-4 my-6 rounded-lg">
+                            <h3 class="font-bold text-sky-800">Biological Insight: The Wrinkled Trait Vanished!</h3>
+                            <p class="text-sky-700">This was Mendel's first major discovery. Even though all F1 plants carry the allele for wrinkled (`a`), they all appear round. The round allele (`A`) is **dominant**.</p>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Programmer's View: The Simulation Logic</h3>
+                        <p class="text-slate-600 mb-4">A simple nested loop simulates this cross perfectly.</p>
+                        <div class="code-box"><pre><code><span class="comment"># Define the alleles for each "purebred" parent.</span>
 parent_1 = ['A', 'A']
 parent_2 = ['a', 'a']
 
@@ -438,42 +471,42 @@ f1_offspring = []
 
 <span class="comment"># For each allele from parent 1...</span>
 for allele1 in parent_1:
-    <span class="comment"># ...combine it with each allele from parent 2.</span>
-    for allele2 in parent_2:
-        f1_offspring.append(allele1 + allele2)
+    <span class="comment"># ...combine it with each allele from parent 2.</span>
+    for allele2 in parent_2:
+        f1_offspring.append(allele1 + allele2)
 
 <span class="comment"># Result: f1_offspring is ['Aa', 'Aa', 'Aa', 'Aa']</span></code></pre></div>
-                        <div class="mt-8 text-center"><button id="crossF1" class="custom-btn">Self-Cross the F1 Generation</button></div>
-                    </div>
-                    
-                    <!-- Step 3: F2 Generation -->
-                    <div id="f2-section" class="step-card hidden-section">
-                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Result: The F2 (Second Filial) Generation</h2>
-                        <p class="text-slate-600 mb-6">Mendel then crossed two plants from the F1 generation (`Aa` x `Aa`). This is where the "vanished" wrinkled trait made a surprising comeback.</p>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
-                            <div class="pea pea-round"><span class="genotype">AA</span><span class="phenotype">Round</span></div>
-                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
-                            <div class="pea pea-round"><span class="genotype">aA</span><span class="phenotype">Round</span></div>
-                            <div class="pea pea-wrinkled"><span class="genotype">aa</span><span class="phenotype">Wrinkled</span></div>
-                        </div>
-                        <div class="concept-box p-4 my-6 rounded-lg">
-                            <h3 class="font-bold text-sky-800">Biological Insight: The Famous 3:1 Ratio</h3>
-                            <p class="text-sky-700">The results weren't random. For every 4 offspring, there were statistically 3 round peas for every 1 wrinkled pea. This predictable ratio proved that inheritance followed specific rules.</p>
-                        </div>
-                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Statistical Summary</h3>
-                        <div class="flex flex-col md:flex-row gap-4">
-                            <div class="flex-1 bg-slate-50 p-4 rounded-lg">
-                                <h4 class="font-bold">Genotype Ratio</h4>
-                                <p class="font-mono">1 AA : 2 Aa : 1 aa</p>
-                            </div>
-                            <div class="flex-1 bg-slate-50 p-4 rounded-lg">
-                                <h4 class="font-bold">Phenotype Ratio</h4>
-                                <p class="font-mono">3 Round : 1 Wrinkled</p>
-                            </div>
-                        </div>
-                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Statistical Analysis with Code (Pandas)</h3>
-                        <p class="text-slate-600 mb-4">While we can see the ratios by eye in this small sample, a tool like Pandas is essential for analyzing larger datasets. It can automatically group and count the results for us.</p>
-                        <div class="code-box"><pre><code><span class="comment"># First, we need the pandas library.</span>
+                        <div class="mt-8 text-center"><button id="crossF1" class="custom-btn">Self-Cross the F1 Generation</button></div>
+                    </div>
+                    
+                    <!-- Step 3: F2 Generation -->
+                    <div id="f2-section" class="step-card hidden-section">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Result: The F2 (Second Filial) Generation</h2>
+                        <p class="text-slate-600 mb-6">Mendel then crossed two plants from the F1 generation (`Aa` x `Aa`). This is where the "vanished" wrinkled trait made a surprising comeback.</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
+                            <div class="pea pea-round"><span class="genotype">AA</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">Aa</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-round"><span class="genotype">aA</span><span class="phenotype">Round</span></div>
+                            <div class="pea pea-wrinkled"><span class="genotype">aa</span><span class="phenotype">Wrinkled</span></div>
+                        </div>
+                        <div class="concept-box p-4 my-6 rounded-lg">
+                            <h3 class="font-bold text-sky-800">Biological Insight: The Famous 3:1 Ratio</h3>
+                            <p class="text-sky-700">The results weren't random. For every 4 offspring, there were statistically 3 round peas for every 1 wrinkled pea. This predictable ratio proved that inheritance followed specific rules.</p>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Statistical Summary</h3>
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="flex-1 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold">Genotype Ratio</h4>
+                                <p class="font-mono">1 AA : 2 Aa : 1 aa</p>
+                            </div>
+                            <div class="flex-1 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold">Phenotype Ratio</h4>
+                                <p class="font-mono">3 Round : 1 Wrinkled</p>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Statistical Analysis with Code (Pandas)</h3>
+                        <p class="text-slate-600 mb-4">While we can see the ratios by eye in this small sample, a tool like Pandas is essential for analyzing larger datasets. It can automatically group and count the results for us.</p>
+                        <div class="code-box"><pre><code><span class="comment"># First, we need the pandas library.</span>
 import pandas as pd
 
 <span class="comment"># The results from our simulation.</span>
@@ -484,7 +517,7 @@ df = pd.DataFrame({'Genotype': f2_offspring})
 
 <span class="comment"># Determine the Phenotype for each row.</span>
 df['Phenotype'] = df['Genotype'].apply(
-    lambda genotype: 'Round' if 'A' in genotype else 'Wrinkled'
+    lambda genotype: 'Round' if 'A' in genotype else 'Wrinkled'
 )
 
 <span class="comment"># Use .value_counts() to get the final statistics.</span>
@@ -493,296 +526,867 @@ phenotype_stats = df['Phenotype'].value_counts()
 
 print(phenotype_stats)
 <span class="comment"># Output:
-# Round     3
-# Wrinkled  1</span></code></pre></div>
-                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Programmer's View: The Simulation Logic</h3>
-                         <p class="text-slate-600 mb-4">The exact same logic works, just with different parent inputs.</p>
-                        <div class="code-box"><pre><code><span class="comment"># The parents are now from the F1 generation.</span>
+# Round     3
+# Wrinkled  1</span></code></pre></div>
+                        <h3 class="text-lg font-semibold text-slate-700 mt-8 mb-2">Programmer's View: The Simulation Logic</h3>
+                         <p class="text-slate-600 mb-4">The exact same logic works, just with different parent inputs.</p>
+                        <div class="code-box"><pre><code><span class="comment"># The parents are now from the F1 generation.</span>
 f1_parent_1 = ['A', 'a']
 f1_parent_2 = ['A', 'a']
 
 f2_offspring = []
 
 for allele1 in f1_parent_1:
-    for allele2 in f1_parent_2:
-        f2_offspring.append(allele1 + allele2)
+    for allele2 in f1_parent_2:
+        f2_offspring.append(allele1 + allele2)
 
 <span class="comment"># Result: f2_offspring is ['AA', 'Aa', 'aA', 'aa']</span></code></pre></div>
-                        <div class="mt-8 text-center"><button id="crossF2" class="custom-btn">Investigate the F2 Generation (Create F3)</button></div>
+                        <div class="mt-8 text-center"><button id="crossF2" class="custom-btn">Investigate the F2 Generation (Create F3)</button></div>
+                    </div>
+            
+                    <!-- Step 4: F3 Generation -->
+                    <div id="f3-section" class="step-card hidden-section">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Step 3: Proving the Theory (F3 Generation)</h2>
+                        <p class="text-slate-600 mb-6">Mendel's genius was his next question: "Are all the round F2 peas genetically the same?" To find out, he self-pollinated plants from the F2 generation. He discovered there were three distinct groups.</p>
+                        <div class="space-y-8">
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Test 1: Self-crossing a purebred round (`AA`) pea</h3>
+                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
+                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
+                                    <div class="arrow">?</div>
+                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
+                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
+                                </div>
+                                <p class="text-sm text-slate-600 mt-2">Result: All offspring are purebred round. This group is "true-breeding".</p>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Test 2: Self-crossing a hybrid round (`Aa`) pea</h3>
+                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
+                                    <div class="pea pea-round"><span class="genotype">Aa</span></div>
+                                    <div class="arrow">?</div>
+                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
+                                    <div class="pea pea-round"><span class="genotype">Aa</span></div>
+                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
+                                </div>
+                                 <p class="text-sm text-slate-600 mt-2">Result: Produces round AND wrinkled offspring, in the familiar 3:1 ratio. This group was not "true-breeding".</p>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Test 3: Self-crossing a wrinkled (`aa`) pea</h3>
+                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
+                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
+                                    <div class="arrow">?</div>
+                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
+                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
+                                </div>
+                                <p class="text-sm text-slate-600 mt-2">Result: All offspring are wrinkled. This group is also "true-breeding".</p>
+                            </div>
+                        </div>
+                        <div class="concept-box p-4 my-8 rounded-lg">
+                            <h3 class="font-bold text-sky-800 text-xl">Conclusion: The Law of Segregation</h3>
+                            <p class="text-sky-700">This was the proof! The 3:1 phenotype ratio in the F2 generation was hiding a more fundamental **1:2:1 genotype ratio** (1 `AA` : 2 `Aa` : 1 `aa`). This showed that the two alleles for a trait (`A` and `a`) are discrete units. They don't blend. They separate—or **segregate**—from each other during the formation of reproductive cells, and then recombine in the offspring. This is the cornerstone of modern genetics.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mendel App Content Ends Here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Flashcard App -->
+    <div id="flashcardModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-50 rounded-xl shadow-2xl w-full max-w-4xl h-full max-h-[95vh] overflow-hidden relative flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-4 border-b flex justify-between items-center bg-white flex-shrink-0">
+                <h2 class="text-xl font-bold text-gray-800">Git-Spaced Flashcards</h2>
+                <button id="closeFlashcardModalButton" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 flex-grow overflow-y-auto flashcard-app">
+                <!-- Flashcard App Content Starts Here -->
+                <div id="app" class="container mx-auto max-w-4xl">
+                    <!-- Header -->
+                    <header class="flex justify-between items-center mb-6 pb-4 border-b">
+                        <h1 class="text-3xl font-bold text-gray-700">Git-Spaced Flashcards</h1>
+                        <div id="user-info" class="hidden text-right">
+                            <p class="font-semibold text-gray-600"></p>
+                            <button id="logout-btn" class="text-sm text-blue-600 hover:underline">Log Out</button>
+                        </div>
+                    </header>
+                    <!-- Login Screen -->
+                    <div id="login-screen">
+                        <div class="bg-white p-8 rounded-lg shadow-md max-w-lg mx-auto">
+                            <h2 class="text-2xl font-bold mb-6 text-center">Connect to GitHub</h2>
+                            <p class="text-sm text-gray-600 mb-4"> This app stores your flashcard decks as JSON files in a GitHub repository. You'll need a <a href="https://github.com/settings/tokens/new?scopes=repo&description=GitSpacedFlashcards" target="_blank" class="text-blue-600 hover:underline">Personal Access Token</a> with `repo` scope. </p>
+                            <div class="space-y-4">
+                                <input type="text" id="github-username" placeholder="GitHub Username" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="text" id="github-repo" placeholder="Repository Name (e.g., my-flashcards)" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="password" id="github-pat" placeholder="Personal Access Token (PAT)" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="text" id="github-folder" placeholder="Folder for Decks (e.g., flashcards)" value="flashcards" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <button id="login-btn" class="mt-6 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 font-semibold transition-colors">Connect</button>
+                            <p id="login-error" class="text-red-500 text-sm mt-4 text-center"></p>
+                        </div>
                     </div>
-            
-                    <!-- Step 4: F3 Generation -->
-                    <div id="f3-section" class="step-card hidden-section">
-                        <h2 class="text-2xl font-bold text-slate-700 mb-4">Step 3: Proving the Theory (F3 Generation)</h2>
-                        <p class="text-slate-600 mb-6">Mendel's genius was his next question: "Are all the round F2 peas genetically the same?" To find out, he self-pollinated plants from the F2 generation. He discovered there were three distinct groups.</p>
-                        <div class="space-y-8">
-                            <div>
-                                <h3 class="font-semibold text-lg mb-2">Test 1: Self-crossing a purebred round (`AA`) pea</h3>
-                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
-                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
-                                    <div class="arrow">⟶</div>
-                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
-                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
-                                </div>
-                                <p class="text-sm text-slate-600 mt-2">Result: All offspring are purebred round. This group is "true-breeding".</p>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-lg mb-2">Test 2: Self-crossing a hybrid round (`Aa`) pea</h3>
-                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
-                                    <div class="pea pea-round"><span class="genotype">Aa</span></div>
-                                    <div class="arrow">⟶</div>
-                                    <div class="pea pea-round"><span class="genotype">AA</span></div>
-                                    <div class="pea pea-round"><span class="genotype">Aa</span></div>
-                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
-                                </div>
-                                 <p class="text-sm text-slate-600 mt-2">Result: Produces round AND wrinkled offspring, in the familiar 3:1 ratio. This group was not "true-breeding".</p>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-lg mb-2">Test 3: Self-crossing a wrinkled (`aa`) pea</h3>
-                                <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
-                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
-                                    <div class="arrow">⟶</div>
-                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
-                                    <div class="pea pea-wrinkled"><span class="genotype">aa</span></div>
-                                </div>
-                                <p class="text-sm text-slate-600 mt-2">Result: All offspring are wrinkled. This group is also "true-breeding".</p>
+                    <!-- Deck List Screen -->
+                    <div id="deck-list-screen" class="hidden">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-semibold">Your Decks</h2>
+                            <button id="show-create-deck-btn" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 font-semibold transition-colors">+ New Deck</button>
+                        </div>
+                        <div id="create-deck-form" class="hidden bg-white p-4 rounded-lg shadow-md mb-4">
+                            <input type="text" id="new-deck-name" placeholder="Enter new deck name..." class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <div class="flex justify-end mt-2 space-x-2">
+                                <button id="cancel-create-deck-btn" class="bg-gray-300 text-gray-800 py-1 px-3 rounded-md hover:bg-gray-400">Cancel</button>
+                                <button id="create-deck-btn" class="bg-blue-600 text-white py-1 px-3 rounded-md hover:bg-blue-700">Create</button>
                             </div>
                         </div>
-                        <div class="concept-box p-4 my-8 rounded-lg">
-                            <h3 class="font-bold text-sky-800 text-xl">Conclusion: The Law of Segregation</h3>
-                            <p class="text-sky-700">This was the proof! The 3:1 phenotype ratio in the F2 generation was hiding a more fundamental **1:2:1 genotype ratio** (1 `AA` : 2 `Aa` : 1 `aa`). This showed that the two alleles for a trait (`A` and `a`) are discrete units. They don't blend. They separate—or **segregate**—from each other during the formation of reproductive cells, and then recombine in the offspring. This is the cornerstone of modern genetics.</p>
+                        <div id="deck-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+                    <!-- Study Screen -->
+                    <div id="study-screen" class="hidden">
+                        <div class="flex justify-between items-center mb-4">
+                            <button id="back-to-decks-btn" class="bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors">&larr; Back to Decks</button>
+                            <div class="text-right">
+                                <h2 id="study-deck-name" class="text-2xl font-semibold"></h2>
+                                <p id="study-progress" class="text-gray-600"></p>
+                            </div>
+                        </div>
+                        <div id="flashcard-container" class="relative w-full h-64 md:h-80 perspective-1000">
+                            <div id="flashcard" class="card w-full h-full">
+                                <div class="card-face card-face-front absolute w-full h-full flex items-center justify-center bg-white rounded-lg shadow-lg p-6 text-center">
+                                    <p id="card-front" class="text-2xl md:text-3xl"></p>
+                                </div>
+                                <div class="card-face card-face-back absolute w-full h-full flex items-center justify-center bg-white rounded-lg shadow-lg p-6 text-center">
+                                    <p id="card-back" class="text-xl md:text-2xl"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="study-controls" class="mt-6 text-center">
+                            <button id="show-answer-btn" class="bg-blue-600 text-white py-3 px-8 rounded-md hover:bg-blue-700 font-semibold text-lg transition-colors">Show Answer</button>
+                            <div id="quality-controls" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                                <button data-quality="1" class="quality-btn bg-red-500 text-white py-3 px-4 rounded-md font-semibold">Again</button>
+                                <button data-quality="3" class="quality-btn bg-yellow-500 text-white py-3 px-4 rounded-md font-semibold">Hard</button>
+                                <button data-quality="4" class="quality-btn bg-green-500 text-white py-3 px-4 rounded-md font-semibold">Good</button>
+                                <button data-quality="5" class="quality-btn bg-blue-500 text-white py-3 px-4 rounded-md font-semibold">Easy</button>
+                            </div>
+                            <div id="gemini-explain-container" class="mt-4 hidden">
+                                <button id="explain-answer-btn" class="bg-teal-500 text-white py-2 px-5 rounded-md hover:bg-teal-600 font-semibold transition-colors flex items-center justify-center mx-auto">
+                                    <span id="explain-btn-text">✨ Explain Answer</span>
+                                    <svg id="explain-spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="session-complete" class="hidden text-center mt-8 bg-white p-8 rounded-lg shadow-md">
+                            <h3 class="text-2xl font-bold text-green-600">Great job!</h3>
+                            <p class="text-gray-700 mt-2">You've finished all due cards for this deck.</p>
+                        </div>
+                    </div>
+                    <!-- Deck Management Screen -->
+                    <div id="manage-deck-screen" class="hidden">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+                            <button id="back-to-decks-from-manage-btn" class="bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors">&larr; Back to Decks</button>
+                            <h2 id="manage-deck-name" class="text-2xl font-semibold"></h2>
+                            <div class="flex gap-2">
+                                <button id="generate-cards-btn" class="bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 font-semibold transition-colors">✨ Generate Cards</button>
+                                <button id="add-card-btn" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 font-semibold transition-colors">+ Add Card</button>
+                            </div>
+                        </div>
+                        <div id="gemini-generate-form" class="hidden bg-white p-6 rounded-lg shadow-md mb-6">
+                            <h3 class="text-xl font-bold mb-4">✨ Generate Cards with AI</h3>
+                            <div class="space-y-4">
+                                <input type="text" id="generation-topic-input" placeholder="Enter a topic (e.g., 'Capital Cities of Asia')" class="w-full p-2 border rounded-md">
+                                <div>
+                                    <label for="generation-count-input" class="block text-sm font-medium text-gray-700">Number of cards:</label>
+                                    <input type="number" id="generation-count-input" value="5" min="1" max="20" class="w-full p-2 border rounded-md mt-1">
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-4 space-x-2">
+                                <button id="cancel-generate-btn" class="bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400">Cancel</button>
+                                <button id="start-generate-btn" class="bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center" style="min-width: 120px;">
+                                    <span id="generate-btn-text">Generate</span>
+                                    <svg id="generate-spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="card-editor" class="hidden bg-white p-6 rounded-lg shadow-md mb-6">
+                            <h3 id="editor-title" class="text-xl font-bold mb-4">Add New Card</h3>
+                            <input type="hidden" id="editing-card-id">
+                            <div class="space-y-4">
+                                <textarea id="card-front-input" placeholder="Card Front (Question)" rows="3" class="w-full p-2 border rounded-md"></textarea>
+                                <textarea id="card-back-input" placeholder="Card Back (Answer)" rows="3" class="w-full p-2 border rounded-md"></textarea>
+                            </div>
+                            <div class="flex justify-end mt-4 space-x-2">
+                                <button id="cancel-edit-btn" class="bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400">Cancel</button>
+                                <button id="save-card-btn" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Save Card</button>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-2">Cards in this deck</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Front</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Back</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="card-list" class="bg-white divide-y divide-gray-200"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Mendel App Content Ends Here -->
+                 <!-- Gemini Explanation Modal -->
+                <div id="explanation-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+                    <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+                        <div class="mt-3">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">✨ AI Explanation</h3>
+                            <div id="explanation-content" class="mt-2 px-4 py-3 max-h-[60vh] overflow-y-auto prose"></div>
+                            <div class="items-center px-4 py-3">
+                                <button id="close-modal-btn" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"> Close </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Flashcard App Content Ends Here -->
             </div>
         </div>
     </div>
 
 
-    <script>
-        // --- Modal Control (Protein App)---
-        const launchAppButton = document.getElementById('launchAppButton');
-        const appModal = document.getElementById('appModal');
-        const closeModalButton = document.getElementById('closeModalButton');
+    <script>
+        // --- Modal Control (Protein App)---
+        const launchAppButton = document.getElementById('launchAppButton');
+        const appModal = document.getElementById('appModal');
+        const closeModalButton = document.getElementById('closeModalButton');
 
-        launchAppButton.addEventListener('click', () => {
-            appModal.classList.remove('hidden');
-        });
+        launchAppButton.addEventListener('click', () => {
+            appModal.classList.remove('hidden');
+        });
 
-        closeModalButton.addEventListener('click', () => {
-            appModal.classList.add('hidden');
-        });
+        closeModalButton.addEventListener('click', () => {
+            appModal.classList.add('hidden');
+        });
 
-        appModal.addEventListener('click', (event) => {
-            if (event.target === appModal) {
-                appModal.classList.add('hidden');
-            }
-        });
+        appModal.addEventListener('click', (event) => {
+            if (event.target === appModal) {
+                appModal.classList.add('hidden');
+            }
+        });
 
-        // --- Modal Control (Mendel App) ---
-        const launchMendelButton = document.getElementById('launchMendelButton');
-        const mendelModal = document.getElementById('mendelModal');
-        const closeMendelModalButton = document.getElementById('closeMendelModalButton');
+        // --- Modal Control (Mendel App) ---
+        const launchMendelButton = document.getElementById('launchMendelButton');
+        const mendelModal = document.getElementById('mendelModal');
+        const closeMendelModalButton = document.getElementById('closeMendelModalButton');
 
-        if (launchMendelButton) {
-            launchMendelButton.addEventListener('click', () => {
-                mendelModal.classList.remove('hidden');
-            });
-        }
-        if(closeMendelModalButton) {
-            closeMendelModalButton.addEventListener('click', () => {
-                mendelModal.classList.add('hidden');
-            });
-        }
-        if(mendelModal){
-             mendelModal.addEventListener('click', (event) => {
-                if (event.target === mendelModal) {
-                    mendelModal.classList.add('hidden');
+        if (launchMendelButton) {
+            launchMendelButton.addEventListener('click', () => {
+                mendelModal.classList.remove('hidden');
+            });
+        }
+        if(closeMendelModalButton) {
+            closeMendelModalButton.addEventListener('click', () => {
+                mendelModal.classList.add('hidden');
+            });
+        }
+        if(mendelModal){
+             mendelModal.addEventListener('click', (event) => {
+                if (event.target === mendelModal) {
+                    mendelModal.classList.add('hidden');
+                }
+            });
+        }
+        
+        // --- Mendel App Logic ---
+        document.getElementById('crossP').addEventListener('click', function() {
+            const f1Section = document.getElementById('f1-section');
+            f1Section.style.display = 'block';
+            f1Section.scrollIntoView({ behavior: 'smooth' });
+            this.style.display = 'none';
+        });
+
+        document.getElementById('crossF1').addEventListener('click', function() {
+            const f2Section = document.getElementById('f2-section');
+            f2Section.style.display = 'block';
+            f2Section.scrollIntoView({ behavior: 'smooth' });
+            this.style.display = 'none';
+        });
+
+        document.getElementById('crossF2').addEventListener('click', function() {
+            const f3Section = document.getElementById('f3-section');
+            f3Section.style.display = 'block';
+            f3Section.scrollIntoView({ behavior: 'smooth' });
+            this.style.display = 'none';
+        });
+
+        // --- Modal Control (Flashcard App) ---
+        const launchFlashcardButton = document.getElementById('launchFlashcardButton');
+        const flashcardModal = document.getElementById('flashcardModal');
+        const closeFlashcardModalButton = document.getElementById('closeFlashcardModalButton');
+        let isFlashcardAppInitialized = false;
+
+        if (launchFlashcardButton) {
+            launchFlashcardButton.addEventListener('click', () => {
+                flashcardModal.classList.remove('hidden');
+                if (!isFlashcardAppInitialized) {
+                    initializeFlashcardApp();
+                    isFlashcardAppInitialized = true;
                 }
             });
         }
-        
-        // --- Mendel App Logic ---
-        document.getElementById('crossP').addEventListener('click', function() {
-            const f1Section = document.getElementById('f1-section');
-            f1Section.style.display = 'block';
-            f1Section.scrollIntoView({ behavior: 'smooth' });
-            this.style.display = 'none';
-        });
-
-        document.getElementById('crossF1').addEventListener('click', function() {
-            const f2Section = document.getElementById('f2-section');
-            f2Section.style.display = 'block';
-            f2Section.scrollIntoView({ behavior: 'smooth' });
-            this.style.display = 'none';
-        });
-
-        document.getElementById('crossF2').addEventListener('click', function() {
-            const f3Section = document.getElementById('f3-section');
-            f3Section.style.display = 'block';
-            f3Section.scrollIntoView({ behavior: 'smooth' });
-            this.style.display = 'none';
-        });
-
-
-        // --- Portfolio Mobile menu toggle ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // --- Portfolio Smooth scrolling for navigation links ---
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                if (mobileMenu.contains(this)) {
-                    mobileMenu.classList.add('hidden');
-                }
-                const targetElement = document.querySelector(this.getAttribute('href'));
-                if(targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
+        if (closeFlashcardModalButton) {
+            closeFlashcardModalButton.addEventListener('click', () => {
+                flashcardModal.classList.add('hidden');
+            });
+        }
+        if (flashcardModal) {
+            flashcardModal.addEventListener('click', (event) => {
+                if (event.target === flashcardModal) {
+                    flashcardModal.classList.add('hidden');
                 }
             });
-        });
+        }
 
-        // --- Embedded Protein App Javascript ---
-        const foldButton = document.getElementById('foldButton');
-        const sequenceInput = document.getElementById('sequence');
-        const statusDiv = document.getElementById('status');
-        const viewerContainer = document.getElementById('viewer-container');
-        const visualizeButton = document.getElementById('visualizeButton');
-        const pdbDataInput = document.getElementById('pdbData');
-        
-        const tabVisualize = document.getElementById('tab-visualize');
-        const tabPredict = document.getElementById('tab-predict');
-        const contentVisualize = document.getElementById('content-visualize');
-        const contentPredict = document.getElementById('content-predict');
 
-        let viewer;
+        // --- Portfolio Mobile menu toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-        // --- App Tab Switching Logic ---
-        tabVisualize.addEventListener('click', () => {
-            tabVisualize.classList.add('active');
-            tabPredict.classList.remove('active');
-            contentVisualize.style.display = 'block';
-            contentPredict.style.display = 'none';
-        });
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
 
-        tabPredict.addEventListener('click', () => {
-            tabPredict.classList.add('active');
-            tabVisualize.classList.remove('active');
-            contentPredict.style.display = 'block';
-            contentVisualize.style.display = 'none';
-        });
-        
-        // --- App Visualize PDB Data Logic ---
-        visualizeButton.addEventListener('click', () => {
-            const pdbData = pdbDataInput.value.trim();
-            if (!pdbData) {
-                statusDiv.innerHTML = `<p class="text-red-500">Please paste PDB data into the text area.</p>`;
-                return;
-            }
-            statusDiv.innerHTML = `<p class="text-green-600 font-semibold">Structure loaded!</p>`;
-            viewerContainer.style.display = 'block';
+        // --- Portfolio Smooth scrolling for navigation links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (mobileMenu.contains(this)) {
+                    mobileMenu.classList.add('hidden');
+                }
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if(targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // --- Embedded Protein App Javascript ---
+        const foldButton = document.getElementById('foldButton');
+        const sequenceInput = document.getElementById('sequence');
+        const statusDiv = document.getElementById('status');
+        const viewerContainer = document.getElementById('viewer-container');
+        const visualizeButton = document.getElementById('visualizeButton');
+        const pdbDataInput = document.getElementById('pdbData');
+        
+        const tabVisualize = document.getElementById('tab-visualize');
+        const tabPredict = document.getElementById('tab-predict');
+        const contentVisualize = document.getElementById('content-visualize');
+        const contentPredict = document.getElementById('content-predict');
+
+        let viewer;
+
+        // --- App Tab Switching Logic ---
+        tabVisualize.addEventListener('click', () => {
+            tabVisualize.classList.add('active');
+            tabPredict.classList.remove('active');
+            contentVisualize.style.display = 'block';
+            contentPredict.style.display = 'none';
+        });
+
+        tabPredict.addEventListener('click', () => {
+            tabPredict.classList.add('active');
+            tabVisualize.classList.remove('active');
+            contentPredict.style.display = 'block';
+            contentVisualize.style.display = 'none';
+        });
+        
+        // --- App Visualize PDB Data Logic ---
+        visualizeButton.addEventListener('click', () => {
+            const pdbData = pdbDataInput.value.trim();
+            if (!pdbData) {
+                statusDiv.innerHTML = `<p class="text-red-500">Please paste PDB data into the text area.</p>`;
+                return;
+            }
+            statusDiv.innerHTML = `<p class="text-green-600 font-semibold">Structure loaded!</p>`;
+            viewerContainer.style.display = 'block';
+            
+            if (!viewer) {
+                viewer = $3Dmol.createViewer(viewerContainer);
+            } else {
+                viewer.clear();
+            }
+            viewer.addModel(pdbData, 'pdb');
+            viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
+            viewer.zoomTo();
+            viewer.render();
+            viewer.zoom(1.2, 1000);
+        });
+
+        sequenceInput.value = "PIAQIHILEGRSDEQKETLIREVSEAISRSLDAPLTSVRVIITEMAKGHFGIGGELASK";
+
+        const fetchWithRetry = async (url, options, retries = 3, delay = 2000) => {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status >= 500 && response.status < 600) {
+                        throw new Error(`Server Error: ${response.status}`);
+                    }
+                    return response;
+                } catch (error) {
+                    console.warn(`Attempt ${i + 1} failed. Retrying in ${delay / 1000}s...`);
+                    if (i < retries - 1) {
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2;
+                    } else {
+                        throw error;
+                    }
+                }
+            }
+        };
+
+        foldButton.addEventListener('click', async () => {
+            let sequence = sequenceInput.value.trim();
+            if (!sequence) {
+                statusDiv.innerHTML = `<p class="text-red-500">Please enter a sequence.</p>`;
+                return;
+            }
+            
+            if (sequence.startsWith('>')) {
+                sequence = sequence.split('\n').slice(1).join('');
+            }
+            sequence = sequence.replace(/[^A-Z]/gi, '').toUpperCase();
+
+            statusDiv.innerHTML = `<div class="flex items-center justify-center gap-3"><div class="loader"></div><p class="text-gray-700">Predicting structure... This may take a minute.</p></div>`;
+            foldButton.disabled = true;
+            foldButton.classList.add('opacity-50');
+            viewerContainer.style.display = 'none';
+            if(viewer) viewer.clear();
+
+            try {
+                const response = await fetchWithRetry('https://api.esmatlas.com/foldSequence/v1/pdb/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: sequence
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                }
+
+                const pdbData = await response.text();
+                
+                pdbDataInput.value = pdbData;
+                
+                statusDiv.innerHTML = `<p class="text-green-600 font-semibold">Prediction successful!</p>`;
+                viewerContainer.style.display = 'block';
+
+                if (!viewer) {
+                    viewer = $3Dmol.createViewer(viewerContainer);
+                } else {
+                    viewer.clear();
+                }
+
+                viewer.addModel(pdbData, 'pdb');
+                viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
+                viewer.zoomTo();
+                viewer.render();
+                viewer.zoom(1.2, 1000);
+
+            } catch (error) {
+                console.error('Folding Error:', error);
+                let errorMessage = `An error occurred: ${error.message}.`;
+                if (error.message.includes('503') || error.message.includes('Server Error')) {
+                    errorMessage = 'The live prediction service is currently unavailable. Please use the "Visualize PDB" tab with Google ColabFold for a more reliable result.';
+                }
+                statusDiv.innerHTML = `<p class="text-red-500">${errorMessage}</p>`;
+            } finally {
+                foldButton.disabled = false;
+                foldButton.classList.remove('opacity-50');
+            }
+        });
+        
+        // --- Embedded Flashcard App Javascript ---
+        function initializeFlashcardApp() {
+            const GITHUB_API_URL = 'https://api.github.com';
+            const flashcardAppContainer = document.querySelector('.flashcard-app');
             
-            if (!viewer) {
-                viewer = $3Dmol.createViewer(viewerContainer);
-            } else {
-                viewer.clear();
-            }
-            viewer.addModel(pdbData, 'pdb');
-            viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
-            viewer.zoomTo();
-            viewer.render();
-            viewer.zoom(1.2, 1000);
-        });
+            // --- STATE MANAGEMENT ---
+            let state = {
+                github: { username: '', repo: '', pat: '', folder: 'flashcards', },
+                decks: [], 
+                currentDeck: null, 
+                studySession: { dueCards: [], currentIndex: 0, completed: false },
+                activeScreen: 'login',
+            };
 
-        sequenceInput.value = "PIAQIHILEGRSDEQKETLIREVSEAISRSLDAPLTSVRVIITEMAKGHFGIGGELASK";
+            // --- UI ELEMENTS ---
+            const screens = {
+                login: flashcardAppContainer.querySelector('#login-screen'),
+                deckList: flashcardAppContainer.querySelector('#deck-list-screen'),
+                study: flashcardAppContainer.querySelector('#study-screen'),
+                manageDeck: flashcardAppContainer.querySelector('#manage-deck-screen'),
+            };
+            const userInfoDiv = flashcardAppContainer.querySelector('#user-info');
+            const deckListDiv = flashcardAppContainer.querySelector('#deck-list');
+            const createDeckForm = flashcardAppContainer.querySelector('#create-deck-form');
+            const cardEditor = flashcardAppContainer.querySelector('#card-editor');
+            const geminiGenerateForm = flashcardAppContainer.querySelector('#gemini-generate-form');
+            const geminiExplainContainer = flashcardAppContainer.querySelector('#gemini-explain-container');
+            const explanationModal = flashcardAppContainer.querySelector('#explanation-modal');
 
-        const fetchWithRetry = async (url, options, retries = 3, delay = 2000) => {
-            for (let i = 0; i < retries; i++) {
+            // --- GEMINI API HELPER ---
+            async function callGemini(prompt, isJson = false) {
+                const apiKey = ""; // Canvas will provide this
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ parts: [{ text: prompt }] }], };
+                if (isJson) {
+                    payload.generationConfig = {
+                        responseMimeType: "application/json",
+                        responseSchema: { type: "ARRAY", items: { type: "OBJECT", properties: { "front": { "type": "STRING" }, "back": { "type": "STRING" }, }, required: ["front", "back"] } }
+                    };
+                }
                 try {
-                    const response = await fetch(url, options);
-                    if (response.status >= 500 && response.status < 600) {
-                        throw new Error(`Server Error: ${response.status}`);
-                    }
-                    return response;
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) { const error = await response.json(); console.error('Gemini API Error:', error); throw new Error(error.error ? error.error.message : 'Unknown API error'); }
+                    const result = await response.json();
+                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (!text) { throw new Error("No content received from Gemini API."); }
+                    return text;
                 } catch (error) {
-                    console.warn(`Attempt ${i + 1} failed. Retrying in ${delay / 1000}s...`);
-                    if (i < retries - 1) {
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2;
-                    } else {
-                        throw error;
-                    }
+                    console.error('Gemini API Request Failed:', error);
+                    alert(`Error communicating with Gemini: ${error.message}`);
+                    return null;
                 }
             }
-        };
 
-        foldButton.addEventListener('click', async () => {
-            let sequence = sequenceInput.value.trim();
-            if (!sequence) {
-                statusDiv.innerHTML = `<p class="text-red-500">Please enter a sequence.</p>`;
-                return;
+            // --- GITHUB API HELPER ---
+            async function githubRequest(endpoint, options = {}) {
+                const url = `${GITHUB_API_URL}${endpoint}`;
+                const headers = { 'Authorization': `token ${state.github.pat}`, 'Accept': 'application/vnd.github.v3+json', };
+                const config = { ...options, headers: { ...headers, ...options.headers }, };
+                try {
+                    const response = await fetch(url, config);
+                    if (!response.ok) { const error = await response.json(); throw new Error(error.message || `GitHub API Error: ${response.status}`); }
+                    return response.json();
+                } catch (error) {
+                    console.error('GitHub API Request Failed:', error);
+                    alert(`Error communicating with GitHub: ${error.message}`);
+                    return null;
+                }
             }
-            
-            if (sequence.startsWith('>')) {
-                sequence = sequence.split('\n').slice(1).join('');
+            async function getFile(path) {
+                const data = await githubRequest(`/repos/${state.github.username}/${state.github.repo}/contents/${path}`);
+                if (data && data.content) { const content = JSON.parse(atob(data.content)); return { ...data, content }; }
+                return null;
             }
-            sequence = sequence.replace(/[^A-Z]/gi, '').toUpperCase();
+            async function updateFile(path, content, sha, message) {
+                const base64Content = btoa(JSON.stringify(content, null, 2));
+                return await githubRequest(`/repos/${state.github.username}/${state.github.repo}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: message, content: base64Content, sha: sha, }), });
+            }
+            async function createFile(path, content, message) {
+                const base64Content = btoa(JSON.stringify(content, null, 2));
+                return await githubRequest(`/repos/${state.github.username}/${state.github.repo}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: message, content: base64Content, }), });
+            }
+            async function deleteFile(path, sha, message) {
+                return await githubRequest(`/repos/${state.github.username}/${state.github.repo}/contents/${path}`, { method: 'DELETE', body: JSON.stringify({ message: message, sha: sha, }), });
+            }
 
-            statusDiv.innerHTML = `<div class="flex items-center justify-center gap-3"><div class="loader"></div><p class="text-gray-700">Predicting structure... This may take a minute.</p></div>`;
-            foldButton.disabled = true;
-            foldButton.classList.add('opacity-50');
-            viewerContainer.style.display = 'none';
-            if(viewer) viewer.clear();
+            // --- SPACED REPETITION LOGIC ---
+            function calculateNextReview(card, quality) {
+                if (quality < 3) { card.repetition = 0; card.interval = 1; } 
+                else {
+                    card.repetition = (card.repetition || 0) + 1;
+                    card.easeFactor = card.easeFactor || 2.5;
+                    card.easeFactor = Math.max(1.3, card.easeFactor + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+                    if (card.repetition === 1) { card.interval = 1; } 
+                    else if (card.repetition === 2) { card.interval = 6; } 
+                    else { card.interval = Math.ceil(card.interval * card.easeFactor); }
+                }
+                const now = new Date();
+                now.setDate(now.getDate() + card.interval);
+                card.dueDate = now.toISOString().split('T')[0];
+                return card;
+            }
 
-            try {
-                const response = await fetchWithRetry('https://api.esmatlas.com/foldSequence/v1/pdb/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: sequence
+            // --- UI RENDERING ---
+            function switchScreen(screenName) {
+                state.activeScreen = screenName;
+                Object.values(screens).forEach(s => s.classList.add('hidden'));
+                if (screens[screenName]) { screens[screenName].classList.remove('hidden'); }
+                userInfoDiv.classList.toggle('hidden', screenName === 'login');
+            }
+            function renderDeckList() {
+                deckListDiv.innerHTML = '';
+                if (state.decks.length === 0) { deckListDiv.innerHTML = `<p class="text-gray-500 col-span-full text-center py-8">No decks found in the '${state.github.folder}' folder. Create one to get started!</p>`; }
+                state.decks.forEach(deck => {
+                    const deckCard = document.createElement('div');
+                    deckCard.className = 'bg-white p-4 rounded-lg shadow-md flex flex-col justify-between';
+                    deckCard.innerHTML = `
+                        <div>
+                            <h3 class="font-bold text-lg">${deck.name.replace('.json', '')}</h3>
+                            <p class="text-sm text-green-600 font-semibold">${deck.dueCardCount} card${deck.dueCardCount !== 1 ? 's' : ''} due</p>
+                        </div>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <button data-path="${deck.path}" class="study-btn flex-grow bg-blue-600 text-white py-2 px-4 rounded-md text-sm hover:bg-blue-700">Study</button>
+                            <button data-path="${deck.path}" class="manage-btn bg-gray-500 text-white py-2 px-4 rounded-md text-sm hover:bg-gray-600">Manage</button>
+                        </div>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            <button data-path="${deck.path}" class="reset-btn flex-grow bg-yellow-500 text-white py-2 px-4 rounded-md text-sm hover:bg-yellow-600">Reset Deck</button>
+                            <button data-path="${deck.path}" data-sha="${deck.sha}" class="delete-deck-btn flex-grow bg-red-600 text-white py-2 px-4 rounded-md text-sm hover:bg-red-700">Delete</button>
+                        </div>`;
+                    deckListDiv.appendChild(deckCard);
                 });
-
-                if (!response.ok) {
-                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
-                }
-
-                const pdbData = await response.text();
-                
-                pdbDataInput.value = pdbData;
-                
-                statusDiv.innerHTML = `<p class="text-green-600 font-semibold">Prediction successful!</p>`;
-                viewerContainer.style.display = 'block';
-
-                if (!viewer) {
-                    viewer = $3Dmol.createViewer(viewerContainer);
-                } else {
-                    viewer.clear();
-                }
-
-                viewer.addModel(pdbData, 'pdb');
-                viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
-                viewer.zoomTo();
-                viewer.render();
-                viewer.zoom(1.2, 1000);
-
-            } catch (error) {
-                console.error('Folding Error:', error);
-                let errorMessage = `An error occurred: ${error.message}.`;
-                if (error.message.includes('503') || error.message.includes('Server Error')) {
-                    errorMessage = 'The live prediction service is currently unavailable. Please use the "Visualize PDB" tab with Google ColabFold for a more reliable result.';
-                }
-                statusDiv.innerHTML = `<p class="text-red-500">${errorMessage}</p>`;
-            } finally {
-                foldButton.disabled = false;
-                foldButton.classList.remove('opacity-50');
             }
-        });
-    </script>
+            function renderStudyScreen() {
+                const session = state.studySession;
+                flashcardAppContainer.querySelector('#study-deck-name').textContent = state.currentDeck.name.replace('.json', '');
+                if(session.completed || session.dueCards.length === 0) {
+                    flashcardAppContainer.querySelector('#flashcard-container').classList.add('hidden');
+                    flashcardAppContainer.querySelector('#study-controls').classList.add('hidden');
+                    flashcardAppContainer.querySelector('#session-complete').classList.remove('hidden');
+                    flashcardAppContainer.querySelector('#study-progress').textContent = `Completed!`;
+                    return;
+                }
+                flashcardAppContainer.querySelector('#flashcard-container').classList.remove('hidden');
+                flashcardAppContainer.querySelector('#study-controls').classList.remove('hidden');
+                flashcardAppContainer.querySelector('#session-complete').classList.add('hidden');
+                flashcardAppContainer.querySelector('#flashcard').classList.remove('is-flipped');
+                flashcardAppContainer.querySelector('#show-answer-btn').classList.remove('hidden');
+                flashcardAppContainer.querySelector('#quality-controls').classList.add('hidden');
+                geminiExplainContainer.classList.add('hidden');
+                flashcardAppContainer.querySelector('#study-progress').textContent = `Card ${session.currentIndex + 1} of ${session.dueCards.length}`;
+                const currentCard = session.dueCards[session.currentIndex];
+                flashcardAppContainer.querySelector('#card-front').textContent = currentCard.front;
+                flashcardAppContainer.querySelector('#card-back').textContent = currentCard.back;
+            }
+            function renderManageDeckScreen() {
+                flashcardAppContainer.querySelector('#manage-deck-name').textContent = `Manage: ${state.currentDeck.name.replace('.json', '')}`;
+                const cardListBody = flashcardAppContainer.querySelector('#card-list');
+                cardListBody.innerHTML = '';
+                if (state.currentDeck.cards.length === 0) { cardListBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-gray-500">This deck is empty. Add a card to get started.</td></tr>`; return; }
+                state.currentDeck.cards.forEach(card => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${card.front}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${card.back}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${card.dueDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                            <button data-id="${card.id}" class="edit-card-btn text-indigo-600 hover:text-indigo-900">Edit</button>
+                            <button data-id="${card.id}" class="delete-card-btn text-red-600 hover:text-red-900">Delete</button>
+                        </td>`;
+                    cardListBody.appendChild(row);
+                });
+            }
+
+            // --- GEMINI HANDLERS ---
+            async function handleGenerateCards() {
+                const topic = flashcardAppContainer.querySelector('#generation-topic-input').value.trim();
+                const count = flashcardAppContainer.querySelector('#generation-count-input').value;
+                if (!topic) { alert("Please enter a topic."); return; }
+                const spinner = flashcardAppContainer.querySelector('#generate-spinner');
+                const btnText = flashcardAppContainer.querySelector('#generate-btn-text');
+                const btn = flashcardAppContainer.querySelector('#start-generate-btn');
+                spinner.classList.remove('hidden'); btnText.classList.add('hidden'); btn.disabled = true;
+                const prompt = `Generate ${count} flashcards for the topic "${topic}". Each card should be a JSON object with a "front" (question) and a "back" (answer). Provide the output as a JSON array of these objects.`;
+                const result = await callGemini(prompt, true);
+                spinner.classList.add('hidden'); btnText.classList.remove('hidden'); btn.disabled = false;
+                if (result) {
+                    try {
+                        const newCardsJson = JSON.parse(result);
+                        if (Array.isArray(newCardsJson)) {
+                            const today = new Date().toISOString().split('T')[0];
+                            const formattedCards = newCardsJson.map(card => ({ id: Date.now().toString() + Math.random().toString(16).slice(2), front: card.front, back: card.back, repetition: 0, interval: 1, easeFactor: 2.5, dueDate: today, }));
+                            state.currentDeck.cards.push(...formattedCards);
+                            await saveCurrentDeck(`✨ Added ${formattedCards.length} AI-generated cards about ${topic}`);
+                            geminiGenerateForm.classList.add('hidden');
+                            flashcardAppContainer.querySelector('#generation-topic-input').value = '';
+                            renderManageDeckScreen();
+                        } else { throw new Error("Response was not a JSON array."); }
+                    } catch (e) { console.error("Failed to parse Gemini response:", e); alert("The AI returned an invalid format. Please try again."); }
+                }
+            }
+            async function handleExplainAnswer() {
+                const session = state.studySession;
+                const currentCard = session.dueCards[session.currentIndex];
+                if (!currentCard) return;
+                const spinner = flashcardAppContainer.querySelector('#explain-spinner');
+                const btn = flashcardAppContainer.querySelector('#explain-answer-btn');
+                spinner.classList.remove('hidden'); btn.disabled = true;
+                const prompt = `Please provide a simple, clear explanation for the following concept, as if you were explaining it to a beginner. Question: "${currentCard.front}" Answer: "${currentCard.back}" Keep the explanation concise and easy to understand. Format the response with markdown.`;
+                const explanation = await callGemini(prompt);
+                spinner.classList.add('hidden'); btn.disabled = false;
+                if (explanation) { flashcardAppContainer.querySelector('#explanation-content').innerHTML = explanation.replace(/\n/g, '<br>'); explanationModal.classList.remove('hidden'); }
+            }
+
+            // --- EVENT HANDLERS & APP LOGIC ---
+            async function handleLogin() {
+                const username = flashcardAppContainer.querySelector('#github-username').value.trim();
+                const repo = flashcardAppContainer.querySelector('#github-repo').value.trim();
+                const pat = flashcardAppContainer.querySelector('#github-pat').value.trim();
+                const folder = flashcardAppContainer.querySelector('#github-folder').value.trim() || 'flashcards';
+                if (!username || !repo || !pat) { flashcardAppContainer.querySelector('#login-error').textContent = 'All fields are required.'; return; }
+                state.github = { username, repo, pat, folder };
+                const repoData = await githubRequest(`/repos/${username}/${repo}`);
+                if(repoData) {
+                    localStorage.setItem('git-spaced-flashcards', JSON.stringify(state.github));
+                    userInfoDiv.querySelector('p').textContent = `${username}/${repo}`;
+                    await loadDecks();
+                    switchScreen('deckList');
+                } else { flashcardAppContainer.querySelector('#login-error').textContent = 'Login failed. Check your credentials and repository name.'; }
+            }
+            async function loadDecks() {
+                const files = await githubRequest(`/repos/${state.github.username}/${state.github.repo}/contents/${state.github.folder}`);
+                if (files && Array.isArray(files)) {
+                    const deckPromises = files.filter(file => file.name.endsWith('.json')).map(async file => {
+                        const deckData = await getFile(file.path);
+                        const today = new Date().toISOString().split('T')[0];
+                        const dueCardCount = deckData.content.filter(card => (card.dueDate || today) <= today).length;
+                        return { name: file.name, path: file.path, sha: file.sha, dueCardCount };
+                    });
+                    state.decks = await Promise.all(deckPromises);
+                } else { state.decks = []; }
+                renderDeckList();
+            }
+            async function startStudySession(deckPath) {
+                const deckData = await getFile(deckPath);
+                if (deckData) {
+                    state.currentDeck = { name: deckData.name, path: deckData.path, sha: deckData.sha, cards: deckData.content };
+                    const today = new Date().toISOString().split('T')[0];
+                    state.studySession = { dueCards: deckData.content.filter(card => (card.dueDate || today) <= today), currentIndex: 0, completed: false, };
+                    switchScreen('study');
+                    renderStudyScreen();
+                }
+            }
+            async function openDeckManager(deckPath) {
+                 const deckData = await getFile(deckPath);
+                 if (deckData) { state.currentDeck = { name: deckData.name, path: deckData.path, sha: deckData.sha, cards: deckData.content }; switchScreen('manageDeck'); renderManageDeckScreen(); }
+            }
+            async function saveCurrentDeck(message) {
+                if (!state.currentDeck) return;
+                const updatedDeck = await updateFile(state.currentDeck.path, state.currentDeck.cards, state.currentDeck.sha, message);
+                if(updatedDeck) { state.currentDeck.sha = updatedDeck.content.sha; } else { alert('Failed to save progress to GitHub!'); }
+            }
+            function handleShowAnswer() {
+                flashcardAppContainer.querySelector('#flashcard').classList.add('is-flipped');
+                flashcardAppContainer.querySelector('#show-answer-btn').classList.add('hidden');
+                flashcardAppContainer.querySelector('#quality-controls').classList.remove('hidden');
+                geminiExplainContainer.classList.remove('hidden');
+            }
+            async function handleQualitySelection(quality) {
+                const session = state.studySession;
+                let currentCard = session.dueCards[session.currentIndex];
+                const originalCardIndex = state.currentDeck.cards.findIndex(c => c.id === currentCard.id);
+                if (originalCardIndex !== -1) {
+                    const updatedCard = calculateNextReview({ ...state.currentDeck.cards[originalCardIndex] }, quality);
+                    state.currentDeck.cards[originalCardIndex] = updatedCard;
+                    if (quality < 3) { session.dueCards.push(updatedCard); }
+                }
+                session.currentIndex++;
+                if (session.currentIndex >= session.dueCards.length) { session.completed = true; await saveCurrentDeck(`Completed study session for ${state.currentDeck.name}`); }
+                renderStudyScreen();
+            }
+            async function handleSaveCard() {
+                const front = flashcardAppContainer.querySelector('#card-front-input').value.trim();
+                const back = flashcardAppContainer.querySelector('#card-back-input').value.trim();
+                const editingId = flashcardAppContainer.querySelector('#editing-card-id').value;
+                if (!front || !back) { alert("Both front and back of the card must be filled out."); return; }
+                if (editingId) {
+                    const cardIndex = state.currentDeck.cards.findIndex(c => c.id === editingId);
+                    if (cardIndex !== -1) { state.currentDeck.cards[cardIndex].front = front; state.currentDeck.cards[cardIndex].back = back; }
+                } else {
+                    const today = new Date().toISOString().split('T')[0];
+                    const newCard = { id: Date.now().toString() + Math.random().toString(16).slice(2), front, back, repetition: 0, interval: 1, easeFactor: 2.5, dueDate: today, };
+                    state.currentDeck.cards.push(newCard);
+                }
+                await saveCurrentDeck(editingId ? `Edited card in ${state.currentDeck.name}` : `Added card to ${state.currentDeck.name}`);
+                cardEditor.classList.add('hidden');
+                renderManageDeckScreen();
+            }
+            async function handleCreateDeck() {
+                const deckName = flashcardAppContainer.querySelector('#new-deck-name').value.trim();
+                if(!deckName) { alert("Deck name cannot be empty."); return; }
+                const fileName = `${deckName.replace(/ /g, '-')}.json`;
+                const path = `${state.github.folder}/${fileName}`;
+                const exists = state.decks.some(d => d.name === fileName);
+                if(exists) { alert("A deck with this name already exists."); return; }
+                const newDeck = await createFile(path, [], `Created new deck: ${deckName}`);
+                if(newDeck) { createDeckForm.classList.add('hidden'); flashcardAppContainer.querySelector('#new-deck-name').value = ''; await loadDecks(); }
+            }
+            async function handleDeleteCard(cardId) {
+                if (confirm("Are you sure you want to delete this card?")) {
+                    state.currentDeck.cards = state.currentDeck.cards.filter(c => c.id !== cardId);
+                    await saveCurrentDeck(`Deleted card from ${state.currentDeck.name}`);
+                    renderManageDeckScreen();
+                }
+            }
+            async function handleDeleteDeck(path, sha) {
+                 const deckName = path.split('/').pop().replace('.json', '');
+                 if (confirm(`Are you sure you want to permanently delete the deck "${deckName}"?`)) { const result = await deleteFile(path, sha, `Deleted deck: ${deckName}`); if (result) { await loadDecks(); } }
+            }
+            async function handleResetDeck(path) {
+                const deckName = path.split('/').pop().replace('.json', '');
+                 if (confirm(`Are you sure you want to reset all progress for "${deckName}"? All cards will be due today.`)) {
+                    const deckData = await getFile(path);
+                    if(deckData) {
+                        const today = new Date().toISOString().split('T')[0];
+                        const resetCards = deckData.content.map(card => ({ ...card, repetition: 0, interval: 1, easeFactor: 2.5, dueDate: today }));
+                        const result = await updateFile(path, resetCards, deckData.sha, `Reset deck: ${deckName}`);
+                        if (result) { alert(`Deck "${deckName}" has been reset.`); await loadDecks(); }
+                    }
+                 }
+            }
+            // --- INITIALIZATION ---
+            function init() {
+                flashcardAppContainer.querySelector('#login-btn').addEventListener('click', handleLogin);
+                flashcardAppContainer.querySelector('#logout-btn').addEventListener('click', () => { localStorage.removeItem('git-spaced-flashcards'); state.github = {}; switchScreen('login'); });
+                flashcardAppContainer.querySelector('#show-create-deck-btn').addEventListener('click', () => createDeckForm.classList.remove('hidden'));
+                flashcardAppContainer.querySelector('#cancel-create-deck-btn').addEventListener('click', () => createDeckForm.classList.add('hidden'));
+                flashcardAppContainer.querySelector('#create-deck-btn').addEventListener('click', handleCreateDeck);
+                flashcardAppContainer.querySelector('#back-to-decks-btn').addEventListener('click', async () => { await loadDecks(); switchScreen('deckList'); });
+                flashcardAppContainer.querySelector('#back-to-decks-from-manage-btn').addEventListener('click', async () => { await loadDecks(); switchScreen('deckList'); });
+                flashcardAppContainer.querySelector('#show-answer-btn').addEventListener('click', handleShowAnswer);
+                flashcardAppContainer.querySelector('#quality-controls').addEventListener('click', e => { if (e.target.matches('[data-quality]')) { handleQualitySelection(parseInt(e.target.dataset.quality)); } });
+                flashcardAppContainer.querySelector('#add-card-btn').addEventListener('click', () => { flashcardAppContainer.querySelector('#editor-title').textContent = 'Add New Card'; flashcardAppContainer.querySelector('#editing-card-id').value = ''; flashcardAppContainer.querySelector('#card-front-input').value = ''; flashcardAppContainer.querySelector('#card-back-input').value = ''; cardEditor.classList.remove('hidden'); geminiGenerateForm.classList.add('hidden'); });
+                flashcardAppContainer.querySelector('#cancel-edit-btn').addEventListener('click', () => cardEditor.classList.add('hidden'));
+                flashcardAppContainer.querySelector('#save-card-btn').addEventListener('click', handleSaveCard);
+                deckListDiv.addEventListener('click', e => { const target = e.target; if (target.matches('.study-btn')) startStudySession(target.dataset.path); if (target.matches('.manage-btn')) openDeckManager(target.dataset.path); if (target.matches('.delete-deck-btn')) handleDeleteDeck(target.dataset.path, target.dataset.sha); if (target.matches('.reset-btn')) handleResetDeck(target.dataset.path); });
+                flashcardAppContainer.querySelector('#card-list').addEventListener('click', e => {
+                    const target = e.target;
+                    if (target.matches('.edit-card-btn')) {
+                        const cardId = target.dataset.id;
+                        const card = state.currentDeck.cards.find(c => c.id === cardId);
+                        if (card) { flashcardAppContainer.querySelector('#editor-title').textContent = 'Edit Card'; flashcardAppContainer.querySelector('#editing-card-id').value = card.id; flashcardAppContainer.querySelector('#card-front-input').value = card.front; flashcardAppContainer.querySelector('#card-back-input').value = card.back; cardEditor.classList.remove('hidden'); cardEditor.scrollIntoView({ behavior: 'smooth' }); }
+                    }
+                    if (target.matches('.delete-card-btn')) { handleDeleteCard(target.dataset.id); }
+                });
+                flashcardAppContainer.querySelector('#generate-cards-btn').addEventListener('click', () => { geminiGenerateForm.classList.remove('hidden'); cardEditor.classList.add('hidden'); });
+                flashcardAppContainer.querySelector('#cancel-generate-btn').addEventListener('click', () => geminiGenerateForm.classList.add('hidden'));
+                flashcardAppContainer.querySelector('#start-generate-btn').addEventListener('click', handleGenerateCards);
+                flashcardAppContainer.querySelector('#explain-answer-btn').addEventListener('click', handleExplainAnswer);
+                flashcardAppContainer.querySelector('#close-modal-btn').addEventListener('click', () => explanationModal.classList.add('hidden'));
+                
+                const savedCredentials = localStorage.getItem('git-spaced-flashcards');
+                if (savedCredentials) {
+                    state.github = JSON.parse(savedCredentials);
+                    flashcardAppContainer.querySelector('#github-username').value = state.github.username;
+                    flashcardAppContainer.querySelector('#github-repo').value = state.github.repo;
+                    flashcardAppContainer.querySelector('#github-pat').value = state.github.pat;
+                    flashcardAppContainer.querySelector('#github-folder').value = state.github.folder;
+                    handleLogin();
+                } else { switchScreen('login'); }
+            }
+            init();
+        }
+
+    </script>
 
 </body>
 </html>
