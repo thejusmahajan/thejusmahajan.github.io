@@ -51,134 +51,224 @@
         <section class="text-center py-12">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Simulacrum Data Analysis</h1>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                A biostatistical analysis of synthetic cancer data (Simulacrum v2.1.0), exploring patient demographics,
-                tumour sites, and staging distributions using R.
+                A comprehensive biostatistical analysis of the Simulacrum v2.1.0 synthetic dataset, exploring patient
+                demographics, tumour characteristics, and staging distributions.
             </p>
         </section>
 
-        <!-- Analysis Results -->
-        <section class="py-12">
-            <h2 class="section-title">Key Findings</h2>
-
-            <div class="grid md:grid-cols-2 gap-12 mb-16">
-                <div>
-                    <img src="images/top_10_cancer_sites.png" alt="Top 10 Cancer Sites"
-                        class="rounded-lg shadow-md w-full">
-                </div>
-                <div class="flex flex-col justify-center">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Most Common Cancers</h3>
-                    <p class="text-lg leading-relaxed mb-4">
-                        The analysis of the tumour dataset reveals that <strong>Skin (C44)</strong>, <strong>Breast
-                            (C50)</strong>,
-                        and <strong>Prostate (C61)</strong> cancers are the most prevalent in this cohort.
-                    </p>
-                    <p class="text-lg leading-relaxed">
-                        <strong>Insight:</strong> This distribution mirrors real-world cancer statistics in the UK,
-                        validating
-                        the utility of the Simulacrum dataset for testing epidemiological hypotheses.
-                    </p>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-12 mb-16">
-                <div class="flex flex-col justify-center order-2 md:order-1">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Stage Distribution</h3>
-                    <p class="text-lg leading-relaxed mb-4">
-                        Staging is a critical factor in determining prognosis. The data shows a significant number of
-                        cases
-                        diagnosed at <strong>Stage 1</strong> and <strong>Stage 4</strong>.
-                    </p>
-                    <p class="text-lg leading-relaxed">
-                        However, a large portion of the data is marked as <strong>'?' (Unknown)</strong> or <strong>'U'
-                            (Unstaged)</strong>.
-                        This highlights a common challenge in real-world health data: missing or incomplete records.
-                    </p>
-                </div>
-                <div class="order-1 md:order-2">
-                    <img src="images/stage_distribution.png" alt="Stage Distribution"
-                        class="rounded-lg shadow-md w-full">
+        <!-- Data Description & Warnings -->
+        <section class="py-8 max-w-4xl mx-auto">
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 mb-8 rounded-r-lg shadow-sm">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-medium text-yellow-800">Important: Synthetic Data Warning</h3>
+                        <div class="mt-2 text-yellow-700">
+                            <p class="mb-2">
+                                The data analyzed in this project is <strong>entirely synthetic</strong>. It comes from
+                                the Simulacrum, a dataset derived from the National Disease Registration Service (NDRS)
+                                in England.
+                            </p>
+                            <p>
+                                While it mimics the structure and statistical properties of real cancer data, <strong>it
+                                    does not contain real patient information</strong>. Results from this analysis
+                                should <strong>not</strong> be compared to real-world clinical data or used to make
+                                clinical decisions.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-12">
-                <div>
-                    <img src="images/vital_status_distribution.png" alt="Vital Status Distribution"
-                        class="rounded-lg shadow-md w-full">
-                </div>
-                <div class="flex flex-col justify-center">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Patient Demographics</h3>
-                    <p class="text-lg leading-relaxed">
-                        The patient cohort shows a roughly even split between males and females. The vital status
-                        analysis
-                        indicates a significant mortality rate, which is expected in a cancer registry dataset.
-                    </p>
-                </div>
-            </div>
+            <h2 class="section-title">About the Data</h2>
+            <p class="text-lg leading-relaxed mb-6 text-gray-700">
+                The Simulacrum is a tool developed by Health Data Insight (HDI) to facilitate cancer data research
+                without compromising patient confidentiality. It allows researchers to write and test code on "safe"
+                data that looks like the real thing.
+            </p>
+            <p class="text-sm text-gray-500 italic mb-12">
+                <strong>Citation:</strong> The Simulacrum Version 2.1.0. Health Data Insight. Available at: <a
+                    href="https://simulacrum.healthdatainsight.org.uk/"
+                    class="text-sky-600 hover:underline">https://simulacrum.healthdatainsight.org.uk/</a>
+            </p>
         </section>
 
-        <!-- Student Walkthrough -->
-        <section class="py-16 bg-white rounded-xl shadow-sm border border-gray-200 px-8">
-            <h2 class="section-title">How It's Done: R Analysis Walkthrough</h2>
+        <!-- Part 1: Patient Demographics -->
+        <section class="py-12 border-t border-gray-200">
+            <h2 class="section-title">Part 1: Patient Demographics</h2>
             <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-                Here is a glimpse into the R code used to process the data and generate the visualizations.
+                We begin by analyzing the `sim_av_patient.csv` dataset to understand the demographic composition of the
+                cohort.
             </p>
 
-            <!-- Step 1 -->
-            <div class="mb-12">
-                <div class="flex items-center mb-4">
-                    <div
-                        class="bg-sky-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl mr-4">
-                        1</div>
-                    <h3 class="text-2xl font-bold text-gray-800">Loading and Cleaning</h3>
+            <!-- Gender Distribution -->
+            <div class="grid md:grid-cols-2 gap-12 mb-16 items-center">
+                <div>
+                    <img src="images/gender_distribution.png" alt="Gender Distribution"
+                        class="rounded-lg shadow-md w-full border border-gray-100">
                 </div>
-                <p class="mb-4 text-gray-700 ml-14">
-                    We load the CSV data and perform basic cleaning. For the tumour analysis, we extract the main ICD-10
-                    code
-                    (first 3 characters) to group cancers by type.
-                </p>
-                <div class="ml-14">
-                    <pre><code class="language-r"># Load data
-df <- read.csv("data/sim_av_tumour.csv")
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Gender Distribution</h3>
+                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
+                        The dataset shows a relatively balanced distribution between male and female patients. This is a
+                        fundamental check to ensure the synthetic data generation process has not introduced significant
+                        gender bias, although specific cancer types (like prostate or breast cancer) are naturally
+                        gender-specific.
+                    </p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
+                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
+                        <pre><code class="language-r"># Load data
+df <- read.csv("data/sim_av_patient.csv")
 
-# Extract main ICD-10 code (e.g., C50 from C50.9)
-df$SITE_MAIN <- substr(df$SITE_ICD10_O2, 1, 3)
-
-# Count occurrences
-site_counts <- sort(table(df$SITE_MAIN), decreasing = TRUE)
-top_10_sites <- head(site_counts, 10)
-</code></pre>
-                </div>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="mb-12">
-                <div class="flex items-center mb-4">
-                    <div
-                        class="bg-sky-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl mr-4">
-                        2</div>
-                    <h3 class="text-2xl font-bold text-gray-800">Visualizing Cancer Types</h3>
-                </div>
-                <p class="mb-4 text-gray-700 ml-14">
-                    We use a horizontal bar plot to display the top 10 cancer sites. We also map the codes to
-                    human-readable names
-                    (e.g., C50 -> Breast) for better interpretation.
-                </p>
-                <div class="ml-14">
-                    <pre><code class="language-r"># Scale counts for readability (x 10^5)
-counts_scaled <- top_10_sites / 100000
+# Map gender codes (0=Not known, 1=Male, 2=Female, 9=Not specified)
+df$GENDER_LABEL <- factor(df$GENDER, 
+                          levels = c(0, 1, 2, 9), 
+                          labels = c("Not known", "Male", "Female", "Not specified"))
 
 # Create plot
+gender_counts <- table(df$GENDER_LABEL)
+barplot(gender_counts, 
+        main = "Patient Gender Distribution",
+        xlab = "Gender",
+        ylab = "Count",
+        col = c("gray", "lightblue", "pink", "gray"))</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vital Status -->
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Vital Status</h3>
+                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
+                        The vital status analysis reveals the proportion of patients who are alive versus deceased
+                        within the dataset. Given that this is a cancer registry, a significant mortality rate is
+                        expected.
+                    </p>
+                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
+                        <strong>Interpretation:</strong> The high number of deceased patients reflects the severity of
+                        the diseases tracked in this registry. This variable is crucial for survival analysis, which
+                        would be a logical next step in a more advanced study.
+                    </p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
+                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
+                        <pre><code class="language-r"># Vital Status (A=Alive, D=Deceased)
+vital_counts <- table(df$VITALSTATUS)
+
+# Create plot
+barplot(vital_counts, 
+        main = "Patient Vital Status",
+        xlab = "Status",
+        ylab = "Count",
+        col = c("lightgreen", "salmon"))</code></pre>
+                    </div>
+                </div>
+                <div class="order-1 md:order-2">
+                    <img src="images/vital_status_distribution.png" alt="Vital Status Distribution"
+                        class="rounded-lg shadow-md w-full border border-gray-100">
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 2: Tumour Analysis -->
+        <section class="py-12 border-t border-gray-200">
+            <h2 class="section-title">Part 2: Tumour Analysis</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+                Next, we examine the `sim_av_tumour.csv` dataset to explore cancer types and staging.
+            </p>
+
+            <!-- Cancer Sites -->
+            <div class="grid md:grid-cols-2 gap-12 mb-16 items-center">
+                <div>
+                    <img src="images/top_10_cancer_sites.png" alt="Top 10 Cancer Sites"
+                        class="rounded-lg shadow-md w-full border border-gray-100">
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Most Common Cancer Sites</h3>
+                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
+                        We identified the most common cancer diagnoses by grouping the ICD-10 codes. The analysis
+                        highlights that <strong>Breast (C50)</strong>, <strong>Prostate (C61)</strong>, and <strong>Lung
+                            (C34)</strong> cancers are the most prevalent.
+                    </p>
+                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
+                        <strong>Note:</strong> Skin cancers (C44) also appear frequently. The distribution closely
+                        mirrors national statistics, validating the Simulacrum's utility for testing epidemiological
+                        pipelines.
+                    </p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
+                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
+                        <pre><code class="language-r"># Load data
+df <- read.csv("data/sim_av_tumour.csv")
+
+# Extract main ICD-10 code (first 3 chars)
+df$SITE_MAIN <- substr(df$SITE_ICD10_O2, 1, 3)
+
+# Count and sort
+site_counts <- sort(table(df$SITE_MAIN), decreasing = TRUE)
+top_10_sites <- head(site_counts, 10)
+
+# Scale counts (x 10^5) for readability
+counts_scaled <- top_10_sites / 100000
+
+# Create horizontal bar plot
 barplot(counts_scaled, 
         main = "Top 10 Cancer Sites (ICD-10)",
         xlab = "Count (x 10^5)",
-        names.arg = labels,
+        names.arg = labels, # Mapped labels (e.g. C50 -> Breast)
         col = "steelblue",
         horiz = TRUE,
-        las = 1)
-</code></pre>
+        las = 1)</code></pre>
+                    </div>
                 </div>
             </div>
 
+            <!-- Staging -->
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Stage Distribution</h3>
+                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
+                        Staging is a critical prognostic factor. The plot shows the distribution of cancer stages at
+                        diagnosis.
+                    </p>
+                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
+                        <strong>Key Observation:</strong> A large portion of the data is marked as <strong>'?'
+                            (Unknown)</strong> or <strong>'U' (Unstaged)</strong>. This is a realistic feature of cancer
+                        registry data, often reflecting cases where staging was not possible due to patient health or
+                        data collection issues. It highlights the importance of handling missing data in real-world
+                        analysis.
+                    </p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
+                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
+                        <pre><code class="language-r"># Get stage counts
+stage_counts <- table(df$STAGE_BEST)
+top_stages <- head(sort(stage_counts, decreasing = TRUE), 15)
+
+# Scale counts
+counts_scaled <- top_stages / 100000
+
+# Create plot with legend
+barplot(counts_scaled, 
+        main = "Distribution of Cancer Stages",
+        ylab = "Count (x 10^5)",
+        col = "darkorange",
+        las = 2,
+        ylim = c(0, max(counts_scaled) * 1.2))
+
+legend("topright", 
+       legend = c("1-4: Main Stages", "?: Unknown", "U: Unstaged"), 
+       bty = "n", title = "Code Key")</code></pre>
+                    </div>
+                </div>
+                <div class="order-1 md:order-2">
+                    <img src="images/stage_distribution.png" alt="Stage Distribution"
+                        class="rounded-lg shadow-md w-full border border-gray-100">
+                </div>
+            </div>
         </section>
 
         <div class="text-center mt-12">
