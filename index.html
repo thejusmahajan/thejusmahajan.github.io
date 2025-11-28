@@ -1,432 +1,102 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Computational Scientist & Blog</title>
+    <title>Thejus Mahajan - Bioinformatics Trainee & Computational Scientist</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://3dmol.org/build/3Dmol-min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .section-title {
-            @apply text-3xl font-bold text-gray-800 mb-8 text-center;
-        }
-        .skill-tag {
-            @apply bg-sky-100 text-sky-800 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full;
-        }
-        .project-card {
-            @apply bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300;
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .tab-button.active {
-            border-color: #3b82f6;
-            color: #3b82f6;
-            background-color: #eff6ff;
-        }
-        .concept-box {
-            background-color: #e0f2fe;
-            border-left: 4px solid #0ea5e9;
-        }
-        .code-box {
-            background-color: #1e293b;
-            color: #f8fafc;
-            border-radius: 8px;
-            padding: 1rem;
-            font-family: 'Courier New', Courier, monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .code-box .comment { color: #94a3b8; }
-        .pea {
-            width: 80px; height: 80px; border-radius: 50%; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; font-weight: 500; color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
-        }
-        .pea:hover { transform: scale(1.05); }
-        .pea-round { background: radial-gradient(circle at 30% 30%, #a7f3d0, #16a34a); }
-        .pea-wrinkled { background: radial-gradient(circle at 30% 30%, #fef08a, #ca8a04); }
-        .genotype { font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; font-weight: bold; }
-        .phenotype { font-size: 0.9rem; }
-        .step-card {
-            background-color: white; border-radius: 12px; padding: 2rem; margin-bottom: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .custom-btn {
-            background-color: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 8px;
-            font-weight: 500; cursor: pointer; transition: background-color 0.3s, transform 0.1s;
-        }
-        .custom-btn:hover { background-color: #1d4ed8; }
-        .custom-btn:active { transform: scale(0.98); }
-        .hidden-section { display: none; }
-        .arrow { font-size: 2rem; color: #94a3b8; }
-        .flashcard-app .card { transform-style: preserve-3d; transition: transform 0.6s; }
-        .flashcard-app .card.is-flipped { transform: rotateY(180deg); }
-        .flashcard-app .card-face { -webkit-backface-visibility: hidden; backface-visibility: hidden; position: absolute; width: 100%; height: 100%; }
-        .flashcard-app .card-face-back { transform: rotateY(180deg); }
-        .flashcard-app .quality-btn { transition: all 0.2s ease-in-out; }
-        .flashcard-app .quality-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        
-        /* New Blog Styles */
-        .blog-card {
-             @apply bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 ease-in-out;
-        }
-        .blog-modal-content {
-            @apply prose lg:prose-xl max-w-none p-6;
-        }
-        .blog-modal-content h1, .blog-modal-content h2, .blog-modal-content h3 {
-            @apply text-gray-800;
-        }
-        .blog-modal-content pre {
-            @apply bg-gray-800 text-white p-4 rounded-lg;
-        }
-        .blog-modal-content table {
-            @apply w-full text-left border-collapse;
-        }
-        .blog-modal-content th, .blog-modal-content td {
-            @apply border border-gray-300 p-2;
-        }
-         .blog-modal-content th {
-            @apply bg-gray-100 font-semibold;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="bg-gray-50 text-gray-700">
+<body class="bg-gray-50 text-gray-700 flex flex-col min-h-screen">
 
     <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-gray-800">Your Name</a>
+            <a href="index.html" class="text-2xl font-bold text-gray-800">Thejus Mahajan</a>
             <div class="hidden md:flex space-x-6">
-                <a href="#about" class="text-gray-600 hover:text-sky-600 transition">About</a>
-                <a href="#skills" class="text-gray-600 hover:text-sky-600 transition">Skills</a>
-                <a href="#projects" class="text-gray-600 hover:text-sky-600 transition">Projects</a>
-                <!-- New Blog Link -->
-                <a href="#blog" class="text-gray-600 hover:text-sky-600 transition">Blog</a>
-                <a href="#publications" class="text-gray-600 hover:text-sky-600 transition">Publications</a>
+                <a href="index.html" class="text-sky-600 font-semibold transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 transition">Projects</a>
+                <a href="blog.html" class="text-gray-600 hover:text-sky-600 transition">Blog</a>
                 <a href="#contact" class="text-gray-600 hover:text-sky-600 transition">Contact</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden flex items-center">
-                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
             </button>
         </nav>
         <div id="mobile-menu" class="hidden md:hidden">
-            <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
-            <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
-            <a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-200">Projects</a>
-            <a href="#blog" class="block py-2 px-4 text-sm hover:bg-gray-200">Blog</a>
-            <a href="#publications" class="block py-2 px-4 text-sm hover:bg-gray-200">Publications</a>
+            <a href="index.html" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
+            <a href="experience.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Experience</a>
+            <a href="skills.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
+            <a href="projects.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Projects</a>
+            <a href="blog.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Blog</a>
             <a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-200">Contact</a>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
-
+    <main class="container mx-auto px-6 py-12 flex-grow">
         <section class="text-center py-20">
             <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
-                From Molecules in Space to Genomes in Cells
+                Thejus Mahajan, Ph.D.
             </h1>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
-                Analytical scientist with a PhD in Astrochemistry, leveraging complex modeling and data analysis skills to solve challenges in bioinformatics and biostatistics.
+                Bioinformatics Trainee | Computational Scientist | Large-Scale Data Analysis | Biostatistics
             </p>
-            <a href="#contact" class="bg-sky-600 text-white font-bold py-3 px-8 rounded-full hover:bg-sky-700 transition-colors duration-300">
+            <a href="#contact"
+                class="bg-sky-600 text-white font-bold py-3 px-8 rounded-full hover:bg-sky-700 transition-colors duration-300">
                 Get in Touch
             </a>
         </section>
 
         <section id="about" class="py-16">
-             <h2 class="section-title">About Me</h2>
-             <div class="flex flex-col md:flex-row items-center gap-12">
-                 <div class="md:w-1/3">
-                     <img src="https://placehold.co/400x400/a3e635/ffffff?text=Your+Photo" alt="Your Name" class="rounded-full shadow-lg mx-auto">
-                 </div>
-                 <div class="md:w-2/3">
-                     <p class="mb-4">
-                          Hello! I'm [Your Name], a quantitative researcher passionate about uncovering insights from complex data. My journey began in astrochemistry, where I developed sophisticated models to understand molecular evolution in interstellar space. This work honed my skills in computational simulation, statistical analysis, and handling vast datasets.
-                     </p>
-                     <p class="mb-4">
-                          I then transitioned to modeling marine ecosystems, applying similar principles to understand biological systems' dynamics. This experience solidified my passion for using computational methods to answer fundamental biological questions.
-                     </p>
-                     <p>
-                          Now, I'm excited to apply my analytical expertise to the fields of bioinformatics and biostatistics. I am a fast learner, adept at mastering new programming languages and technologies, and I am driven by a desire to contribute to impactful biomedical research. I believe my unique background provides a fresh perspective on tackling challenges in genomics, proteomics, and clinical trial data.
-                     </p>
-                 </div>
-             </div>
-        </section>
-
-        <section id="skills" class="py-16 bg-white rounded-xl shadow-md">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title">Skills & Expertise</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Bioinformatics & Biostatistics</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">Genomic Data Analysis (NGS)</span>
-                            <span class="skill-tag">Statistical Genetics</span>
-                            <span class="skill-tag">R & Bioconductor</span>
-                            <span class="skill-tag">Clinical Trial Design</span>
-                            <span class="skill-tag">Survival Analysis</span>
-                            <span class="skill-tag">Python (Pandas, NumPy)</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Computational & Modeling</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">Differential Equations</span>
-                            <span class="skill-tag">Bayesian Statistics</span>
-                            <span class="skill-tag">Monte Carlo Simulations</span>
-                            <span class="skill-tag">High-Performance Computing</span>
-                            <span class="skill-tag">Fortran / C++</span>
-                            <span class="skill-tag">Data Visualization</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Transferable Skills</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">Problem Solving</span>
-                            <span class="skill-tag">Project Management</span>
-                            <span class="skill-tag">Scientific Writing</span>
-                            <span class="skill-tag">Cross-disciplinary Collaboration</span>
-                            <span class="skill-tag">Data Interpretation</span>
-                            <span class="skill-tag">Critical Thinking</span>
-                        </div>
-                    </div>
+            <h2 class="section-title">Career Interests</h2>
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/3">
+                    <img src="images/faceshot_tilted_01.png" alt="Thejus Mahajan"
+                        class="rounded-full shadow-lg mx-auto">
+                </div>
+                <div class="md:w-2/3">
+                    <p class="mb-4 text-lg leading-relaxed">
+                        A Ph.D.-level computational scientist with a strong foundation in large-scale data analysis and
+                        scientific modeling. Currently complementing a robust background in R and Fortran with intensive
+                        training in bioinformatics and biostatistics, developing key skills in Python, Bioconductor,
+                        SQL, and NGS data analysis workflows. Eager to apply a powerful analytical mindset and new
+                        computational biology skills to a challenging role in the Hamburg bioinformatics sector, with a
+                        focus on analyzing complex biological datasets.
+                    </p>
                 </div>
             </div>
         </section>
-
-        <section id="projects" class="py-16">
-            <h2 class="section-title">Highlighted Projects</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/38bdf8/ffffff?text=Project+1" alt="Project 1" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Genomic Variant Analysis Pipeline</h3>
-                        <p class="text-gray-600 mb-4">Developed a Python pipeline to analyze Next-Generation Sequencing (NGS) data, identify genetic variants, and annotate their potential clinical significance.</p>
-                        <a href="https://github.com/thejusmahajan" target="_blank" class="text-sky-600 font-semibold hover:underline">View on GitHub &rarr;</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/818cf8/ffffff?text=Project+2" alt="Project 2" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Astrochemical Network Modeling</h3>
-                        <p class="text-gray-600 mb-4">Modeled complex chemical reaction networks in interstellar clouds to predict molecular abundances, involving numerical integration of thousands of coupled differential equations.</p>
-                        <a href="#" class="text-sky-600 font-semibold hover:underline">Read Paper &rarr;</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/f472b6/ffffff?text=Project+3" alt="Project 3" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Marine Ecosystem Simulation</h3>
-                        <p class="text-gray-600 mb-4">Created a simulation of plankton population dynamics in response to changing environmental factors, applying statistical methods to validate the model against observational data.</p>
-                        <a href="#" class="text-sky-600 font-semibold hover:underline">Learn More &rarr;</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/10b981/ffffff?text=Protein+Folder" alt="Protein Folding App" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Interactive Protein Folding App</h3>
-                        <p class="text-gray-600 mb-4">An interactive tool to predict and visualize 3D protein structures using ESMFold and ColabFold, rendered with 3Dmol.js.</p>
-                        <button id="launchAppButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/4ade80/ffffff?text=Mendel's+Peas" alt="Mendel's Experiment App" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Interactive Mendel's Experiment</h3>
-                        <p class="text-gray-600 mb-4">An interactive, step-by-step guide to Gregor Mendel's classic pea plant experiments, explaining the Law of Segregation.</p>
-                        <button id="launchMendelButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/f97316/ffffff?text=Flashcard+App" alt="Flashcard App" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Git-Spaced Flashcards</h3>
-                        <p class="text-gray-600 mb-4">A spaced repetition learning app, like Anki, that stores its data in your GitHub repository and includes AI-powered features.</p>
-                        <button id="launchFlashcardButton" class="text-sky-600 font-semibold hover:underline">Launch App &rarr;</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- ================== NEW BLOG SECTION ================== -->
-        <section id="blog" class="py-16">
-            <h2 class="section-title">Bioinformatics Blog & Notes</h2>
-             <p class="text-center text-gray-600 max-w-2xl mx-auto -mt-6 mb-12">
-                A personal collection of study materials, code snippets, and thoughts on bioinformatics, data science, and computational biology.
-            </p>
-            <div id="blog-posts-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Blog posts will be dynamically inserted here by blog.js -->
-            </div>
-        </section>
-        <!-- ====================================================== -->
-
-        <section id="publications" class="py-16 bg-white rounded-xl shadow-md">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title">Publications</h2>
-                <div class="space-y-6">
-                    <div class="border-l-4 border-sky-500 pl-4">
-                        <p class="font-semibold">Your Name, et al. (2023). "Title of Your Awesome Astrochemistry Paper." <em>Astrophysical Journal</em>.</p>
-                    </div>
-                    <div class="border-l-4 border-sky-500 pl-4">
-                        <p class="font-semibold">Your Name, et al. (2022). "Another Great Paper on Molecular Clouds." <em>Monthly Notices of the Royal Astronomical Society</em>.</p>
-                    </div>
-                    <div class="border-l-4 border-sky-500 pl-4">
-                        <p class="font-semibold">Co-author, et al. (2021). "Paper on Marine Ecosystems Where You Contributed." <em>Journal of Marine Systems</em>.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
 
-    <footer id="contact" class="bg-gray-800 text-white">
+    <footer id="contact" class="bg-gray-800 text-white mt-auto">
         <div class="container mx-auto px-6 py-12 text-center">
             <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
-            <p class="mb-8 max-w-xl mx-auto">I'm currently seeking opportunities in bioinformatics and biostatistics. If you have a project or role where my skills would be a good fit, please don't hesitate to reach out.</p>
+            <p class="mb-8 max-w-xl mx-auto">I'm currently seeking opportunities in bioinformatics and biostatistics.
+            </p>
             <div class="flex justify-center space-x-6">
-                <a href="mailto:your.email@example.com" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
-                    your.email@example.com
-                </a>
-                <a href="https://www.linkedin.com/in/yourprofile" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
-                    LinkedIn
-                </a>
-                <a href="https://github.com/thejusmahajan" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">
-                    GitHub
-                </a>
+                <a href="mailto:thejusmahajan@gmail.com"
+                    class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">Email
+                    Me</a>
+                <a href="https://www.linkedin.com/in/dr-thejus-mahajan-ph-d-85a4b087" target="_blank"
+                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank"
+                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">GitHub</a>
             </div>
-             <p class="mt-10 text-gray-400 text-sm">&copy; 2025 Your Name. All Rights Reserved.</p>
+            <p class="mt-10 text-gray-400 text-sm">&copy; 2025 Thejus Mahajan. All Rights Reserved.</p>
         </div>
     </footer>
-    
-    <!-- Modals for Apps (Protein, Mendel, Flashcard) -->
-    <!-- ... (Your existing modal HTML is unchanged) ... -->
-    <div id="appModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">...</div>
-    <div id="mendelModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">...</div>
-    <div id="flashcardModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">...</div>
 
-    <!-- ================== NEW BLOG POST MODAL ================== -->
-    <div id="blogModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-gray-50 rounded-xl shadow-2xl w-full max-w-4xl h-full max-h-[95vh] overflow-hidden relative flex flex-col">
-            <!-- Modal Header -->
-            <div class="p-4 border-b flex justify-between items-center bg-white flex-shrink-0">
-                <h2 id="blogModalTitle" class="text-xl font-bold text-gray-800">Blog Post Title</h2>
-                <button id="closeBlogModalButton" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
-            </div>
-            <!-- Modal Body -->
-            <div id="blogModalBody" class="p-6 flex-grow overflow-y-auto">
-                 <!-- Blog content will be injected here -->
-            </div>
-        </div>
-    </div>
-    <!-- ====================================================== -->
-    
-    <!-- Your existing script for apps -->
-    <script>
-        // --- All your existing JavaScript for Modals, Protein App, etc. goes here ---
-        // I've omitted it for brevity, but you should keep it.
-        // --- For example:
-        const launchAppButton = document.getElementById('launchAppButton');
-        // ... and so on for all your app logic.
-    </script>
-    
-    <!-- NEW: Script for Blog Functionality -->
-    <script src="blog.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const blogPostsContainer = document.getElementById('blog-posts-container');
-            const blogModal = document.getElementById('blogModal');
-            const blogModalTitle = document.getElementById('blogModalTitle');
-            const blogModalBody = document.getElementById('blogModalBody');
-            const closeBlogModalButton = document.getElementById('closeBlogModalButton');
-
-            // 1. Populate blog post listings on the main page
-            if (blogPosts && blogPostsContainer) {
-                // Display the most recent 3-6 posts, you can change the slice value
-                const recentPosts = blogPosts.slice(0, 6); 
-
-                recentPosts.forEach(post => {
-                    const postElement = document.createElement('div');
-                    postElement.className = 'blog-card';
-                    postElement.innerHTML = `
-                        <div class="p-6">
-                            <p class="text-sm text-gray-500 mb-2">${post.date}</p>
-                            <h3 class="text-xl font-bold mb-3 text-gray-800">${post.title}</h3>
-                            <p class="text-gray-600 mb-4">${post.summary}</p>
-                            <button data-post-id="${post.id}" class="read-more-btn text-sky-600 font-semibold hover:underline">Read More &rarr;</button>
-                        </div>
-                    `;
-                    blogPostsContainer.appendChild(postElement);
-                });
-            }
-
-            // 2. Handle clicks on "Read More" buttons
-            blogPostsContainer.addEventListener('click', (event) => {
-                if (event.target.classList.contains('read-more-btn')) {
-                    const postId = event.target.getAttribute('data-post-id');
-                    const post = blogPosts.find(p => p.id === postId);
-                    if (post) {
-                        blogModalTitle.textContent = post.title;
-                        blogModalBody.innerHTML = `<div class="blog-modal-content">${post.content}</div>`;
-                        blogModal.classList.remove('hidden');
-                    }
-                }
-            });
-
-            // 3. Handle closing the blog modal
-            const closeBlogModal = () => {
-                blogModal.classList.add('hidden');
-            };
-
-            closeBlogModalButton.addEventListener('click', closeBlogModal);
-            blogModal.addEventListener('click', (event) => {
-                if (event.target === blogModal) {
-                    closeBlogModal();
-                }
-            });
-        });
-
-        // --- Portfolio Mobile menu toggle ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // --- Portfolio Smooth scrolling for navigation links ---
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                if (mobileMenu.classList.contains('block')) {
-                    mobileMenu.classList.add('hidden');
-                }
-                const targetElement = document.querySelector(this.getAttribute('href'));
-                if(targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-        
-        // --- NOTE: Add all your other existing JS for the interactive apps below this line ---
-
-    </script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>
