@@ -139,13 +139,21 @@ df$GENDER_LABEL <- factor(df$GENDER,
                           levels = c(0, 1, 2, 9), 
                           labels = c("Not known", "Male", "Female", "Not specified"))
 
-# Create plot
+# Drop unused levels (Ghost Categories)
+df$GENDER_LABEL <- droplevels(df$GENDER_LABEL)
+
+# Create plot with scaling
 gender_counts <- table(df$GENDER_LABEL)
-barplot(gender_counts, 
+gender_counts_scaled <- gender_counts / 1000
+
+# Disable scientific notation
+options(scipen=999)
+
+barplot(gender_counts_scaled, 
         main = "Patient Gender Distribution",
         xlab = "Gender",
-        ylab = "Count",
-        col = c("gray", "lightblue", "pink", "gray"))</code></pre>
+        ylab = "Count (Thousands)",
+        col = c("lightblue", "pink"))</code></pre>
                     </div>
                 </div>
             </div>
@@ -166,14 +174,23 @@ barplot(gender_counts,
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
                         <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
-                        <pre><code class="language-r"># Vital Status (A=Alive, D=Deceased)
-vital_counts <- table(df$VITALSTATUS)
+                        <pre><code class="language-r"># Clean Data: Aggregate D3, D4 etc. into 'D'
+# We treat anything starting with 'D' as Deceased, 'A' as Alive.
+df$VITAL_CLEAN <- ifelse(substr(df$VITALSTATUS, 1, 1) == "D", "Deceased",
+                         ifelse(df$VITALSTATUS == "A", "Alive", NA))
+
+# Remove NAs (noise codes)
+df_clean <- df[!is.na(df$VITAL_CLEAN), ]
+
+# Scale to Thousands
+vital_counts <- table(df_clean$VITAL_CLEAN)
+vital_counts_scaled <- vital_counts / 1000
 
 # Create plot
-barplot(vital_counts, 
+barplot(vital_counts_scaled, 
         main = "Patient Vital Status",
         xlab = "Status",
-        ylab = "Count",
+        ylab = "Count (Thousands)",
         col = c("lightgreen", "salmon"))</code></pre>
                     </div>
                 </div>
