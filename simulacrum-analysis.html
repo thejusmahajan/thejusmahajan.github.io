@@ -232,6 +232,7 @@
                         gender-specific.
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
+
                         <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
                         <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
                         <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
@@ -422,6 +423,8 @@ plt.savefig("vital_status_distribution.png")</code></pre>
                                 <li><strong>Decision:</strong> C44 cases are excluded from the "Top 10 Cancer Types"
                                     ranking to align with standard reporting (e.g., NCRAS/CRUK methodology), though they
                                     are retained for overall volume counts.</li>
+                                <li class="mt-2"><strong>Note:</strong> In Situ carcinomas (ICD-10 D codes) were also
+                                    excluded to focus on invasive cancer burden.</li>
                             </ul>
                         </div>
 
@@ -524,6 +527,8 @@ plt.savefig("top_10_cancer_sites.png")</code></pre>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
                         <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
                         <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
+import re  # Required for regex matching
+
 def clean_stage(stage):
     stage = str(stage).upper().strip()
     if stage in ['?', 'U', 'NAN', 'nan']: return 'Unknown'
