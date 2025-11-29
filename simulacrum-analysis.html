@@ -239,9 +239,12 @@
 gender_map = {0: "Not known", 1: "Male", 2: "Female", 9: "Not specified"}
 df['GENDER_LABEL'] = df['GENDER'].map(gender_map)
 
-# Filter out empty/unknown categories if they are effectively zero
+# Filter out empty/unknown categories
+# "Ghost Label" Fix: Explicitly remove 'Not specified' if count is 0
 gender_counts = df['GENDER_LABEL'].value_counts()
 gender_counts = gender_counts[gender_counts > 0]
+if 'Not specified' in gender_counts.index:
+    gender_counts = gender_counts.drop('Not specified')
 
 # Scale to Thousands
 gender_counts_scaled = gender_counts / 1000
@@ -491,8 +494,10 @@ icd10_map = {
 }
 labels = [f"{code} ({icd10_map.get(code, code)})" for code in site_counts.index]
 
-# Scale and Plot
+# Scale to Thousands
 site_counts_scaled = site_counts / 1000
+
+# Plot
 sns.barplot(x=site_counts_scaled.values, y=labels, color="steelblue")
 plt.title("Top 10 Invasive Cancer Sites (Excl. NMSC)")
 plt.xlabel("Count (Thousands)")
