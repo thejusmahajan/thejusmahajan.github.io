@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Devicon for programming icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 </head>
 
 <body class="bg-gray-50 text-gray-700 flex flex-col min-h-screen">
@@ -44,43 +46,177 @@
     </header>
 
     <main class="container mx-auto px-6 py-12 flex-grow">
-        <section id="skills" class="py-16 bg-white rounded-xl shadow-md">
+        <section id="skills" class="py-16">
             <div class="container mx-auto px-6">
-                <h2 class="section-title">Repertoire of Skills</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Programming & Scripting</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">R</span>
-                            <span class="skill-tag">Fortran</span>
-                            <span class="skill-tag">SQL</span>
-                            <span class="skill-tag">Bash</span>
-                            <span class="skill-tag">C++</span>
-                            <span class="skill-tag">Matlab</span>
+                <h2 class="section-title mb-12">Repertoire of Skills</h2>
+
+                <!-- 1. Programming & Scripting (Tech Stack Grid) -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-3">
+                        <svg class="w-8 h-8 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        Programming & Scripting
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Python -->
+                        <div
+                            class="bg-gray-900 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border border-gray-700">
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="devicon-python-plain text-4xl text-yellow-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg">Python</h4>
+                                    <span class="text-xs text-gray-400 uppercase tracking-wider">Advanced</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-sky-500 h-2.5 rounded-full" style="width: 90%"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Scientific Software</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">GOTM-FABM</span>
-                            <span class="skill-tag">ERGOM</span>
-                            <span class="skill-tag">Bioconductor</span>
-                            <span class="skill-tag">Monte Carlo Simulations</span>
-                            <span class="skill-tag">LaTeX</span>
+
+                        <!-- R -->
+                        <div
+                            class="bg-gray-900 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border border-gray-700">
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="devicon-r-plain text-4xl text-blue-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg">R</h4>
+                                    <span class="text-xs text-gray-400 uppercase tracking-wider">Advanced</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-sky-500 h-2.5 rounded-full" style="width: 85%"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">Soft Skills</h3>
-                        <div class="flex flex-wrap">
-                            <span class="skill-tag">Problem Solving</span>
-                            <span class="skill-tag">Communication</span>
-                            <span class="skill-tag">Leadership</span>
-                            <span class="skill-tag">Adaptability</span>
-                            <span class="skill-tag">Critical Thinking</span>
+
+                        <!-- Fortran -->
+                        <div
+                            class="bg-gray-900 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border border-gray-700">
+                            <div class="flex items-center gap-4 mb-4">
+                                <!-- Generic code icon for Fortran if specific not available, or just text -->
+                                <span class="text-3xl font-mono font-bold text-purple-400">F</span>
+                                <div>
+                                    <h4 class="font-bold text-lg">Fortran</h4>
+                                    <span class="text-xs text-gray-400 uppercase tracking-wider">Proficient</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-sky-500 h-2.5 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+
+                        <!-- SQL -->
+                        <div
+                            class="bg-gray-900 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border border-gray-700">
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="devicon-mysql-plain text-4xl text-orange-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg">SQL</h4>
+                                    <span class="text-xs text-gray-400 uppercase tracking-wider">Intermediate</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-sky-500 h-2.5 rounded-full" style="width: 60%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bash -->
+                        <div
+                            class="bg-gray-900 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border border-gray-700">
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="devicon-bash-plain text-4xl text-gray-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg">Bash</h4>
+                                    <span class="text-xs text-gray-400 uppercase tracking-wider">Proficient</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-sky-500 h-2.5 rounded-full" style="width: 70%"></div>
+                            </div>
+                        </div>
+
+                        <!-- C++ -->
+                        <div
+                            class="bg-gray-900 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border border-gray-700">
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="devicon-cplusplus-plain text-4xl text-blue-600"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg">C++</h4>
+                                    <span class="text-xs text-gray-400 uppercase tracking-wider">Familiar</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                <div class="bg-sky-500 h-2.5 rounded-full" style="width: 50%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- 2. Scientific Software (Descriptive Cards) -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-3">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                            </path>
+                        </svg>
+                        Scientific Software & Tools
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500 hover:shadow-md transition">
+                            <h4 class="font-bold text-lg text-gray-800">GOTM-FABM</h4>
+                            <p class="text-gray-600 text-sm mt-1">Advanced ecological modeling framework for marine
+                                environments.</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500 hover:shadow-md transition">
+                            <h4 class="font-bold text-lg text-gray-800">ERGOM</h4>
+                            <p class="text-gray-600 text-sm mt-1">Biogeochemical model for simulating nutrient cycles.
+                            </p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500 hover:shadow-md transition">
+                            <h4 class="font-bold text-lg text-gray-800">Bioconductor</h4>
+                            <p class="text-gray-600 text-sm mt-1">Genomic data analysis and visualization using R.</p>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500 hover:shadow-md transition">
+                            <h4 class="font-bold text-lg text-gray-800">Monte Carlo Simulations</h4>
+                            <p class="text-gray-600 text-sm mt-1">Stochastic modeling for complex physical systems.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Soft Skills (Pill Tags) -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-8 text-gray-800 flex items-center gap-3">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        Soft Skills
+                    </h3>
+                    <div class="flex flex-wrap gap-4">
+                        <span
+                            class="px-6 py-3 bg-green-100 text-green-800 rounded-full font-semibold shadow-sm hover:shadow-md transition transform hover:-translate-y-1 cursor-default">Problem
+                            Solving</span>
+                        <span
+                            class="px-6 py-3 bg-green-100 text-green-800 rounded-full font-semibold shadow-sm hover:shadow-md transition transform hover:-translate-y-1 cursor-default">Communication</span>
+                        <span
+                            class="px-6 py-3 bg-green-100 text-green-800 rounded-full font-semibold shadow-sm hover:shadow-md transition transform hover:-translate-y-1 cursor-default">Leadership</span>
+                        <span
+                            class="px-6 py-3 bg-green-100 text-green-800 rounded-full font-semibold shadow-sm hover:shadow-md transition transform hover:-translate-y-1 cursor-default">Adaptability</span>
+                        <span
+                            class="px-6 py-3 bg-green-100 text-green-800 rounded-full font-semibold shadow-sm hover:shadow-md transition transform hover:-translate-y-1 cursor-default">Critical
+                            Thinking</span>
+                        <span
+                            class="px-6 py-3 bg-green-100 text-green-800 rounded-full font-semibold shadow-sm hover:shadow-md transition transform hover:-translate-y-1 cursor-default">Mentoring</span>
+                    </div>
+                </div>
+
             </div>
         </section>
     </main>
