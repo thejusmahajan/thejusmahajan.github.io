@@ -1,0 +1,25 @@
+&model_params
+  dt = 3600.0
+  nyears = 33
+  aorg_init = 4.99
+  phyt_init = 0.01
+
+
+
+/
+
+&bio_params
+  mu_max_day = 0.28d0
+  kn = 0.15d0
+  mortality = 0.04d0
+  w_mig = 1.0d0
+  w_sink = 0.1d0
+  tau_trans = 0.2d0
+  tslope_cold = 9.0
+  tslope_hot = 2.0
+  mutation_width = 0.2d0
+
+
+  use_akinetes = .true. ! Enable for Experiment B
+
+/

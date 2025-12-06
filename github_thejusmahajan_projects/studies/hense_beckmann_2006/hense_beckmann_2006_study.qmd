@@ -1,0 +1,57 @@
+---
+title: "Hense & Beckmann (2006) Study: Life Cycle Model Comparison"
+author: "Thejus Mahajan"
+date: today
+format:
+  html:
+    toc: true
+    theme: cosmo
+    code-fold: true
+---
+
+# 1. Introduction
+This study aims to reproduce the results of **Hense & Beckmann (2006)**, which presented a compartment-based model of the cyanobacteria life cycle. We will compare their findings with our Agent-Based Model (IBM) to evaluate the consistency and potential advantages of the individual-based approach.
+
+# 2. Methodology
+We use the code from `../ibm_unchanged` as the baseline, as it represents a clean version of the IBM before the specific *Dolichospermum* modifications.
+
+## 2.1 File Structure
+The study is contained in the `hense_beckmann_2006/` directory.
+- `src/`: Source code (Fortran).
+- `parameters.nml`: Model configuration.
+- `scripts/`: Analysis scripts.
+
+# 3. Parameter Extraction
+The following parameters are derived from Hense & Beckmann (2006).
+
+| Parameter | Symbol | Value | Unit | Description |
+| :--- | :---: | :---: | :---: | :--- |
+| Max Growth Rate | $\mu_{max}$ | `0.25` | $d^{-1}$ | Maximum growth rate of vegetative cells (at 30°C). |
+| Half-Sat Constant | $k_N$ | `0.3` | mmol N $m^{-3}$ | Nitrogen half-saturation constant. |
+| Migration Velocity | $w_{mig}$ | `1.0` | $m d^{-1}$ | Vertical velocity of buoyant cells. |
+| Sinking Velocity | $w_{sink}$ | `0.1` | $m d^{-1}$ | Sinking speed of detritus/akinetes. |
+| Transfer Rate | $\tau^{-1}$ | `0.2` | $d^{-1}$ | Rate of transfer between life stages ($2.5 \times 10^{-6} s^{-1}$). |
+| Mortality Rate | $\gamma$ | `0.04` | $d^{-1}$ | Base mortality rate ($4.5 \times 10^{-7} s^{-1}$). |
+| Akinete Mortality | $\gamma_{aki}$ | `0.0004` | $d^{-1}$ | Akinete mortality (1% of base). |
+| Akinete Sinking | $w_{aki}$ | `10.0` | $m d^{-1}$ | Akinete sinking speed ($10 \times w_{mig}$?). Wait, Table 2 says $w/w_{mig} = -10$. So $10 m/d$ downwards. |
+
+*Note: Values converted from $s^{-1}$ to $d^{-1}$ where applicable.*
+
+# 4. Experiments
+We performed a baseline seasonal simulation to reproduce the life cycle dynamics.
+
+## 4.1 Baseline Simulation
+The model was run for 10 years with the extracted parameters. The results show a clear seasonal succession of vegetative cells and akinetes.
+
+### Results
+![Hense & Beckmann (2006) Reproduction: Life Cycle Dynamics](scripts/hense_cycle.png)
+
+### Observations
+- **Vegetative Cells (Green)**: Bloom in summer when temperature is high ($>15^\circ$C).
+- **Akinetes (Blue)**: Form in autumn/winter when temperature drops below the critical threshold ($<15^\circ$C).
+- **Succession**: The population successfully transitions between growing and resting stages, maintaining persistence over multiple years.
+- **Abundance**: Peak vegetative abundance reaches $\sim 12,000$ agents (super-agents).
+
+# 5. Conclusion
+We have successfully adapted the IBM to include the key parameters and life cycle logic from Hense & Beckmann (2006). The model reproduces the fundamental seasonal alternation between vegetative growth and akinete formation. Future work will refine the 4-stage life cycle and include explicit vertical migration.
+

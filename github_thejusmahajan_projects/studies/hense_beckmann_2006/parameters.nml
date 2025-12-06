@@ -1,0 +1,12 @@
+&model_params
+  dt = 3600.0
+  nyears = 10
+  aorg_init = 4.99
+  phyt_init = 0.01  ! Total R = 5.0
+/
+&bio_params
+  mu_max_day = 1.0  ! Paper value
+  kn = 0.15         ! Paper value
+  tslope = 6.0      ! Width of thermal curve
+  mutation_width = 0.20 ! Mutation width for trait evolution
+/

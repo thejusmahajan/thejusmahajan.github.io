@@ -1,0 +1,97 @@
+---
+title: "CYA-REMO: Technical Methodology Report"
+author: "Thejus Mahajan"
+date: today
+format:
+  html:
+    toc: true
+    theme: cosmo
+    code-fold: true
+---
+
+# 1. Introduction
+This document serves as a comprehensive technical guide to the **CYA-REMO** project. It details the computational workflow, directory structure, and model configuration used to simulate the evolutionary dynamics of *Dolichospermum* in the Baltic Sea. It is intended for modelers and researchers seeking to reproduce or extend this work.
+
+# 2. Workflow Overview
+The project followed a phased approach, moving from reproducing established results to implementing novel species-specific features.
+
+## Phase 1: Model Validation (Beckmann et al. 2019)
+- **Objective**: Validate the base NPZD-IBM model against the reference implementation.
+- **Key Experiments**:
+    - **Constant Temperature**: Verified steady-state trait distribution ($\sigma \approx 0.86^\circ$C).
+    - **Sudden Change**: Verified adaptation lag and biomass response.
+    - **Seasonal Cycle**: Established the baseline seasonal tracking behavior.
+- **Outcome**: Confirmed model fidelity with $10^6$ agents.
+
+## Phase 2: Dolichospermum Configuration
+- **Objective**: Adapt the generic model for *Dolichospermum*.
+- **Key Changes**:
+    - **Growth Rate**: Reduced $\mu_{max}$ from $1.0 d^{-1}$ to $0.28 d^{-1}$.
+    - **Directory**: Created `cya_remo/` to isolate species-specific experiments.
+- **Outcome**: Discovered that evolutionary lag is robust to $\mu_{max}$ due to mortality pinning.
+
+## Phase 3: Akinete Life Cycle
+- **Objective**: Implement a temperature-dependent resting stage.
+- **Implementation**: Added `growth_crit`, `mu_rest`, and `mort_rest` parameters.
+- **Outcome**: Reduced evolutionary lag by ~10 days ("Seed Bank" effect).
+
+## Phase 4: Climate Change Hindcast
+- **Objective**: Simulate 100 years of warming (+2°C).
+- **Scenarios**: Evolving (`mutation_width=0.2`) vs. Static (`mutation_width=0.0001`).
+- **Outcome**: Demonstrated that evolution is critical for maintaining biomass under warming.
+
+# 3. Project Directory Structure
+The project is organized to separate the generic base model from the specific *Dolichospermum* experiments.
+
+```
+ibm/
+├── parameters.nml          # Base model parameters (Generic)
+├── reproduce_beckmann...   # Validation report
+├── src/                    # Base source code
+├── scripts/                # Shared plotting scripts
+│
+└── cya_remo/               # Dolichospermum Project Root
+    ├── parameters.nml      # Species-specific parameters
+    ├── src/                # Modified source code (Akinetes, Trend)
+    │   ├── wcm.F90         # Forcing & Main Loop
+    │   ├── phyt_ibm.F90    # Biological Logic (Growth/Mortality)
+    │   └── wcm_arrays.f90  # Global Arrays & Constants
+    ├── output/             # Simulation output (fort.*)
+    └── plots/              # Generated figures
+```
+
+# 4. Parameter Explanation & Evolution
+The model parameters evolved as we transitioned from the generic test case to the specific *Dolichospermum* study.
+
+## 4.1 Namelist Parameters (`parameters.nml`)
+
+| Parameter | Type | Generic Value | Dolichospermum Value | Description |
+| :--- | :--- | :---: | :---: | :--- |
+| `mu_max_day` | Real | `1.0` | `0.28` | Maximum growth rate ($d^{-1}$). Lowered for *Dolichospermum*. |
+| `kn` | Real | `0.15` | `0.15` | Half-saturation constant for Nitrogen. |
+| `tslope` | Real | `6.0` | `6.0` | Width of the thermal tolerance curve. |
+| `mutation_width` | Real | `0.20` | `0.20` / `0.0001` | Standard deviation of offspring trait variation. Set to `0.0001` for Static scenario. |
+| `use_akinetes` | Logical | `.false.` | `.true.` | Enable/Disable Akinete formation logic. |
+| `growth_crit` | Real | N/A | `0.2` | Temperature limitation threshold for akinete formation. |
+| `mu_rest` | Real | N/A | `0.01` | Metabolic activity of akinetes. |
+| `mort_rest` | Real | N/A | `0.01` | Mortality rate of akinetes. |
+
+## 4.2 Hardcoded Parameters (`wcm_arrays.f90`)
+
+| Parameter | Value | Description |
+| :--- | :--- | :--- |
+| `M` | `100000` / `10000` | Number of super-agents. Reduced to `10000` for long-term Hindcast to save time. |
+| `M2` | `500000` / `50000` | Maximum array size (buffer). |
+
+## 4.3 Forcing Configuration (`wcm.F90`)
+The environmental forcing is controlled by preprocessor directives in `src/wcm.F90`.
+
+- `CONSTANT_TEMP`: Fixed temperature (Validation).
+- `SEASONAL_TEMP`: Sinusoidal cycle $15 \pm 5^\circ$C.
+- `TREND`: Adds linear warming (+2°C / `nyears`). Used for Hindcast.
+
+# 5. How to Run
+1.  **Configure**: Edit `parameters.nml` and `src/wcm.F90` (directives).
+2.  **Compile**: `make clean && make`
+3.  **Run**: `make run`
+4.  **Visualize**: Use Python scripts in `scripts/` (e.g., `plot_hindcast.py`).

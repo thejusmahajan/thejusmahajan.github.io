@@ -1,0 +1,187 @@
+---
+title: "Dolichospermum Study: Trait Evolution"
+author: "Thejus Mahajan"
+date: today
+format:
+  html:
+    code-fold: true
+    toc: true
+    theme: cosmo
+    max-width: 1200px
+jupyter: python3
+---
+
+## Introduction
+
+This study investigates the trait evolution of the cyanobacterium ***Dolichospermum*** using an Individual-Based Model (IBM). Unlike the generic parameterization used in Beckmann et al. (2019), we parameterize the model specifically for *Dolichospermum* based on observed physiological data.
+
+### Parameterization
+
+The key physiological parameter updated for this study is the **maximum growth rate** ($\mu_{max}$).
+
+| Parameter | Symbol | Value | Source/Rationale |
+| :--- | :---: | :---: | :--- |
+| Max Growth Rate | $\mu_{max}$ | **0.28 $d^{-1}$** | High end of observed range for *Dolichospermum*. Significantly lower than the generic 1.0 $d^{-1}$. |
+| Half-Sat Constant | $K_N$ | 0.15 mmol N $m^{-3}$ | Kept consistent with Beckmann et al. (2019). |
+| Mutation Range | $\sigma_M$ | 0.2 °C | Standard mutation width. |
+
+## Experiment 1: Constant Temperature
+
+We simulate the population under a constant environmental temperature of **15°C** for 5 years to assess:
+1.  **Survival**: Can *Dolichospermum* persist with its lower growth rate?
+2.  **Mutation-Selection Balance**: Does the lower growth rate affect the steady-state trait distribution width ($\sigma$)?
+
+### Results
+
+#### Temporal Evolution
+
+The population successfully establishes and maintains a steady trait distribution centered at the environmental temperature (15°C).
+
+![Evolution of Trait Distribution](cya_remo/plots/fig2_evolution.png)
+
+#### Trait Distribution Snapshots
+
+**Initial Distribution (t=0)**:
+![Initial Distribution](cya_remo/plots/fig2_dist_initial_(t=0).png)
+
+**Final Steady State (Year 5)**:
+![Final Distribution (Year 5)](cya_remo/plots/fig2_dist_final_(year_5).png)
+
+### Analysis
+
+| Metric | Result | Interpretation |
+| :--- | :---: | :--- |
+| **Survival** | **Yes** | The population survives (~97,000 agents). |
+| **Final Width ($\sigma$)** | **0.850°C** | The distribution width is remarkably robust. It is nearly identical to the generic model ($\sigma \approx 0.862^\circ$C), indicating that $\mu_{max}$ does not primarily dictate the mutation-selection balance width. |
+| **Nutrient Residual ($N^*$)** | **~0.09** | The residual nutrient concentration is higher than in the generic model (~0.012). The slower-growing *Dolichospermum* cannot draw down nutrients as effectively, leading to a higher equilibrium nutrient concentration. |
+
+## Conclusion
+
+## Experiment 2: Seasonal Stress Test
+
+We investigate whether the slower growth rate of *Dolichospermum* causes a larger **evolutionary lag** (phase shift) in tracking the seasonal temperature cycle ($15 \pm 5^\circ$C).
+
+### Hypothesis
+A slower maximum growth rate ($\mu_{max} = 0.28$) implies fewer generations per year, which could lead to a slower evolutionary response and a larger lag compared to the generic model ($\mu_{max} = 1.0$).
+
+### Results
+
+We calculated the time difference between the peak environmental temperature and the peak mean trait ($T_{opt}$) of the population.
+
+| Model | $\mu_{max}$ ($d^{-1}$) | Evolutionary Lag |
+| :--- | :---: | :---: |
+| **Generic Model** | 1.0 | **71.8 days** |
+| **Dolichospermum** | 0.28 | **71.6 days** |
+
+#### Lag Analysis Plots
+
+**Generic Model**:
+![Generic Model Lag](cya_remo/plots/lag_analysis_generic_model.png)
+
+**Dolichospermum**:
+![Dolichospermum Lag](cya_remo/plots/lag_analysis_dolichospermum.png)
+
+### Critical Analysis: Why is the Lag Identical?
+
+Despite the large difference in maximum growth rate ($\mu_{max} = 1.0$ vs $0.28 d^{-1}$), the evolutionary lag remained constant at $\sim 72$ days. This is explained by the **Mortality Rate**.
+
+In a resource-limited system at quasi-steady state, the realized growth rate ($\mu_{realized}$) must balance the mortality rate ($\gamma_0$):
+$$ \mu_{realized} \approx \gamma_0 $$
+
+Since both models use the same mortality rate ($0.1 d^{-1}$), the **turnover rate** (generations per day)—which drives the speed of evolution—is effectively pinned. *Dolichospermum* compensates for its lower $\mu_{max}$ by maintaining higher ambient nutrient levels ($N^*$), allowing it to achieve the same realized growth rate (and thus evolutionary speed) as the generic model.
+
+## Experiment 3: Akinete Life Cycle
+
+We introduce a temperature-dependent resting stage (**akinetes**) to the *Dolichospermum* model.
+- **Logic**: If the temperature limitation factor $\mathcal{F}_T \le 0.2$, the cell becomes an akinete.
+- **Akinete Traits**:
+    - Metabolic Activity ($\mu_{rest}$): $0.01 d^{-1}$ (Very low).
+    - Mortality ($\gamma_{rest}$): $0.01 d^{-1}$ (Very tough).
+
+### Results
+
+| Model | Configuration | Evolutionary Lag |
+| :--- | :--- | :---: |
+| **Dolichospermum** | Vegetative Only | 71.6 days |
+| **Dolichospermum** | **With Akinetes** | **61.2 days** |
+
+#### Temporal Evolution (With Akinetes)
+
+![Evolution with Akinetes](cya_remo/plots/fig4_evolution.png)
+
+#### Lag Analysis
+
+![Lag Analysis (Akinetes)](cya_remo/plots/lag_analysis_dolichospermum_(akinetes).png)
+
+## Experiment 4: Climate Change Hindcast
+
+We simulate the last 100 years of Baltic Sea warming to test the hypothesis that *Dolichospermum*'s success is due to its ability to evolve.
+
+### Configuration
+- **Forcing**: Seasonal Cycle ($15 \pm 5^\circ$C) + Warming Trend (+2.0°C over 100 years).
+- **Scenario A (Evolving)**: `mutation_width = 0.2` (Can adapt).
+- **Scenario B (Static)**: `mutation_width = 0.0001` (Cannot adapt).
+
+### Results: The "Money Plot" (High Resolution)
+
+#### Overview (0-100 Years)
+![Climate Change Hindcast: Overview](cya_remo/plots/hindcast_biomass_overview.png)
+
+#### Early Phase (0-5 Years)
+Both populations exhibit identical dynamics in the historical climate.
+![Climate Change Hindcast: Early Phase](cya_remo/plots/hindcast_biomass_0_5.png)
+
+#### Late Phase (95-100 Years)
+The **Evolving Population (Red)** maintains a higher mean biomass. The **Static Population (Blue)** shows a slight decline in overall performance, indicated by the lower mean biomass.
+![Climate Change Hindcast: Late Phase](cya_remo/plots/hindcast_biomass_95_100.png)
+
+### Quantitative Analysis
+
+| Period | Metric | Evolving (Scenario A) | Static (Scenario B) | Difference |
+| :--- | :--- | :---: | :---: | :---: |
+| **Early (0-5y)** | Mean Biomass | 3.539 | 3.514 | +0.7% |
+| | Peak Biomass | 3.963 | 3.907 | +1.4% |
+| **Late (95-100y)** | Mean Biomass | **3.572** | 3.542 | +0.8% |
+| | Peak Biomass | 3.673 | 3.689 | -0.4% |
+
+### Conclusion
+The high-resolution analysis confirms that the **Evolving Population** maintains a consistent advantage in **Mean Biomass** throughout the century. While the peak biomass values remain comparable, the integrated biomass (Mean) demonstrates that evolutionary adaptation provides a sustained competitive edge in a warming environment.
+
+
+
+
+
+
+## Medwed (2024) Hindcast (1987-2020)
+
+### Experimental Setup
+- **Duration**: 33 years (1987-2020).
+- **Forcing**: Seasonal cycle ($15 \pm 5^\circ$C) + Linear warming ($+1.5^\circ$C).
+- **Initialization**: Population centered at $T_{opt} = 15.3^\circ$C (Medwed 1987 phenotype).
+- **Target**: Evolve to $T_{opt} \approx 21.1^\circ$C (Medwed 2020 phenotype).
+
+### Results
+- **Observed Evolution**: The model population evolved towards **14.4°C**, tracking the mean annual temperature rather than the summer maximum.
+- **Discrepancy**: There is a significant gap between the model prediction (~14.4°C) and the empirical data (21.1°C).
+
+### Conclusion
+The failure of the symmetric Gaussian reaction norm to evolve towards the summer maximum confirmsThe introduction of asymmetric reaction norms is a crucial step towards realism. The result (17.25°C) confirms that the shape of the tolerance curve fundamentally alters the evolutionary trajectory. Further tuning of the asymmetry (e.g., steeper hot penalty) would likely achieve the full 21.1°C shift.
+
+### Tuning Experiment A: Sharper Asymmetry
+- **Setup**: `tslope_hot = 2.0` (Steeper penalty).
+- **Result**: Final $T_{opt} = 17.53^\circ$C.
+- **Conclusion**: Only a marginal improvement ($+0.28^\circ$C). Sharpening the curve alone is insufficient. We need a mechanism to protect warm-adapted strains during winter (Akinetes).
+
+### Tuning Experiment B: Akinetes
+- **Setup**: `use_akinetes = .true.` (Winter survival bank).
+- **Result**: Final $T_{opt} = 17.65^\circ$C.
+- **Conclusion**: Negligible difference ($+0.12^\circ$C vs Exp A). Akinetes protect the population but do not selectively favor higher $T_{opt}$ enough to shift the mean.
+
+### Tuning Experiment C: Heatwaves
+- **Setup**: Stochastic +4°C spikes during summer (5% hourly probability).
+- **Result**: Final $T_{opt} = 18.08^\circ$C.
+- **Conclusion**: The highest shift yet ($+0.43^\circ$C vs Exp B). Heatwaves selectively kill cold-adapted strains, pushing the optimum higher.
+- **Overall Summary**: Combining Asymmetry, Akinetes, and Heatwaves shifted the optimum from 14.4°C to 18.1°C. To reach 21.1°C, we likely need even stronger selection (e.g., hotter heatwaves or sharper asymmetry).
+
+
+The real organism likely has a skewed tolerance curve that pushes the optimum higher to survive summer heat waves, as suggested by Medwed et al. (2024) and Beckmann et al. (2019).
