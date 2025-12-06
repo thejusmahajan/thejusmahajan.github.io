@@ -1,0 +1,234 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Converted Tailwind @apply rules */
+.section-title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.skill-tag {
+    background-color: #e0f2fe;
+    color: #075985;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    display: inline-block;
+}
+
+.project-card,
+.blog-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    /* rounded-xl */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.project-card:hover,
+.blog-card:hover {
+    transform: translateY(-0.5rem);
+    /* hover:-translate-y-2 */
+}
+
+/* Standard CSS */
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.tab-button.active {
+    border-color: #3b82f6;
+    color: #3b82f6;
+    background-color: #eff6ff;
+}
+
+.concept-box {
+    background-color: #e0f2fe;
+    border-left: 4px solid #0ea5e9;
+}
+
+.code-box {
+    background-color: #1e293b;
+    color: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.code-box .comment {
+    color: #94a3b8;
+}
+
+.pea {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s;
+}
+
+.pea:hover {
+    transform: scale(1.05);
+}
+
+.pea-round {
+    background: radial-gradient(circle at 30% 30%, #a7f3d0, #16a34a);
+}
+
+.pea-wrinkled {
+    background: radial-gradient(circle at 30% 30%, #fef08a, #ca8a04);
+}
+
+.genotype {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.phenotype {
+    font-size: 0.9rem;
+}
+
+.step-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.custom-btn {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.custom-btn:hover {
+    background-color: #1d4ed8;
+}
+
+.custom-btn:active {
+    transform: scale(0.98);
+}
+
+.hidden-section {
+    display: none;
+}
+
+.arrow {
+    font-size: 2rem;
+    color: #94a3b8;
+}
+
+.flashcard-app .card {
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+.flashcard-app .card.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.flashcard-app .card-face {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.flashcard-app .card-face-back {
+    transform: rotateY(180deg);
+}
+
+.flashcard-app .quality-btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.flashcard-app .quality-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Blog Modal Styles */
+.blog-modal-content {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    padding: 1.5rem;
+}
+
+.blog-modal-content h1,
+.blog-modal-content h2,
+.blog-modal-content h3 {
+    color: #1f2937;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.blog-modal-content pre {
+    background-color: #1f2937;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+}
+
+.blog-modal-content table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.blog-modal-content th,
+.blog-modal-content td {
+    border: 1px solid #d1d5db;
+    padding: 0.5rem;
+}
+
+.blog-modal-content th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+}
+
+.perspective-1000 {
+    perspective: 1000px;
+}
