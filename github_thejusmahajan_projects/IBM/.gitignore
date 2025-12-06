@@ -1,0 +1,20 @@
+# Compilation artifacts
+*.o
+*.mod
+*.x
+
+# Output data
+output/*
+!output/.gitkeep
+fort.*
+
+# Plots
+plots/*
+!plots/.gitkeep
+
+# Python cache
+__pycache__/
+*.pyc
+
+# System files
+.DS_Store

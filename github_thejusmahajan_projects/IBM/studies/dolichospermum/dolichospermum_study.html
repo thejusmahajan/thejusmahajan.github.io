@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Thejus Mahajan">
-<meta name="dcterms.date" content="2025-12-04">
+<meta name="dcterms.date" content="2025-12-06">
 
 <title>Dolichospermum Study: Trait Evolution</title>
 <style>
@@ -104,6 +104,15 @@ window.Quarto = {
   <li><a href="#quantitative-analysis" id="toc-quantitative-analysis" class="nav-link" data-scroll-target="#quantitative-analysis">Quantitative Analysis</a></li>
   <li><a href="#conclusion-1" id="toc-conclusion-1" class="nav-link" data-scroll-target="#conclusion-1">Conclusion</a></li>
   </ul></li>
+  <li><a href="#medwed-2024-hindcast-1987-2020" id="toc-medwed-2024-hindcast-1987-2020" class="nav-link" data-scroll-target="#medwed-2024-hindcast-1987-2020">Medwed (2024) Hindcast (1987-2020)</a>
+  <ul class="collapse">
+  <li><a href="#experimental-setup" id="toc-experimental-setup" class="nav-link" data-scroll-target="#experimental-setup">Experimental Setup</a></li>
+  <li><a href="#results-3" id="toc-results-3" class="nav-link" data-scroll-target="#results-3">Results</a></li>
+  <li><a href="#conclusion-2" id="toc-conclusion-2" class="nav-link" data-scroll-target="#conclusion-2">Conclusion</a></li>
+  <li><a href="#tuning-experiment-a-sharper-asymmetry" id="toc-tuning-experiment-a-sharper-asymmetry" class="nav-link" data-scroll-target="#tuning-experiment-a-sharper-asymmetry">Tuning Experiment A: Sharper Asymmetry</a></li>
+  <li><a href="#tuning-experiment-b-akinetes" id="toc-tuning-experiment-b-akinetes" class="nav-link" data-scroll-target="#tuning-experiment-b-akinetes">Tuning Experiment B: Akinetes</a></li>
+  <li><a href="#tuning-experiment-c-heatwaves" id="toc-tuning-experiment-c-heatwaves" class="nav-link" data-scroll-target="#tuning-experiment-c-heatwaves">Tuning Experiment C: Heatwaves</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -128,7 +137,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 4, 2025</p>
+      <p class="date">December 6, 2025</p>
     </div>
   </div>
   
@@ -418,6 +427,55 @@ window.Quarto = {
 <section id="conclusion-1" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion-1">Conclusion</h3>
 <p>The high-resolution analysis confirms that the <strong>Evolving Population</strong> maintains a consistent advantage in <strong>Mean Biomass</strong> throughout the century. While the peak biomass values remain comparable, the integrated biomass (Mean) demonstrates that evolutionary adaptation provides a sustained competitive edge in a warming environment.</p>
+</section>
+</section>
+<section id="medwed-2024-hindcast-1987-2020" class="level2">
+<h2 class="anchored" data-anchor-id="medwed-2024-hindcast-1987-2020">Medwed (2024) Hindcast (1987-2020)</h2>
+<section id="experimental-setup" class="level3">
+<h3 class="anchored" data-anchor-id="experimental-setup">Experimental Setup</h3>
+<ul>
+<li><strong>Duration</strong>: 33 years (1987-2020).</li>
+<li><strong>Forcing</strong>: Seasonal cycle (<span class="math inline">\(15 \pm 5^\circ\)</span>C) + Linear warming (<span class="math inline">\(+1.5^\circ\)</span>C).</li>
+<li><strong>Initialization</strong>: Population centered at <span class="math inline">\(T_{opt} = 15.3^\circ\)</span>C (Medwed 1987 phenotype).</li>
+<li><strong>Target</strong>: Evolve to <span class="math inline">\(T_{opt} \approx 21.1^\circ\)</span>C (Medwed 2020 phenotype).</li>
+</ul>
+</section>
+<section id="results-3" class="level3">
+<h3 class="anchored" data-anchor-id="results-3">Results</h3>
+<ul>
+<li><strong>Observed Evolution</strong>: The model population evolved towards <strong>14.4°C</strong>, tracking the mean annual temperature rather than the summer maximum.</li>
+<li><strong>Discrepancy</strong>: There is a significant gap between the model prediction (~14.4°C) and the empirical data (21.1°C).</li>
+</ul>
+</section>
+<section id="conclusion-2" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion-2">Conclusion</h3>
+<p>The failure of the symmetric Gaussian reaction norm to evolve towards the summer maximum confirmsThe introduction of asymmetric reaction norms is a crucial step towards realism. The result (17.25°C) confirms that the shape of the tolerance curve fundamentally alters the evolutionary trajectory. Further tuning of the asymmetry (e.g., steeper hot penalty) would likely achieve the full 21.1°C shift.</p>
+</section>
+<section id="tuning-experiment-a-sharper-asymmetry" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-experiment-a-sharper-asymmetry">Tuning Experiment A: Sharper Asymmetry</h3>
+<ul>
+<li><strong>Setup</strong>: <code>tslope_hot = 2.0</code> (Steeper penalty).</li>
+<li><strong>Result</strong>: Final <span class="math inline">\(T_{opt} = 17.53^\circ\)</span>C.</li>
+<li><strong>Conclusion</strong>: Only a marginal improvement (<span class="math inline">\(+0.28^\circ\)</span>C). Sharpening the curve alone is insufficient. We need a mechanism to protect warm-adapted strains during winter (Akinetes).</li>
+</ul>
+</section>
+<section id="tuning-experiment-b-akinetes" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-experiment-b-akinetes">Tuning Experiment B: Akinetes</h3>
+<ul>
+<li><strong>Setup</strong>: <code>use_akinetes = .true.</code> (Winter survival bank).</li>
+<li><strong>Result</strong>: Final <span class="math inline">\(T_{opt} = 17.65^\circ\)</span>C.</li>
+<li><strong>Conclusion</strong>: Negligible difference (<span class="math inline">\(+0.12^\circ\)</span>C vs Exp A). Akinetes protect the population but do not selectively favor higher <span class="math inline">\(T_{opt}\)</span> enough to shift the mean.</li>
+</ul>
+</section>
+<section id="tuning-experiment-c-heatwaves" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-experiment-c-heatwaves">Tuning Experiment C: Heatwaves</h3>
+<ul>
+<li><strong>Setup</strong>: Stochastic +4°C spikes during summer (5% hourly probability).</li>
+<li><strong>Result</strong>: Final <span class="math inline">\(T_{opt} = 18.08^\circ\)</span>C.</li>
+<li><strong>Conclusion</strong>: The highest shift yet (<span class="math inline">\(+0.43^\circ\)</span>C vs Exp B). Heatwaves selectively kill cold-adapted strains, pushing the optimum higher.</li>
+<li><strong>Overall Summary</strong>: Combining Asymmetry, Akinetes, and Heatwaves shifted the optimum from 14.4°C to 18.1°C. To reach 21.1°C, we likely need even stronger selection (e.g., hotter heatwaves or sharper asymmetry).</li>
+</ul>
+<p>The real organism likely has a skewed tolerance curve that pushes the optimum higher to survive summer heat waves, as suggested by Medwed et al.&nbsp;(2024) and Beckmann et al.&nbsp;(2019).</p>
 </section>
 </section>
 
