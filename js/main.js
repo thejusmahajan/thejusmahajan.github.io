@@ -67,8 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Placeholder for App Logic ---
-    // You would put your app-specific JS here or in separate files.
     // --- Flashcard App Logic ---
     const launchFlashcardButton = document.getElementById('launchFlashcardButton');
     const flashcardModal = document.getElementById('flashcardModal');

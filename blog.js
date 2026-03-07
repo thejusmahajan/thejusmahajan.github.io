@@ -76,15 +76,5 @@ WHERE Mass = MIN(Mass);</code></pre>
                 </tbody>
             </table>
         `
-    },
-    {
-        id: 'placeholder-post',
-        title: "Understanding BLAST: A Bioinformatician's First Tool",
-        date: "October 15, 2025",
-        summary: "A practical guide to the Basic Local Alignment Search Tool (BLAST). We'll cover the core concepts, different BLAST programs, and how to interpret the results.",
-        content: `
-            <h2>Introduction to BLAST</h2>
-            <p>This is a placeholder for a future article about BLAST. Come back soon for more content!</p>
-        `
     }
 ];
