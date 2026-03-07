@@ -212,6 +212,125 @@
             </div>
         </section>
 
+        <!-- Featured Impact Case Studies -->
+        <section class="py-24 bg-slate-50 border-t border-slate-200">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl lg:text-4xl font-extrabold text-slate-900">Featured Case Studies</h2>
+                    <p class="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">High-impact projects demonstrating robust
+                        pipeline engineering and reproducible data analysis.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- Case Study 1: HealthTwiSt -->
+                    <div
+                        class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-xl transition-shadow flex flex-col group">
+                        <div class="h-3 bg-gradient-to-r from-sky-400 to-sky-600"></div>
+                        <div class="p-8 flex-grow">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-2xl font-bold text-slate-900">Clinical Pipeline Refactoring</h3>
+                                <span
+                                    class="px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-xs font-bold uppercase tracking-wide">R
+                                    & Configs</span>
+                            </div>
+                            <p class="text-sky-600 font-semibold mb-6">HealthTwiSt GmbH</p>
+
+                            <div class="mb-5">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Problem
+                                </h4>
+                                <p class="text-slate-600 text-sm leading-relaxed">A legacy monolithic R pipeline for
+                                    processing 143k clinical records was bloated with hardcoded rules, making it brittle
+                                    and difficult to onboard new team members.</p>
+                            </div>
+
+                            <div class="mb-5">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Approach
+                                </h4>
+                                <p class="text-slate-600 text-sm leading-relaxed">Systematically decoupled logic from
+                                    data by extracting 257 clinical rules into 8 scalable CSV configurations. Engineered
+                                    robust handling functions like <code>grade_complication()</code> for asymmetric
+                                    inputs.</p>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Impact
+                                </h4>
+                                <ul class="text-slate-600 text-sm leading-relaxed list-disc list-inside space-y-1">
+                                    <li><strong>26.5% reduction</strong> in total codebase size.</li>
+                                    <li>Zero loss of functionality (verified via byte-level checks).</li>
+                                    <li>Identified and patched 2 critical latent bugs in registry logic.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div
+                            class="p-6 bg-slate-50 border-t border-slate-100 mt-auto transition-colors group-hover:bg-sky-50">
+                            <a href="experience.html#healthtwist"
+                                class="text-sky-600 font-semibold hover:text-sky-700 flex items-center gap-2">Read Full
+                                Experience Details &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Case Study 2: Hepatitis Delta -->
+                    <div
+                        class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-xl transition-shadow flex flex-col group">
+                        <div class="h-3 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+                        <div class="p-8 flex-grow">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-2xl font-bold text-slate-900">Hepatitis Delta Virus Pipeline</h3>
+                                <span
+                                    class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wide">Nextflow
+                                    DSL2</span>
+                            </div>
+                            <p class="text-emerald-600 font-semibold mb-6">Open Source Project</p>
+
+                            <div class="mb-5">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Problem
+                                </h4>
+                                <p class="text-slate-600 text-sm leading-relaxed">Analyzing 151 HDV genome sequence data
+                                    sequences manually is slow, error-prone, and suffers from the "works on my machine"
+                                    reproducibility problem endemic in bioinformatics.</p>
+                            </div>
+
+                            <div class="mb-5">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Approach
+                                </h4>
+                                <p class="text-slate-600 text-sm leading-relaxed">Architected an end-to-end, automated
+                                    Nextflow DSL2 workflow integrating MAFFT and trimAl. Utilized Conda environments
+                                    natively within processes to guarantee exact tool versions on any compute node.</p>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Impact
+                                </h4>
+                                <ul class="text-slate-600 text-sm leading-relaxed list-disc list-inside space-y-1">
+                                    <li>Achieved <strong>100% computational reproducibility</strong> across distributed
+                                        environments.</li>
+                                    <li>Automated phylogenetic signal enhancement via strict gap thresholds.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div
+                            class="p-6 bg-slate-50 border-t border-slate-100 flex flex-wrap gap-6 mt-auto transition-colors group-hover:bg-emerald-50">
+                            <a href="https://github.com/thejusmahajan/Hepatitis-Delta-virus-Nextflow-pipeline"
+                                target="_blank"
+                                class="text-emerald-600 font-semibold hover:text-emerald-700 flex items-center gap-2">View
+                                Code on GitHub &rarr;</a>
+                            <a href="blog.html#hepatitis-delta-pipeline"
+                                class="text-slate-600 font-semibold hover:text-slate-800 flex items-center gap-2">Read
+                                Tech Write-up &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <a href="projects.html"
+                        class="inline-flex items-center px-8 py-3 border-2 border-slate-300 text-slate-600 font-semibold rounded-lg hover:border-slate-800 hover:text-slate-900 transition-colors">
+                        View All Projects
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <!-- Narrative Section -->
         <section id="about" class="py-24 bg-white border-t border-slate-100">
             <div class="container mx-auto px-6 max-w-5xl">
