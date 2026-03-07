@@ -4,33 +4,32 @@
 
 const blogPosts = [
     {
-        id: 'multi-omics-integration',
-        title: "The Challenge of Multi-omics Integration: DOGMA-seq and mtscATAC-seq",
+        id: 'hepatitis-delta-pipeline',
+        title: "Building a Reproducible Hepatitis Delta Virus Pipeline with Nextflow",
         date: "February 28, 2026",
-        summary: "As my focus shifts heavily towards single-cell bioinformatics, I'm documenting the critical computational challenges of integrating distinct modalities (like chromatin accessibility and gene expression) from the same cell.",
+        summary: "Documenting the key challenges and architectural decisions behind building a Nextflow DSL2 pipeline for analyzing the Hepatitis Delta Virus (HDV) genome, focusing on dependency management and alignment accuracy.",
         content: `
-            <h2>The Promise of Single-Cell Multi-omics</h2>
-            <p>Traditional bulk RNA-seq gives us an average signal across thousands of cells. Single-cell RNA-seq (scRNA-seq) solved this by profiling individual cells, allowing us to identify rare cell populations. However, to truly understand cellular regulation, we need more than just the transcriptome; we need to see the epigenome.</p>
-            <p>This is where multi-omics shines. Technologies like <strong>mtscATAC-seq</strong> (mitochondrial single-cell ATAC-seq) and <strong>DOGMA-seq</strong> allow us to measure chromatin accessibility and gene expression simultaneously in the exact same cell.</p>
+            <h2>The Challenge of Viral Genomics</h2>
+            <p>Analyzing fast-mutating viral genomes like the Hepatitis Delta Virus (HDV) presents unique challenges in sequence alignment and noise reduction. Legacy bash scripts often struggle with reproducibility when dealing with multiple sequence aligners and varying software versions across different cluster environments.</p>
+            <p>To solve this, I architected a robust, reproducible NGS pipeline in <strong>Nextflow DSL2</strong>.</p>
             
             <hr class="my-6">
             
-            <h2>Computational Hurdles</h2>
-            <p>The transition from single-modality to multi-modality data introduces massive computational complexity. Here are the primary challenges I'm currently studying to tackle these datasets:</p>
+            <h2>Pipeline Architecture</h2>
             
-            <h3>1. Massive Dimensionality and Sparsity</h3>
-            <p>ATAC-seq data is notoriously sparse (mostly zeros) because we are looking at binary states (open or closed) across hundreds of thousands of peaks across the genome. When combined with transcriptomic data, the feature space explodes. We rely heavily on advanced dimensionality reduction techniques (like LSI for ATAC, and PCA for RNA) before attempting integration.</p>
+            <h3>1. Dependency Management with Conda</h3>
+            <p>A major focus was ensuring the pipeline could be run by anyone, anywhere, without dependency nightmares. By tightly integrating Conda environments directly into the Nextflow <code>process</code> blocks, the pipeline automatically provisions the correct versions of required tools (like MAFFT and trimAl) on the fly, eliminating "it works on my machine" issues.</p>
             
-            <h3>2. Modality Integration (The "Anchor" Problem)</h3>
-            <p>How do we link an ATAC peak (a regulatory region like an enhancer) to the specific gene it controls? Methods like Seurat's Weighted Nearest Neighbor (WNN) or MOFA+ (Multi-Omics Factor Analysis) are required to build a joint representation of the cell. You have to carefully weight each modality so that a noisy ATAC signal doesn't drown out a clean RNA signal, or vice versa.</p>
+            <h3>2. High-Accuracy Alignment (MAFFT)</h3>
+            <p>For highly divergent viral sequences, standard aligners often fail to capture the true evolutionary relationships. The pipeline integrates <strong>MAFFT</strong> (Multiple Alignment using Fast Fourier Transform), configuring it to prioritize accuracy over speed for the HDV segments, resulting in high-fidelity multiple sequence alignments (MSAs).</p>
             
-            <h3>3. Trajectory Inference</h3>
-            <p>In cancer evolution or developmental biology, cells exist on a continuum. We want to draw "pseudotime" trajectories. Multi-omics allows us to see if chromatin changes <em>precede</em> transcriptional changes, establishing causality rather than just correlation.</p>
+            <h3>3. Noise Reduction (trimAl)</h3>
+            <p>Raw MSAs are often riddled with phylogenetically uninformative regions (gaps and poorly conserved columns). The pipeline pipes the MAFFT output directly into <strong>trimAl</strong>, automatically removing these noisy regions based on strict gap thresholds, significantly improving the signal-to-noise ratio for downstream phylogenetic analysis.</p>
             
             <hr class="my-6">
             
-            <h2>Moving Forward</h2>
-            <p>The future of computational biology lies not just in generating this data, but in building the AI/ML infrastructures (like autoencoders and graph neural networks) necessary to parse these intertwined biological layers. My current training in Python object-oriented design and R/Bioconductor is strictly focused on mastering these integration workflows.</p>
+            <h2>Conclusion</h2>
+            <p>By leveraging Nextflow DSL2, the Hepatitis Delta Virus pipeline is not just a script, but a modular, scalable software architecture. This approach, combining strict environment encapsulation with optimal bioinformatics tools, is exactly the rigor required for modern clinical and research genomics.</p>
         `
     },
     {
