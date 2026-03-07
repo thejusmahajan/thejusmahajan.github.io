@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCA Interactive Demo - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Babel Standalone for in-browser JSX compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-700 flex flex-col min-h-screen">
+    
+    <header class="sticky top-4 mt-4 mx-auto w-[95%] max-w-6xl bg-white/70 backdrop-blur-lg border border-slate-200/50 rounded-full shadow-lg z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-800">Dr. Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 transition">Skills</a>
+                <a href="projects.html" class="text-sky-600 font-semibold transition">Projects</a>
+                <a href="blog.html" class="text-gray-600 hover:text-sky-600 transition">Blog</a>
+                <a href="mailto:thejusmahajanmarrat@gmail.com" class="text-gray-600 hover:text-sky-600 transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="index.html" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
+            <a href="experience.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Experience</a>
+            <a href="skills.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
+            <a href="projects.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Projects</a>
+            <a href="blog.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Blog</a>
+            <a href="mailto:thejusmahajanmarrat@gmail.com" class="block py-2 px-4 text-sm hover:bg-gray-200">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12 px-4 w-full h-[calc(100vh-80px)]">
+        <div id="pca-root" class="h-full w-full max-w-7xl mx-auto shadow-2xl rounded-2xl overflow-hidden border border-gray-200"></div>
+    </main>
+
+    <script src="js/main.js"></script>
+
+    <script type="text/babel">
+const { useState, useEffect, useMemo } = React;
+
+
+const PCAVisualizer = () => {
+  const [step, setStep] = useState(0);
+  const [data, setData] = useState([]);
+  const [mean, setMean] = useState({ x: 0, y: 0 });
+  const [stdDev, setStdDev] = useState({ x: 1, y: 1 });
+  const [isScaled, setIsScaled] = useState(false);
+
+  // Generate random correlated data on mount
+  useEffect(() => {
+    generateNewData();
+  }, []);
+
+  const generateNewData = () => {
+    const newData = [];
+    let sumX = 0;
+    let sumY = 0;
+    const n = 20;
+    
+    // Create a "cigar" shape (correlated data)
+    // Values are positive (2 to 8) so they appear off-center initially
+    for (let i = 0; i < n; i++) {
+      const x = 2 + Math.random() * 6; // Random X between 2 and 8
+      const noise = (Math.random() - 0.5) * 2;
+      const y = 1 + x * 0.8 + noise; // Y is correlated to X
+      
+      newData.push({ 
+        id: i, 
+        rawX: x, 
+        rawY: y 
+      });
+      sumX += x;
+      sumY += y;
+    }
+    
+    const meanX = sumX / n;
+    const meanY = sumY / n;
+    
+    // Calculate Standard Deviation
+    const varianceX = newData.reduce((acc, val) => acc + Math.pow(val.rawX - meanX, 2), 0) / (n - 1);
+    const varianceY = newData.reduce((acc, val) => acc + Math.pow(val.rawY - meanY, 2), 0) / (n - 1);
+    
+    setMean({ x: meanX, y: meanY });
+    setStdDev({ x: Math.sqrt(varianceX), y: Math.sqrt(varianceY) });
+    setData(newData);
+    setStep(0);
+  };
+
+  // Calculate transformed data based on current step
+  const getDisplayedData = () => {
+    // PCA Rotation Angle
+    // If Scaled (Standardized), the principal component for 2 positive correlated vars 
+    // is ALWAYS 45 degrees (Math.PI / 4) because variances are equal (1).
+    // If Unscaled, it depends on the raw slope (approx 0.67 radians here).
+    const angle = isScaled ? Math.PI / 4 : 0.67; 
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
+    return data.map(point => {
+      // 1. Center
+      let x = point.rawX - mean.x;
+      let y = point.rawY - mean.y;
+
+      // 2. Scale (Optional)
+      if (isScaled) {
+        x = x / stdDev.x;
+        y = y / stdDev.y;
+      }
+      
+      // 3. Rotate
+      const rotatedX = x * cos + y * sin;
+      const rotatedY = -x * sin + y * cos;
+
+      let displayX, displayY, col1, col2;
+
+      switch(step) {
+        case 0: // Raw
+          displayX = point.rawX;
+          displayY = point.rawY;
+          col1 = point.rawX.toFixed(2);
+          col2 = point.rawY.toFixed(2);
+          break;
+        case 1: // Centered / Standardized
+        case 2: // Eigenvectors
+          displayX = x;
+          displayY = y;
+          col1 = x.toFixed(2);
+          col2 = y.toFixed(2);
+          break;
+        case 3: // Rotated
+          displayX = rotatedX;
+          displayY = rotatedY;
+          col1 = rotatedX.toFixed(2);
+          col2 = rotatedY.toFixed(2);
+          break;
+        case 4: // Compressed
+          displayX = rotatedX;
+          displayY = 0; // Drop 2nd dimension
+          col1 = rotatedX.toFixed(2);
+          col2 = "0.00"; 
+          break;
+        default:
+          displayX = point.rawX;
+          displayY = point.rawY;
+      }
+      return { ...point, displayX, displayY, col1, col2 };
+    });
+  };
+
+  const currentData = getDisplayedData();
+
+  // SVG Scaling helpers
+  const svgSize = 400;
+  const center = svgSize / 2;
+  
+  // Dynamic Zoom: Standardized data is small (-2 to 2), so we zoom in (scale 80).
+  // Raw data is large (2 to 8), so we zoom out (scale 20).
+  const pixelsPerUnit = isScaled && step > 0 ? 80 : 20;
+
+  const toSVG = (x, y) => {
+    // If Step 0 (Raw), we need to shift the origin so the positive data is visible
+    let offsetX = 0;
+    let offsetY = 0;
+    
+    // If we are standardized (Step > 0), (0,0) is center.
+    // If we are raw (Step 0), (0,0) is usually bottom-left relative to data, 
+    // but here we just center the SVG at (0,0) and let data float.
+    
+    return {
+      x: x * pixelsPerUnit + center + offsetX,
+      y: -y * pixelsPerUnit + center + offsetY
+    };
+  };
+
+  const stepsInfo = [
+    {
+      title: "1. Raw Feature Space",
+      desc: "The initial n × m data matrix. High correlation between features (multicollinearity) indicates redundancy.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-blue-500"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+    },
+    {
+      title: isScaled ? "2. Standardization (Center + Scale)" : "2. Mean Centering",
+      desc: isScaled 
+        ? "We subtract the mean μ and divide by standard deviation σ. The data is now 'Unitless' with Variance = 1 (Unit Circle)." 
+        : "We compute the column mean vector μ and subtract it from the data (X - μ). This shifts the centroid to the origin (0,0).",
+      icon: isScaled ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-indigo-500"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path><path d="M7 21h10"></path><path d="M12 3v18"></path><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"></path></svg> : <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-indigo-500"><polyline points="5 9 2 12 5 15"></polyline><polyline points="9 5 12 2 15 5"></polyline><polyline points="19 9 22 12 19 15"></polyline><polyline points="9 19 12 22 15 19"></polyline><line x1="2" x2="22" y1="12" y2="12"></line><line x1="12" x2="12" y1="2" y2="22"></line></svg>
+    },
+    {
+      title: "3. Eigendecomposition",
+      desc: isScaled
+        ? "With unit variance, the Principal Component is exactly 45° (diagonal). The variables contribute equally to the variance."
+        : "We calculate the Eigenvectors of the Covariance Matrix. PC1 (Red) aligns with the direction of maximum variance.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-purple-500"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+    },
+    {
+      title: "4. Basis Transformation",
+      desc: "We project the original data onto the new Orthogonal Basis defined by the Principal Components. This decorrelates the features.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-orange-500"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+    },
+    {
+      title: "5. Dimensionality Reduction",
+      desc: "We discard the noise. We have successfully compressed the dataset while preserving the signal.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-red-500"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" x2="8.12" y1="4" y2="15.88"></line><line x1="14.47" x2="20" y1="14.48" y2="20"></line><line x1="8.12" x2="12" y1="8.12" y2="12"></line></svg>
+    }
+  ];
+
+  return (
+    <div className="flex flex-col h-screen bg-gray-50 text-slate-800 font-sans">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm">
+        <div>
+          <h1 className="text-xl font-bold text-slate-800">PCA Visualizer</h1>
+          <p className="text-sm text-slate-500">From .dat file to compressed features</p>
+        </div>
+        <div className="flex items-center space-x-4">
+           
+           <button 
+            onClick={() => setIsScaled(!isScaled)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${isScaled ? 'bg-indigo-100 text-indigo-700 border-indigo-300' : 'bg-white text-gray-500 border-gray-300 hover:border-gray-400'}`}
+           >
+             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path><path d="M7 21h10"></path><path d="M12 3v18"></path><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"></path></svg>
+             <span>scale.unit = {isScaled ? 'TRUE' : 'FALSE'}</span>
+           </button>
+
+           <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-gray-600">
+             Step {step + 1} of 5
+           </span>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 flex overflow-hidden">
+        
+        {/* Left: Visualization */}
+        <div className="flex-1 p-6 flex flex-col items-center justify-center bg-gray-100 relative overflow-hidden">
+          <div className="bg-white rounded-xl shadow-lg p-4 relative z-10">
+            <svg width={svgSize} height={svgSize} className="border border-gray-100 bg-slate-50 rounded-lg">
+              {/* Grid Lines */}
+              <pattern id="grid" width={pixelsPerUnit} height={pixelsPerUnit} patternUnits="userSpaceOnUse">
+                <path d={`M ${pixelsPerUnit} 0 L 0 0 0 ${pixelsPerUnit}`} fill="none" stroke="#e2e8f0" strokeWidth="1"/>
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#grid)" />
+
+              {/* Unit Circle (Only visible if Scaled and Centered) */}
+              {isScaled && step >= 1 && (
+                <circle 
+                  cx={center} 
+                  cy={center} 
+                  r={pixelsPerUnit} // Radius = 1 unit (1 Sigma)
+                  fill="none" 
+                  stroke="#fbbf24" 
+                  strokeWidth="2" 
+                  strokeDasharray="4,4"
+                  opacity="0.6"
+                />
+              )}
+
+              {/* Axes (Fixed at Center) */}
+              <line x1={0} y1={center} x2={svgSize} y2={center} stroke="#cbd5e1" strokeWidth="2" />
+              <line x1={center} y1={0} x2={center} y2={svgSize} stroke="#cbd5e1" strokeWidth="2" />
+              
+              {/* Axis Labels */}
+              <text x={svgSize - 20} y={center + 15} className="text-xs text-slate-400">
+                {step === 3 || step === 4 ? 'PC1' : 'X'}
+              </text>
+              <text x={center + 5} y={15} className="text-xs text-slate-400">
+                {step === 3 || step === 4 ? 'PC2' : 'Y'}
+              </text>
+              <text x={center + 5} y={center + 15} className="text-xs text-slate-400">0,0</text>
+              
+              {/* Scale Indicator */}
+              {isScaled && step >= 1 && (
+                <text x={center + pixelsPerUnit + 5} y={center - 5} className="text-xs font-bold text-amber-500">1σ</text>
+              )}
+
+              {/* Eigenvectors (Only visible in step 2) */}
+              {step === 2 && (
+                <>
+                  {/* PC1 */}
+                  <line 
+                    x1={center - 150 * Math.cos(isScaled ? Math.PI/4 : 0.67)} 
+                    y1={center + 150 * Math.sin(isScaled ? Math.PI/4 : 0.67)} 
+                    x2={center + 150 * Math.cos(isScaled ? Math.PI/4 : 0.67)} 
+                    y2={center - 150 * Math.sin(isScaled ? Math.PI/4 : 0.67)} 
+                    stroke="#ef4444" 
+                    strokeWidth="3" 
+                    strokeDasharray="5,5"
+                  />
+                  {/* PC2 */}
+                  <line 
+                    x1={center - 80 * Math.cos((isScaled ? Math.PI/4 : 0.67) + 1.57)} 
+                    y1={center + 80 * Math.sin((isScaled ? Math.PI/4 : 0.67) + 1.57)} 
+                    x2={center + 80 * Math.cos((isScaled ? Math.PI/4 : 0.67) + 1.57)} 
+                    y2={center - 80 * Math.sin((isScaled ? Math.PI/4 : 0.67) + 1.57)} 
+                    stroke="#10b981" 
+                    strokeWidth="3" 
+                    strokeDasharray="5,5"
+                  />
+                </>
+              )}
+
+              {/* Data Points */}
+              {currentData.map((pt) => {
+                const coords = toSVG(pt.displayX, pt.displayY);
+                return (
+                  <g key={pt.id} style={{ transition: 'all 0.8s ease-in-out' }}>
+                     <circle 
+                      cx={coords.x} 
+                      cy={coords.y} 
+                      r={5} 
+                      fill={step === 4 ? "#ef4444" : "#3b82f6"} 
+                      opacity={0.8}
+                      className="transition-all duration-700 ease-in-out"
+                    />
+                    {step === 4 && (
+                       <line 
+                        x1={coords.x} y1={center} 
+                        x2={coords.x} y2={coords.y} 
+                        stroke="#ef4444" strokeWidth="1" opacity="0.3"
+                       />
+                    )}
+                  </g>
+                );
+              })}
+            </svg>
+            
+            <div className="absolute top-6 left-6 bg-white/90 backdrop-blur p-2 rounded shadow text-xs space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                <span>Data Points</span>
+              </div>
+              {isScaled && step >= 1 && (
+                 <div className="flex items-center gap-2">
+                 <div className="w-3 h-3 rounded-full border-2 border-amber-400 border-dashed"></div>
+                 <span>Unit Variance (1σ)</span>
+               </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Explainer & Data */}
+        <div className="w-96 bg-white border-l border-gray-200 flex flex-col">
+          {/* Explanation Card */}
+          <div className="p-6 bg-slate-50 border-b border-gray-200">
+             <div className="flex items-center gap-3 mb-3">
+               <div className="p-2 bg-white rounded-lg shadow-sm">
+                 {stepsInfo[step].icon}
+               </div>
+               <h2 className="font-bold text-slate-800">{stepsInfo[step].title}</h2>
+             </div>
+             <p className="text-sm text-slate-600 leading-relaxed">
+               {stepsInfo[step].desc}
+             </p>
+          </div>
+
+          {/* Data File Simulator */}
+          <div className="flex-1 p-0 overflow-hidden flex flex-col">
+            <div className="bg-slate-800 text-slate-100 px-4 py-2 text-xs font-mono flex justify-between items-center">
+              <span>experiment_data.dat</span>
+              <span className="opacity-50">{(currentData.length * 0.2).toFixed(1)} KB</span>
+            </div>
+            <div className="flex-1 overflow-y-auto bg-slate-900 font-mono text-sm p-4">
+              <table className="w-full text-right">
+                <thead>
+                  <tr className="text-slate-500 border-b border-slate-700">
+                    <th className="pb-2 pr-4 text-left">ID</th>
+                    <th className="pb-2 pr-4 text-green-400">
+                      {step < 3 ? 'Col 1' : 'PC1'}
+                    </th>
+                    <th className="pb-2 text-blue-400">
+                      {step < 3 ? 'Col 2' : step === 4 ? <span className="text-red-500 line-through">PC2</span> : 'PC2'}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="text-slate-300">
+                  {currentData.map((pt) => (
+                    <tr key={pt.id} className="hover:bg-slate-800 transition-colors">
+                      <td className="py-1 pr-4 text-left text-slate-600">Row_{pt.id}</td>
+                      <td className="py-1 pr-4">{pt.col1}</td>
+                      <td className={`py-1 ${step === 4 ? 'text-slate-700' : ''}`}>
+                        {pt.col2}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer Controls */}
+      <footer className="bg-white p-4 border-t border-gray-200 flex justify-center gap-4">
+        <button 
+          onClick={generateNewData}
+          className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          <span>New Random Data</span>
+        </button>
+        
+        <button 
+          onClick={() => setStep(prev => prev > 0 ? prev - 1 : 0)}
+          disabled={step === 0}
+          className={`px-6 py-2 rounded-lg font-medium transition-colors ${step === 0 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+        >
+          Previous
+        </button>
+
+        <button 
+          onClick={() => setStep(prev => prev < 4 ? prev + 1 : 0)}
+          className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-sm transition-all active:scale-95"
+        >
+          <span>{step === 4 ? 'Reset Demo' : 'Next Step'}</span>
+          {step < 4 && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>}
+        </button>
+      </footer>
+    </div>
+  );
+};
+
+
+
+const root = ReactDOM.createRoot(document.getElementById('pca-root'));
+root.render(<PCAVisualizer />);
+    </script>
+</body>
+</html>
