@@ -16,18 +16,18 @@
     <!-- Babel Standalone for in-browser JSX compilation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-700 flex flex-col min-h-screen">
+<body class="bg-[#07080a] text-[#e6e6fa] flex flex-col min-h-screen">
     
-    <header class="sticky top-4 mt-4 mx-auto w-[95%] max-w-6xl bg-white/70 backdrop-blur-lg border border-slate-200/50 rounded-full shadow-lg z-50 transition-all duration-300">
+    <header class="sticky top-4 mt-4 mx-auto w-[95%] max-w-6xl bg-[#0a0c10]/70 backdrop-blur-lg border border-white/10/50 rounded-full shadow-lg z-50 transition-all duration-300">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-gray-800">Dr. Thejus Mahajan</a>
+            <a href="index.html" class="text-2xl font-bold text-[#e6e6fa]">Dr. Thejus Mahajan</a>
             <div class="hidden md:flex space-x-6">
-                <a href="index.html" class="text-gray-600 hover:text-sky-600 transition">About</a>
-                <a href="experience.html" class="text-gray-600 hover:text-sky-600 transition">Experience</a>
-                <a href="skills.html" class="text-gray-600 hover:text-sky-600 transition">Skills</a>
+                <a href="index.html" class="text-[#c5c5c5] hover:text-sky-600 transition">About</a>
+                <a href="experience.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Experience</a>
+                <a href="skills.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Skills</a>
                 <a href="projects.html" class="text-sky-600 font-semibold transition">Projects</a>
-                <a href="blog.html" class="text-gray-600 hover:text-sky-600 transition">Blog</a>
-                <a href="mailto:thejusmahajanmarrat@gmail.com" class="text-gray-600 hover:text-sky-600 transition">Contact</a>
+                <a href="blog.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Blog</a>
+                <a href="mailto:thejusmahajanmarrat@gmail.com" class="text-[#c5c5c5] hover:text-sky-600 transition">Contact</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden flex items-center">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,17 +36,17 @@
             </button>
         </nav>
         <div id="mobile-menu" class="hidden md:hidden">
-            <a href="index.html" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
-            <a href="experience.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Experience</a>
-            <a href="skills.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
-            <a href="projects.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Projects</a>
-            <a href="blog.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Blog</a>
-            <a href="mailto:thejusmahajanmarrat@gmail.com" class="block py-2 px-4 text-sm hover:bg-gray-200">Contact</a>
+            <a href="index.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">About</a>
+            <a href="experience.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Experience</a>
+            <a href="skills.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Skills</a>
+            <a href="projects.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Projects</a>
+            <a href="blog.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Blog</a>
+            <a href="mailto:thejusmahajanmarrat@gmail.com" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Contact</a>
         </div>
     </header>
 
     <main class="flex-grow pt-24 pb-12 px-4 w-full h-[calc(100vh-80px)]">
-        <div id="pca-root" class="h-full w-full max-w-7xl mx-auto shadow-2xl rounded-2xl overflow-hidden border border-gray-200"></div>
+        <div id="pca-root" class="h-full w-full max-w-7xl mx-auto shadow-2xl rounded-2xl overflow-hidden border border-white/10"></div>
     </main>
 
     <script src="js/main.js"></script>
@@ -221,24 +221,24 @@ const PCAVisualizer = () => {
   ];
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 text-slate-800 font-sans">
+    <div className="flex flex-col h-screen bg-gray-50 text-[#e6e6fa] font-sans">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm">
+      <header className="bg-[#0a0c10] border-b border-white/10 px-6 py-4 flex justify-between items-center shadow-sm">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">PCA Visualizer</h1>
-          <p className="text-sm text-slate-500">From .dat file to compressed features</p>
+          <h1 className="text-xl font-bold text-[#e6e6fa]">PCA Visualizer</h1>
+          <p className="text-sm text-gray-400">From .dat file to compressed features</p>
         </div>
         <div className="flex items-center space-x-4">
            
            <button 
             onClick={() => setIsScaled(!isScaled)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${isScaled ? 'bg-indigo-100 text-indigo-700 border-indigo-300' : 'bg-white text-gray-500 border-gray-300 hover:border-gray-400'}`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${isScaled ? 'bg-indigo-100 text-indigo-700 border-indigo-300' : 'bg-[#0a0c10] text-gray-400 border-white/20 hover:border-gray-400'}`}
            >
              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path><path d="M7 21h10"></path><path d="M12 3v18"></path><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"></path></svg>
              <span>scale.unit = {isScaled ? 'TRUE' : 'FALSE'}</span>
            </button>
 
-           <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-gray-600">
+           <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-[#c5c5c5]">
              Step {step + 1} of 5
            </span>
         </div>
@@ -249,8 +249,8 @@ const PCAVisualizer = () => {
         
         {/* Left: Visualization */}
         <div className="flex-1 p-6 flex flex-col items-center justify-center bg-gray-100 relative overflow-hidden">
-          <div className="bg-white rounded-xl shadow-lg p-4 relative z-10">
-            <svg width={svgSize} height={svgSize} className="border border-gray-100 bg-slate-50 rounded-lg">
+          <div className="bg-[#0a0c10] rounded-xl shadow-lg p-4 relative z-10">
+            <svg width={svgSize} height={svgSize} className="border border-gray-100 bg-[#07080a] rounded-lg">
               {/* Grid Lines */}
               <pattern id="grid" width={pixelsPerUnit} height={pixelsPerUnit} patternUnits="userSpaceOnUse">
                 <path d={`M ${pixelsPerUnit} 0 L 0 0 0 ${pixelsPerUnit}`} fill="none" stroke="#e2e8f0" strokeWidth="1"/>
@@ -340,7 +340,7 @@ const PCAVisualizer = () => {
               })}
             </svg>
             
-            <div className="absolute top-6 left-6 bg-white/90 backdrop-blur p-2 rounded shadow text-xs space-y-2">
+            <div className="absolute top-6 left-6 bg-[#0a0c10]/90 backdrop-blur p-2 rounded shadow text-xs space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-blue-500"></div>
                 <span>Data Points</span>
@@ -356,16 +356,16 @@ const PCAVisualizer = () => {
         </div>
 
         {/* Right: Explainer & Data */}
-        <div className="w-96 bg-white border-l border-gray-200 flex flex-col">
+        <div className="w-96 bg-[#0a0c10] border-l border-white/10 flex flex-col">
           {/* Explanation Card */}
-          <div className="p-6 bg-slate-50 border-b border-gray-200">
+          <div className="p-6 bg-[#07080a] border-b border-white/10">
              <div className="flex items-center gap-3 mb-3">
-               <div className="p-2 bg-white rounded-lg shadow-sm">
+               <div className="p-2 bg-[#0a0c10] rounded-lg shadow-sm">
                  {stepsInfo[step].icon}
                </div>
-               <h2 className="font-bold text-slate-800">{stepsInfo[step].title}</h2>
+               <h2 className="font-bold text-[#e6e6fa]">{stepsInfo[step].title}</h2>
              </div>
-             <p className="text-sm text-slate-600 leading-relaxed">
+             <p className="text-sm text-[#c5c5c5] leading-relaxed">
                {stepsInfo[step].desc}
              </p>
           </div>
@@ -379,7 +379,7 @@ const PCAVisualizer = () => {
             <div className="flex-1 overflow-y-auto bg-slate-900 font-mono text-sm p-4">
               <table className="w-full text-right">
                 <thead>
-                  <tr className="text-slate-500 border-b border-slate-700">
+                  <tr className="text-gray-400 border-b border-slate-700">
                     <th className="pb-2 pr-4 text-left">ID</th>
                     <th className="pb-2 pr-4 text-green-400">
                       {step < 3 ? 'Col 1' : 'PC1'}
@@ -392,9 +392,9 @@ const PCAVisualizer = () => {
                 <tbody className="text-slate-300">
                   {currentData.map((pt) => (
                     <tr key={pt.id} className="hover:bg-slate-800 transition-colors">
-                      <td className="py-1 pr-4 text-left text-slate-600">Row_{pt.id}</td>
+                      <td className="py-1 pr-4 text-left text-[#c5c5c5]">Row_{pt.id}</td>
                       <td className="py-1 pr-4">{pt.col1}</td>
-                      <td className={`py-1 ${step === 4 ? 'text-slate-700' : ''}`}>
+                      <td className={`py-1 ${step === 4 ? 'text-[#e6e6fa]' : ''}`}>
                         {pt.col2}
                       </td>
                     </tr>
@@ -407,10 +407,10 @@ const PCAVisualizer = () => {
       </main>
 
       {/* Footer Controls */}
-      <footer className="bg-white p-4 border-t border-gray-200 flex justify-center gap-4">
+      <footer className="bg-[#0a0c10] p-4 border-t border-white/10 flex justify-center gap-4">
         <button 
           onClick={generateNewData}
-          className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-[#c5c5c5] hover:bg-slate-100 rounded-lg transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
           <span>New Random Data</span>
@@ -419,7 +419,7 @@ const PCAVisualizer = () => {
         <button 
           onClick={() => setStep(prev => prev > 0 ? prev - 1 : 0)}
           disabled={step === 0}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors ${step === 0 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+          className={`px-6 py-2 rounded-lg font-medium transition-colors ${step === 0 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 text-[#e6e6fa] hover:bg-gray-300'}`}
         >
           Previous
         </button>
