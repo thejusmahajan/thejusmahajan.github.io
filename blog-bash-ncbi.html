@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Line Core: Navigating NCBI & Biopython - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-gray-50 text-gray-700 flex flex-col min-h-screen">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-800">Dr. Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="mailto:thejusmahajanmarrat@gmail.com"
+                    class="text-gray-600 hover:text-sky-600 transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="index.html" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
+            <a href="experience.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Experience</a>
+            <a href="skills.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
+            <a href="projects.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Projects</a>
+            <a href="blog.html" class="block py-2 px-4 text-sm hover:bg-gray-200">Blog</a>
+            <a href="mailto:thejusmahajanmarrat@gmail.com" class="block py-2 px-4 text-sm hover:bg-gray-200">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 flex-grow max-w-4xl">
+        <article class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12">
+            <header class="mb-10 text-center">
+                <p class="text-sky-600 font-medium mb-2">October 10, 2025</p>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Command Line Core: Navigating NCBI &
+                    Biopython</h1>
+                <p class="text-lg text-gray-600">Essential reference notes on using advanced bash scripting,
+                    E-utilities, and Biopython for programmatic retrieval and rapid parsing of genomic data from the
+                    NCBI databases.</p>
+            </header>
+
+            <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+                <h2>1. The Power of E-utilities (Bash)</h2>
+                <p>Relying on a GUI web browser to download FASTA files from NCBI is a cardinal sin in bioinformatics
+                    pipeline engineering. To build reproducible workflows (like my Hepatitis virus pipeline),
+                    programmatic access via Entrez Direct (E-utilities) is mandatory.</p>
+
+                <h3>Querying and Downloading via CLI</h3>
+                <p>The core pipeline uses <code>esearch</code> to query the database and pipes the IDs to
+                    <code>efetch</code> to download the physical data. Here are my standard snippets:</p>
+                <pre><code class="language-bash"># Search the nucleotide database for Hepatitis Delta Virus complete genomes and download in FASTA format
+esearch -db nucleotide -query "Hepatitis Delta Virus[Organism] AND complete genome[Title]" | \
+  efetch -format fasta > hdv_genomes.fasta
+
+# Extracting just the accession numbers instead for a downstream Nextflow channel
+esearch -db nucleotide -query "txid12461[Organism:exp]" | efetch -format acc > accessions.txt</code></pre>
+
+                <hr class="my-8">
+
+                <h2>2. Parsing with Biopython</h2>
+                <p>Once raw data is downloaded, bash commands like <code>grep</code> and <code>awk</code> are fast but
+                    brittle when handling complex multiline fasta files. This is where Python's <code>Bio.SeqIO</code>
+                    becomes the heavy lifter.</p>
+
+                <h3>Filtering Sequences</h3>
+                <p>A frequent task is filtering out sequences that are too short (likely fragments) or contain unknown
+                    bases ('N').</p>
+                <pre><code class="language-python">from Bio import SeqIO
+
+def filter_quality_sequences(input_fasta, output_fasta, min_length=1500):
+    valid_records = []
+    
+    # Parse the raw fasta
+    for record in SeqIO.parse(input_fasta, "fasta"):
+        # Check length constraint and ensure no 'N' (unknown) nucleotides exist
+        if len(record.seq) >= min_length and "N" not in record.seq.upper():
+            valid_records.append(record)
+            
+    # Write the high quality records back to a new file
+    SeqIO.write(valid_records, output_fasta, "fasta")
+    print(f"Filtered {len(valid_records)} high-quality sequences.")
+
+filter_quality_sequences("hdv_genomes.fasta", "hdv_filtered.fasta")</code></pre>
+
+                <h3>Memory Note</h3>
+                <p>If the input fasta is massive (multi-gigabyte like human genome chunks), you cannot hold
+                    <code>valid_records</code> in memory as a list. You must yield them via a generator and write
+                    sequentially, or use <code>SeqIO.index()</code> for dictionary-like random access on disk.</p>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog
+                    Index</a>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-800 text-white mt-auto">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
+            <p class="mb-8 max-w-xl mx-auto">I'm currently seeking opportunities in bioinformatics and biostatistics.
+            </p>
+            <div class="flex justify-center space-x-6">
+                <a href="mailto:thejusmahajanmarrat@gmail.com"
+                    class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">Email
+                    Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan" target="_blank"
+                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank"
+                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">GitHub</a>
+            </div>
+            <p class="mt-10 text-gray-400 text-sm">&copy; 2025 Thejus Mahajan. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
