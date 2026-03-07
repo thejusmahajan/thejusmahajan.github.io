@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Thejus Mahajan</title>
+    <title>Blog - Dr. Thejus Mahajan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,8 @@
                 <a href="skills.html" class="text-gray-600 hover:text-sky-600 transition">Skills</a>
                 <a href="projects.html" class="text-gray-600 hover:text-sky-600 transition">Projects</a>
                 <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
-                <a href="mailto:thejusmahajanmarrat@gmail.com" class="text-gray-600 hover:text-sky-600 transition">Contact</a>
+                <a href="mailto:thejusmahajanmarrat@gmail.com"
+                    class="text-gray-600 hover:text-sky-600 transition">Contact</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden flex items-center">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -50,8 +51,108 @@
                 A personal collection of study materials, code snippets, and thoughts on bioinformatics, data science,
                 and computational biology.
             </p>
-            <div id="blog-posts-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Blog posts will be dynamically inserted here by blog.js -->
+
+            <!-- Learning Journey Hero -->
+            <div
+                class="mb-16 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col md:flex-row">
+                <div class="md:w-5/12 bg-slate-100">
+                    <img src="images/bioinformatics_studying.png" alt="Studying Bioinformatics and Biostatistics"
+                        class="w-full h-full object-cover">
+                </div>
+                <div class="md:w-7/12 p-8 md:p-12 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Continuous Learning as a Computational Scientist
+                    </h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Transitioning from Astrochemistry to Genomics requires rigorous, ongoing education. These blog
+                        posts double as my personal knowledge base—documenting what I learn from advanced biostatistics
+                        training, pipeline refactoring, and command-line workflow optimization. Writing these out helps
+                        me solidify memory and build a reproducible reference library for daily clinical data
+                        challenges.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span
+                            class="px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-xs font-semibold">Self-Study</span>
+                        <span
+                            class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-semibold">Documentation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Post 1 -->
+                <div
+                    class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="p-6">
+                        <p class="text-sm text-gray-500 mb-2">February 28, 2026</p>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Building a Reproducible Hepatitis Delta Virus
+                            Pipeline with Nextflow</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">Documenting the key challenges and architectural
+                            decisions behind building a Nextflow DSL2 pipeline for analyzing the Hepatitis Delta Virus
+                            (HDV) genome, focusing on dependency management and alignment accuracy.</p>
+                        <a href="blog-hepatitis-delta-pipeline.html"
+                            class="text-sky-600 font-semibold hover:underline">Read Article &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Blog Post 2 -->
+                <div
+                    class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="p-6">
+                        <p class="text-sm text-gray-500 mb-2">February 12, 2026</p>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Why Moving to Nextflow DSL2 is Mandatory for
+                            Clinical Pipelines</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">Reflecting on my current pipeline engineering work:
+                            why transitioning legacy bash/R scripts into monolithic Nextflow workflows, and specifically
+                            utilizing DSL2 modules, is critical for reproducibility.</p>
+                        <a href="blog-nextflow-dsl2.html" class="text-sky-600 font-semibold hover:underline">Read
+                            Article &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Blog Post 3 -->
+                <div
+                    class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="p-6">
+                        <p class="text-sm text-gray-500 mb-2">September 30, 2025</p>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">The Definitive Guide to SQL's Order of
+                            Operations</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">A common source of errors for SQL developers is
+                            assuming the database executes commands in the order they are written. This guide breaks
+                            down the logical processing order.</p>
+                        <a href="blog-sql-order.html" class="text-sky-600 font-semibold hover:underline">Read Article
+                            &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Blog Post 4 -->
+                <div
+                    class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="p-6">
+                        <p class="text-sm text-gray-500 mb-2">November 15, 2025</p>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Applied Biostatistics: PCA and Survival
+                            Analysis in R</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">A deep dive into clinical biostatistics. My study
+                            notes on implementing Principal Component Analysis for high-dimensional data reduction and
+                            Kaplan-Meier estimators for clinical survival analysis.</p>
+                        <a href="blog-survival-pca.html" class="text-sky-600 font-semibold hover:underline">Read Study
+                            Notes &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Blog Post 5 -->
+                <div
+                    class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                    <div class="p-6">
+                        <p class="text-sm text-gray-500 mb-2">October 10, 2025</p>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Command Line Core: Navigating NCBI & Biopython
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">Essential reference notes on using advanced bash
+                            scripting, E-utilities, and Biopython for programmatic retrieval and rapid parsing of
+                            genomic data from the NCBI databases.</p>
+                        <a href="blog-bash-ncbi.html" class="text-sky-600 font-semibold hover:underline">Read Study
+                            Notes &rarr;</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -74,20 +175,6 @@
         </div>
     </footer>
 
-    <!-- Blog Modal -->
-    <div id="blogModal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
-        <div
-            class="bg-gray-50 rounded-xl shadow-2xl w-full max-w-4xl h-full max-h-[95vh] overflow-hidden relative flex flex-col">
-            <div class="p-4 border-b flex justify-between items-center bg-white flex-shrink-0">
-                <h2 id="blogModalTitle" class="text-xl font-bold text-gray-800">Blog Post Title</h2>
-                <button id="closeBlogModalButton"
-                    class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
-            </div>
-            <div id="blogModalBody" class="p-6 flex-grow overflow-y-auto"></div>
-        </div>
-    </div>
-
-    <script src="blog.js"></script>
     <script src="js/main.js"></script>
 </body>
 
