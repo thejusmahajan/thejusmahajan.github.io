@@ -4,6 +4,65 @@
 
 const blogPosts = [
     {
+        id: 'multi-omics-integration',
+        title: "The Challenge of Multi-omics Integration: DOGMA-seq and mtscATAC-seq",
+        date: "February 28, 2026",
+        summary: "As my focus shifts heavily towards single-cell bioinformatics, I'm documenting the critical computational challenges of integrating distinct modalities (like chromatin accessibility and gene expression) from the same cell.",
+        content: `
+            <h2>The Promise of Single-Cell Multi-omics</h2>
+            <p>Traditional bulk RNA-seq gives us an average signal across thousands of cells. Single-cell RNA-seq (scRNA-seq) solved this by profiling individual cells, allowing us to identify rare cell populations. However, to truly understand cellular regulation, we need more than just the transcriptome; we need to see the epigenome.</p>
+            <p>This is where multi-omics shines. Technologies like <strong>mtscATAC-seq</strong> (mitochondrial single-cell ATAC-seq) and <strong>DOGMA-seq</strong> allow us to measure chromatin accessibility and gene expression simultaneously in the exact same cell.</p>
+            
+            <hr class="my-6">
+            
+            <h2>Computational Hurdles</h2>
+            <p>The transition from single-modality to multi-modality data introduces massive computational complexity. Here are the primary challenges I'm currently studying to tackle these datasets:</p>
+            
+            <h3>1. Massive Dimensionality and Sparsity</h3>
+            <p>ATAC-seq data is notoriously sparse (mostly zeros) because we are looking at binary states (open or closed) across hundreds of thousands of peaks across the genome. When combined with transcriptomic data, the feature space explodes. We rely heavily on advanced dimensionality reduction techniques (like LSI for ATAC, and PCA for RNA) before attempting integration.</p>
+            
+            <h3>2. Modality Integration (The "Anchor" Problem)</h3>
+            <p>How do we link an ATAC peak (a regulatory region like an enhancer) to the specific gene it controls? Methods like Seurat's Weighted Nearest Neighbor (WNN) or MOFA+ (Multi-Omics Factor Analysis) are required to build a joint representation of the cell. You have to carefully weight each modality so that a noisy ATAC signal doesn't drown out a clean RNA signal, or vice versa.</p>
+            
+            <h3>3. Trajectory Inference</h3>
+            <p>In cancer evolution or developmental biology, cells exist on a continuum. We want to draw "pseudotime" trajectories. Multi-omics allows us to see if chromatin changes <em>precede</em> transcriptional changes, establishing causality rather than just correlation.</p>
+            
+            <hr class="my-6">
+            
+            <h2>Moving Forward</h2>
+            <p>The future of computational biology lies not just in generating this data, but in building the AI/ML infrastructures (like autoencoders and graph neural networks) necessary to parse these intertwined biological layers. My current training in Python object-oriented design and R/Bioconductor is strictly focused on mastering these integration workflows.</p>
+        `
+    },
+    {
+        id: 'nextflow-dsl2-refactoring',
+        title: "Why Moving to Nextflow DSL2 is Mandatory for Clinical Pipelines",
+        date: "February 12, 2026",
+        summary: "Reflecting on my current pipeline engineering work: why transitioning legacy bash/R scripts into monolithic Nextflow workflows, and specifically utilizing DSL2 modules, is critical for reproducibility.",
+        content: `
+            <h2>The Fragility of Legacy Pipelines</h2>
+            <p>In clinical bioinformatics, a pipeline that produces the "right answer" isn't enough. It must produce the right answer reproducibly, transparently, and robustly across different compute environments. Legacy pipelines—often a tangled web of Bash scripts, custom R scripts, and hardcoded variables—fail this test.</p>
+            
+            <hr class="my-6">
+            
+            <h2>The Nextflow Solution</h2>
+            <p>Currently, I am heavily engaged in refactoring legacy data processing pipelines. <strong>Nextflow</strong> has been the absolute game-changer in this space, specifically due to the move to DSL2.</p>
+            
+            <h3>1. Modularity with DSL2</h3>
+            <p>Before DSL2, Nextflow pipelines were often monolithic. DSL2 introduced true modularity. You can now define a process (e.g., a quality control step using fastp, or an alignment step using MAFFT) in its own standalone <code>.nf</code> file and import it into multiple different workflows. This mirrors the DRY (Don't Repeat Yourself) principles of standard software engineering.</p>
+            
+            <h3>2. Environment Encapsulation</h3>
+            <p>A pipeline is only as reproducible as its environment. By combining Nextflow with Conda or Docker/Singularity, every single process runs in an isolated, perfectly defined environment. The days of "it works on my machine" are over. If my pipeline runs on a local workstation, it will run identically on an AWS Batch cluster.</p>
+            
+            <h3>3. Dataflow Programming</h3>
+            <p>Nextflow's channel-based architecture means tasks execute the moment their input data is ready. You don't have to write complex loops or wait for an entire batch to finish before starting the next step. It inherently maximizes parallelization on HPC clusters without writing any complex threading code.</p>
+            
+            <hr class="my-6">
+            
+            <h2>Takeaway</h2>
+            <p>When dealing with hundreds of thousands of clinical records (or gigabytes of NGS reads), pipeline failures are expensive in both time and compute. Investing in a robust, configuration-driven Nextflow architecture upfront prevents catastrophic debugging nightmares down the line.</p>
+        `
+    },
+    {
         id: 'sql-order-of-operations',
         title: "The Definitive Guide to SQL's Order of Operations",
         date: "September 30, 2025",
