@@ -233,35 +233,30 @@
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
 
-                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
+                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
 
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-r"># Base R
+                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
 # Map gender codes
-gender_map <- c("0"="Not known", "1"="Male", "2"="Female", "9"="Not specified")
-df$GENDER_LABEL <- gender_map[as.character(df$GENDER)]
+gender_map = {0: "Not known", 1: "Male", 2: "Female", 9: "Not specified"}
+df['GENDER_LABEL'] = df['GENDER'].map(gender_map)
 
 # Filter out empty/unknown categories
 # "Ghost Label" Fix: Explicitly remove 'Not specified' if count is 0
-gender_counts <- table(df$GENDER_LABEL)
-gender_counts <- gender_counts[gender_counts > 0]
-if("Not specified" %in% names(gender_counts) && gender_counts["Not specified"] == 0) {
-    gender_counts <- gender_counts[names(gender_counts) != "Not specified"]
-}
+gender_counts = df['GENDER_LABEL'].value_counts()
+gender_counts = gender_counts[gender_counts > 0]
+if 'Not specified' in gender_counts.index:
+    gender_counts = gender_counts.drop('Not specified')
 
 # Scale to Thousands
-gender_counts_scaled <- gender_counts / 1000
+gender_counts_scaled = gender_counts / 1000
 
 # Plot
-# Disable scientific notation
-options(scipen=999)
-
-png("results/gender_distribution.png")
-barplot(gender_counts_scaled, 
-        main = "Patient Gender Distribution",
-        xlab = "Gender",
-        ylab = "Count (Thousands)",
-        col = c("gray", "lightblue", "pink", "gray"))
-dev.off()</code></pre>
+plt.figure(figsize=(8, 6))
+colors = ['lightblue' if x == 'Male' else 'pink' if x == 'Female' else 'gray' for x in gender_counts_scaled.index]
+sns.barplot(x=gender_counts_scaled.index, y=gender_counts_scaled.values, palette=colors)
+plt.title("Patient Gender Distribution")
+plt.ylabel("Count (Thousands)")
+plt.savefig("gender_distribution.png")</code></pre>
                     </div>
                 </div>
             </div>
@@ -281,28 +276,26 @@ dev.off()</code></pre>
                         proper survival analysis (e.g., Kaplan-Meier curves), which accounts for time-at-risk.
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
-                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-r"># Base R
-# Clean Data: Aggregate D3, D4 etc. into 'Deceased'
-df$VITAL_CLEAN <- ifelse(substr(df$VITALSTATUS, 1, 1) == "D", "Deceased",
-                         ifelse(df$VITALSTATUS == "A", "Alive", NA))
+                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
+                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
+# Clean Data: Map D3, D4, etc. to D
+df['VITAL_CLEAN'] = df['VITALSTATUS'].apply(lambda x: 'D' if str(x).startswith('D') else ('A' if str(x) == 'A' else 'Other'))
 
-# Remove NAs (the noise codes)
-df_clean <- df[!is.na(df$VITAL_CLEAN), ]
+# Filter: Keep only Alive (A) and Deceased (D)
+df_vital = df[df['VITAL_CLEAN'].isin(['A', 'D'])].copy()
+df_vital['STATUS_LABEL'] = df_vital['VITAL_CLEAN'].map({'A': 'Alive', 'D': 'Deceased'})
 
-vital_counts <- table(df_clean$VITAL_CLEAN)
-
-# Scale to Thousands
-vital_counts_scaled <- vital_counts / 1000
+# Count and Scale
+vital_counts = df_vital['STATUS_LABEL'].value_counts()
+vital_counts_scaled = vital_counts / 1000
 
 # Plot
-png("results/vital_status_distribution.png")
-barplot(vital_counts_scaled, 
-        main = "Patient Vital Status",
-        xlab = "Status",
-        ylab = "Count (Thousands)",
-        col = c("lightgreen", "salmon"))
-dev.off()</code></pre>
+plt.figure(figsize=(8, 6))
+colors = ['lightgreen' if x == 'Alive' else 'salmon' for x in vital_counts_scaled.index]
+sns.barplot(x=vital_counts_scaled.index, y=vital_counts_scaled.values, palette=colors)
+plt.title("Patient Vital Status")
+plt.ylabel("Count (Thousands)")
+plt.savefig("vital_status_distribution.png")</code></pre>
                     </div>
                 </div>
                 <div class="order-1 md:order-2">
@@ -481,45 +474,37 @@ dev.off()</code></pre>
                         Bowel cancer.
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
-                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-r"># Base R
+                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
+                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
 # Extract 3-char code
-df$SITE_MAIN <- substr(df$SITE_ICD10_O2, 1, 3)
+df['SITE_MAIN'] = df['SITE_ICD10_O2'].str[:3]
 
 # Filter 1: Keep only Invasive (Starts with 'C')
-df_invasive <- df[grepl("^C", df$SITE_MAIN), ]
+df_invasive = df[df['SITE_MAIN'].str.startswith('C', na=False)].copy()
 
 # Filter 2: Exclude C44 (NMSC)
-df_final <- df_invasive[df_invasive$SITE_MAIN != "C44", ]
+df_final = df_invasive[df_invasive['SITE_MAIN'] != 'C44'].copy()
 
 # Count Top 10
-site_counts <- head(sort(table(df_final$SITE_MAIN), decreasing=TRUE), 10)
+site_counts = df_final['SITE_MAIN'].value_counts().head(10)
 
 # Map codes to names
-icd10_map <- c(
-  "C50" = "Breast", "C61" = "Prostate", "C34" = "Lung", "C18" = "Colon", 
-  "C19" = "Rectosigmoid", "C20" = "Rectum", "C43" = "Melanoma", 
-  "C67" = "Bladder", "C25" = "Pancreas", "C64" = "Kidney",
-  "C54" = "Uterus"
-)
-
-labels <- sapply(names(site_counts), function(code) {
-  if(code %in% names(icd10_map)) paste0(code, " (", icd10_map[code], ")") else code
-})
+icd10_map = {
+    "C50": "Breast", "C61": "Prostate", "C34": "Lung", "C18": "Colon", 
+    "C19": "Rectosigmoid", "C20": "Rectum", "C43": "Melanoma", 
+    "C67": "Bladder", "C25": "Pancreas", "C64": "Kidney",
+    "C54": "Uterus"
+}
+labels = [f"{code} ({icd10_map.get(code, code)})" for code in site_counts.index]
 
 # Scale to Thousands
-site_counts_scaled <- site_counts / 1000
+site_counts_scaled = site_counts / 1000
 
 # Plot
-png("results/top_10_cancer_sites.png")
-barplot(site_counts_scaled, 
-        names.arg = labels,
-        col = "steelblue",
-        main = "Top 10 Invasive Cancer Sites (Excl. NMSC)",
-        xlab = "Count (Thousands)",
-        las = 2,
-        horiz = TRUE)
-dev.off()</code></pre>
+sns.barplot(x=site_counts_scaled.values, y=labels, color="steelblue")
+plt.title("Top 10 Invasive Cancer Sites (Excl. NMSC)")
+plt.xlabel("Count (Thousands)")
+plt.savefig("top_10_cancer_sites.png")</code></pre>
                     </div>
                 </div>
             </div>
@@ -540,54 +525,30 @@ dev.off()</code></pre>
                         analysis.
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
-                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">R Code:</h4>
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-r"># Base R
-clean_stage <- function(stage) {
-  stage <- trimws(toupper(as.character(stage)))
-  if(stage %in% c("?", "U", "NAN", "NA", "")) return("Unknown")
-  # Aggregate 1A, 1B -> 1 
-  if(grepl("^1", stage)) return("1")
-  if(grepl("^2", stage)) return("2")
-  if(grepl("^3", stage)) return("3")
-  if(grepl("^4", stage)) return("4")
-  return("Unknown")
-}
+                        <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
+                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
+import re  # Required for regex matching
+
+def clean_stage(stage):
+    stage = str(stage).upper().strip()
+    if stage in ['?', 'U', 'NAN', 'nan']: return 'Unknown'
+    # Aggregate 1A, 1B -> 1
+    match = re.match(r'^([1-4])', stage)
+    return match.group(1) if match else 'Unknown'
 
 # Apply cleaning
-df$STAGE_CLEAN <- sapply(df$STAGE_BEST, clean_stage)
+df['STAGE_CLEAN'] = df['STAGE_BEST'].apply(clean_stage)
 
-# Ensure order: 1, 2, 3, 4, Unknown
-df$STAGE_CLEAN <- factor(df$STAGE_CLEAN, levels=c("1", "2", "3", "4", "Unknown"))
-stage_counts <- table(df$STAGE_CLEAN)
+# Define Order: 1, 2, 3, 4, Unknown
+stage_order = ['1', '2', '3', '4', 'Unknown']
+stage_counts = df['STAGE_CLEAN'].value_counts().reindex(stage_order, fill_value=0)
 
-# Scale counts
-stage_counts_scaled <- stage_counts / 1000
-
-# Define Legend Text
-legend_text <- c(
-  "1, 2, 3, 4: Main Stages (I-IV)",
-  "A, B, C: Sub-stages",
-  "?: Unknown / Not Staged",
-  "U: Unstaged"
-)
-
-# Plot
-png("results/stage_distribution.png", width=900, height=600)
-par(mar=c(5, 5, 4, 2) + 0.1)
-bp <- barplot(stage_counts_scaled, 
-              main = "Distribution of Cancer Stages",
-              ylab = "Count (Thousands)",
-              col = "darkorange",
-              las = 2,
-              ylim = c(0, max(stage_counts_scaled) * 1.2))
-
-# Add Legend
-legend("topright", 
-       legend = legend_text, 
-       bty = "n", 
-       cex = 0.8,
-       title = "Code Key")
-dev.off()</code></pre>
+# Scale and Plot
+stage_counts_scaled = stage_counts / 1000
+sns.barplot(x=stage_counts_scaled.index, y=stage_counts_scaled.values, color="seagreen")
+plt.title("Distribution of Cancer Stages")
+plt.ylabel("Count (Thousands)")
+plt.savefig("stage_distribution.png")</code></pre>
                     </div>
                 </div>
                 <div class="order-1 md:order-2">
