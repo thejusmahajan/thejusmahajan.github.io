@@ -235,7 +235,7 @@
 
                         <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
 
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
+                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-python"># Python (Pandas/Seaborn)
 # Map gender codes
 gender_map = {0: "Not known", 1: "Male", 2: "Female", 9: "Not specified"}
 df['GENDER_LABEL'] = df['GENDER'].map(gender_map)
@@ -277,7 +277,7 @@ plt.savefig("gender_distribution.png")</code></pre>
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
                         <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
+                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-python"># Python (Pandas/Seaborn)
 # Clean Data: Map D3, D4, etc. to D
 df['VITAL_CLEAN'] = df['VITALSTATUS'].apply(lambda x: 'D' if str(x).startswith('D') else ('A' if str(x) == 'A' else 'Other'))
 
@@ -475,7 +475,7 @@ plt.savefig("vital_status_distribution.png")</code></pre>
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
                         <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
+                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-python"># Python (Pandas/Seaborn)
 # Extract 3-char code
 df['SITE_MAIN'] = df['SITE_ICD10_O2'].str[:3]
 
@@ -526,7 +526,7 @@ plt.savefig("top_10_cancer_sites.png")</code></pre>
                     </p>
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 overflow-x-auto">
                         <h4 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Python Code:</h4>
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code># Python (Pandas/Seaborn)
+                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code class="language-python"># Python (Pandas/Seaborn)
 import re  # Required for regex matching
 
 def clean_stage(stage):
@@ -585,7 +585,7 @@ plt.savefig("stage_distribution.png")</code></pre>
 
     <script src="js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </body>
 
 </html>
