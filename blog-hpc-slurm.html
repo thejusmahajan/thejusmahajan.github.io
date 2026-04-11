@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HPC Job Management: A Practical SLURM Guide - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">July 19, 2024</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">HPC Job Management: A Practical SLURM Guide</h1>
+                    <p class="text-lg text-gray-600">Everything I wish I knew about SLURM when I started running ocean simulations on the DKRZ supercomputer.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <p>When I joined the marine ecosystem modeling group at the University of Hamburg, my first task was to run a suite of ICON-O ocean simulations on Levante, the supercomputer at the German Climate Computing Centre (DKRZ). I had used Linux extensively during my PhD in astrochemistry, but I had never worked with a job scheduler before. I naively tried to run my model interactively on a login node and was promptly (and rightly) sent a warning email by the system administrators. That was my introduction to SLURM.</p>
+
+                    <p>SLURM (Simple Linux Utility for Resource Management) is the job scheduler that governs access to computational resources on most modern HPC clusters. You do not run programs directly; instead, you submit job scripts that describe what resources you need and what commands to execute. SLURM then queues your job and dispatches it to available compute nodes when your turn comes. This post covers the practical patterns I use daily.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">SLURM Basics: sbatch, squeue, scancel</h2>
+
+                    <p>The fundamental workflow is: write a batch script, submit it with <code>sbatch</code>, monitor it with <code>squeue</code>, and cancel it with <code>scancel</code> if something goes wrong. Here is a minimal but realistic batch script for running an ocean model simulation:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>#!/bin/bash
+#SBATCH --job-name=icon_ocean_run
+#SBATCH --partition=compute
+#SBATCH --account=bm1344
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=128
+#SBATCH --time=08:00:00
+#SBATCH --mem=0
+#SBATCH --output=logs/icon_%j.out
+#SBATCH --error=logs/icon_%j.err
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=thejus.mahajan@uni-hamburg.de
+
+# Load required modules
+module load intel-oneapi-mpi/2021.10.0
+module load netcdf-c/4.9.2
+module load cdo/2.3.0
+
+# Change to the experiment directory
+cd /work/bm1344/experiments/north_atlantic_025
+
+# Run the model using MPI across all allocated tasks
+srun ./icon_ocean</code></pre>
+
+                    <p>Let me break down the key directives:</p>
+
+                    <ul>
+                        <li><code>--partition=compute</code> selects which pool of nodes to use. On Levante, <code>compute</code> is the standard partition; <code>gpu</code> would be for GPU-accelerated workloads.</li>
+                        <li><code>--nodes=4</code> and <code>--ntasks-per-node=128</code> request 4 nodes with 128 MPI tasks each, for a total of 512 MPI ranks. This is how parallel ocean models scale across hundreds of processors.</li>
+                        <li><code>--time=08:00:00</code> sets a wall-clock limit of 8 hours. If your job exceeds this, SLURM kills it. Always estimate generously but not absurdly -- over-requesting time reduces your scheduling priority.</li>
+                        <li><code>--mem=0</code> is a DKRZ-specific convention meaning "use all available memory on the node." On other clusters, you might specify <code>--mem=240G</code> explicitly.</li>
+                        <li><code>%j</code> in the output filename expands to the job ID, so each run gets its own log file.</li>
+                    </ul>
+
+                    <p>Once the script is ready, the workflow looks like this:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># Submit the job
+$ sbatch run_icon.sh
+Submitted batch job 12345678
+
+# Check the queue -- see all your running/pending jobs
+$ squeue --me
+  JOBID  PARTITION     NAME      USER  ST   TIME  NODES  NODELIST(REASON)
+12345678   compute  icon_oc  mahajan   R   1:23:45   4  l10[234-237]
+
+# If something is wrong, cancel it
+$ scancel 12345678
+
+# Check status of a specific job (including completed jobs)
+$ scontrol show job 12345678</code></pre>
+
+                    <p>A habit I developed early: always check your job's first few lines of output shortly after it starts running. Many configuration errors (wrong file paths, missing modules) cause the job to fail within the first minute, but if you do not check, it might sit in "running" state consuming your allocation while writing error messages to the log file.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Array Jobs for Parameter Sweeps</h2>
+
+                    <p>This is the SLURM feature that saved me the most time. During my postdoc, I needed to run sensitivity experiments: the same ocean model configuration with systematically varied parameters (e.g., different values of vertical mixing coefficients, or different atmospheric forcing datasets). Instead of writing 100 separate submission scripts, SLURM's array jobs let you submit a single script that spawns multiple independent tasks:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>#!/bin/bash
+#SBATCH --job-name=sensitivity
+#SBATCH --partition=compute
+#SBATCH --account=bm1344
+#SBATCH --nodes=1
+#SBATCH --ntasks=64
+#SBATCH --time=02:00:00
+#SBATCH --mem=120G
+#SBATCH --array=1-100
+#SBATCH --output=logs/sensitivity_%A_%a.out
+
+# %A = master job ID, %a = array task index
+
+# Read the parameter value for this specific task
+# params.txt has one parameter set per line
+MIXING_COEFF=$(sed -n "${SLURM_ARRAY_TASK_ID}p" params.txt | cut -f1)
+WIND_SCALE=$(sed -n "${SLURM_ARRAY_TASK_ID}p" params.txt | cut -f2)
+
+echo "Task ${SLURM_ARRAY_TASK_ID}: mixing=${MIXING_COEFF}, wind_scale=${WIND_SCALE}"
+
+# Create a unique experiment directory
+EXPDIR="/work/bm1344/sensitivity/run_${SLURM_ARRAY_TASK_ID}"
+mkdir -p ${EXPDIR}
+
+# Generate the namelist with these specific parameters
+sed -e "s/@MIXING_COEFF@/${MIXING_COEFF}/" \
+    -e "s/@WIND_SCALE@/${WIND_SCALE}/" \
+    namelist_template.nml > ${EXPDIR}/namelist.nml
+
+# Run the model
+cd ${EXPDIR}
+srun ./icon_ocean</code></pre>
+
+                    <p>The <code>--array=1-100</code> directive tells SLURM to launch 100 independent tasks. Each task receives its own <code>$SLURM_ARRAY_TASK_ID</code> (an integer from 1 to 100), which it uses to look up the corresponding parameters from a file. The tasks are scheduled independently, so they can run on different nodes at different times -- SLURM handles all the queuing.</p>
+
+                    <p>A few practical tips I learned the hard way:</p>
+
+                    <ul>
+                        <li>Use <code>--array=1-100%20</code> to limit concurrent tasks to 20 at a time. This prevents you from consuming the entire cluster and annoying your colleagues.</li>
+                        <li>If some tasks fail, you can resubmit only the failed ones: <code>--array=3,17,42,89</code> to run specific task IDs.</li>
+                        <li>Always use <code>%A_%a</code> (not <code>%j</code>) in output filenames for array jobs, so each task gets a separate log file.</li>
+                    </ul>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Resource Management Tips</h2>
+
+                    <p>One of the most common mistakes I see (and made myself early on) is blindly requesting maximum resources for every job. On shared clusters, this wastes allocation budget, increases queue wait times, and is generally antisocial. SLURM provides tools to help you right-size your requests.</p>
+
+                    <p>The most useful command is <code>sacct</code>, which shows the actual resource consumption of completed jobs:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># Check how much memory and time a completed job actually used
+$ sacct -j 12345678 --format=JobID,JobName,Elapsed,MaxRSS,MaxVMSize,State
+      JobID    JobName    Elapsed     MaxRSS  MaxVMSize      State
+------------ ---------- ---------- ---------- ---------- ----------
+12345678     icon_oc+   05:42:31                         COMPLETED
+12345678.0        srun  05:42:28   42312456K  98765432K  COMPLETED
+
+# MaxRSS is peak resident memory: ~42 GB out of the 240 GB available per node
+# Elapsed is 5h42m out of the 8h requested</code></pre>
+
+                    <p>From this output, I can see that my job used about 42 GB of memory (out of 240 GB available) and finished in under 6 hours (out of 8 hours requested). For the next run, I could safely reduce the memory request and tighten the time limit. This matters because many clusters use a "fairshare" scheduling policy where your priority decreases based on the resources you consume -- requesting less means your future jobs start sooner.</p>
+
+                    <p>Another essential pattern is <strong>job chaining with dependencies</strong>. Ocean model simulations often need to be run in segments: first a spinup phase, then the production run, then a post-processing step. Rather than babysitting each stage, you can chain them:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># Submit the spinup job
+$ SPINUP_ID=$(sbatch --parsable run_spinup.sh)
+echo "Spinup job: ${SPINUP_ID}"
+
+# Submit the production run -- only starts after spinup succeeds
+$ PROD_ID=$(sbatch --parsable --dependency=afterok:${SPINUP_ID} run_production.sh)
+echo "Production job: ${PROD_ID}"
+
+# Submit post-processing -- only starts after production succeeds
+$ sbatch --dependency=afterok:${PROD_ID} run_postprocess.sh
+
+# Check the dependency chain
+$ squeue --me
+  JOBID  PARTITION     NAME      USER  ST  TIME  NODES  NODELIST(REASON)
+1234001   compute  spinup   mahajan   R   0:45   4  l10[234-237]
+1234002   compute  product  mahajan  PD   0:00   8  (Dependency)
+1234003   compute  postpro  mahajan  PD   0:00   1  (Dependency)</code></pre>
+
+                    <p>The <code>--dependency=afterok:JOBID</code> flag means "start this job only if the specified job completed successfully (exit code 0)." If the spinup fails, the downstream jobs will never start, preventing you from wasting compute hours on invalid input. There is also <code>afterany</code> (start regardless of exit status) and <code>afternotok</code> (start only if the dependency failed -- useful for automated error-recovery scripts).</p>
+
+                    <p>I typically wrap this pattern in a small Bash script that submits the entire pipeline at once. This way, I can submit a multi-stage experiment on Friday evening and come back Monday to find all the results waiting, with each stage having correctly depended on the previous one.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is SLURM?</p>
+                                <p>SLURM (Simple Linux Utility for Resource Management) is a job scheduler and resource manager used on most HPC clusters. It queues, schedules, and manages batch jobs across hundreds or thousands of compute nodes.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>Whenever you need to run computationally intensive tasks on a shared HPC cluster -- model simulations, large-scale data processing, parameter sweeps, or any workload that requires more resources than a single workstation provides.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded p-3 text-sm"><code>sbatch --array=1-100 run_model.sh</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"How would you run 1000 independent analyses on an HPC cluster?"</p>
+                                <p>Use SLURM array jobs with the <code>--array=1-1000</code> flag. Each array task receives a unique <code>$SLURM_ARRAY_TASK_ID</code> environment variable, which you use to index into a parameter file or select input data. SLURM schedules each task independently, so they can run in parallel across available nodes. Use <code>--array=1-1000%50</code> to limit concurrency and avoid monopolizing the cluster.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>Always check actual resource usage with <code>sacct</code> after your first few runs, then adjust your <code>#SBATCH</code> requests accordingly. Over-requesting memory and time wastes your allocation budget and lowers your scheduling priority under fairshare policies.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

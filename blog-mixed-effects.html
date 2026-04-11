@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixed-Effects Models in R: When Standard Regression Isn't Enough - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">October 8, 2024</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Mixed-Effects Models in R: When Standard Regression Isn't Enough</h1>
+                    <p class="text-lg text-gray-600">Why ecological and clinical data almost always violate independence assumptions, and how mixed-effects models save the day.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The Independence Problem</h2>
+
+                    <p>If you have ever worked with ecological field data or clinical trial datasets, you have almost certainly encountered a structure that standard linear regression cannot properly handle. The core issue is <strong>non-independence of observations</strong>.</p>
+
+                    <p>Consider a straightforward scenario: you are studying the effect of a nutrient supplement on phytoplankton growth across five sampling stations in a lake, with measurements taken weekly over two months. Each station contributes multiple observations. These observations from the same station are correlated &mdash; if station A tends to have higher baseline chlorophyll due to local conditions, all measurements from station A will be shifted upward together.</p>
+
+                    <p>Running a naive linear regression ignores this grouping structure entirely:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code># Naive approach — WRONG for nested data
+naive_model <- lm(growth ~ nutrient_level, data = plankton_df)
+summary(naive_model)</code></pre>
+
+                    <p>The problem is subtle but serious. Because the model treats every row as an independent draw, it underestimates the true standard errors. The residuals within each station are positively correlated, but <code>lm()</code> assumes they are not. The practical consequence is <strong>inflated Type I error</strong> &mdash; you will find "significant" effects that are really just artifacts of pseudoreplication. In ecology, this is one of the most common statistical mistakes, and in clinical biostatistics, regulatory agencies like the FDA explicitly require appropriate handling of within-subject correlation in repeated-measures designs.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Fixed vs. Random Effects</h2>
+
+                    <p>Mixed-effects models (also called multilevel or hierarchical linear models) solve this by partitioning variability into two components:</p>
+
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Fixed effects</strong> capture the systematic, population-level relationships you want to make inferences about. For example, the average effect of the nutrient treatment on growth, or the effect of a drug versus placebo in a clinical trial.</li>
+                        <li><strong>Random effects</strong> capture the grouping structure &mdash; the fact that observations within the same cluster (patient, station, study site) share some unmeasured source of variability. They model the between-group variance without estimating a separate coefficient for each group.</li>
+                    </ul>
+
+                    <p>In R, the <code>lme4</code> package is the standard tool for fitting these models. The syntax uses a formula notation where random effects are specified inside parentheses:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code>library(lme4)
+
+# Random intercept model: each patient has their own baseline
+model <- lmer(response ~ treatment + (1 | patient_id), data = df)
+
+# Random intercept and slope: each patient has their own baseline
+# AND their own treatment effect trajectory
+model_rs <- lmer(response ~ treatment + (treatment | patient_id), data = df)
+
+summary(model)</code></pre>
+
+                    <p>The notation <code>(1 | patient_id)</code> means "fit a random intercept for each level of <code>patient_id</code>." This allows each patient to have their own baseline value while still estimating a single overall treatment effect. The random intercepts are assumed to be normally distributed with mean zero and some variance that the model estimates from the data.</p>
+
+                    <p>When I first moved from fitting standard GLMs in my physics work to analyzing repeated-measures clinical data, this framework was a revelation. Instead of averaging over time points per subject (losing information) or treating all observations as independent (inflating significance), mixed-effects models let you use every data point while properly accounting for the correlation structure.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Model Diagnostics</h2>
+
+                    <p>Fitting the model is only half the work. You need to verify that the model assumptions are reasonable. Key diagnostic steps include:</p>
+
+                    <p><strong>1. Residual inspection.</strong> Plot residuals against fitted values. You should see no systematic pattern &mdash; look out for heteroscedasticity (fanning) or nonlinearity (curvature):</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code>plot(fitted(model), resid(model),
+     xlab = "Fitted values", ylab = "Residuals",
+     main = "Residuals vs Fitted")
+abline(h = 0, lty = 2, col = "red")
+
+# QQ plot of residuals
+qqnorm(resid(model))
+qqline(resid(model), col = "red")</code></pre>
+
+                    <p><strong>2. Variance components.</strong> The <code>summary()</code> output reports the variance attributed to each random effect and the residual variance. If the random-effect variance is near zero, the grouping structure may not matter much, and a simpler model could suffice:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code># Look at the "Random effects" section of the summary
+# Variance components tell you how much variability is
+# between groups vs. within groups
+summary(model)
+
+# Extract variance components directly
+VarCorr(model)</code></pre>
+
+                    <p><strong>3. Model comparison.</strong> Use likelihood ratio tests to compare nested models. This is useful for testing whether a random effect is necessary, or whether adding a fixed-effect predictor improves the fit:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code># Compare model with and without treatment effect
+model_null <- lmer(response ~ 1 + (1 | patient_id), data = df, REML = FALSE)
+model_full <- lmer(response ~ treatment + (1 | patient_id), data = df, REML = FALSE)
+
+# Likelihood ratio test
+anova(model_null, model_full)</code></pre>
+
+                    <p>One important nuance: you must refit with <code>REML = FALSE</code> (i.e., maximum likelihood) when comparing models with different fixed effects using <code>anova()</code>. REML estimation is preferred for unbiased variance component estimates, but ML is required for valid likelihood ratio tests on fixed effects. This is a detail that is easy to overlook but matters for correct inference.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is a mixed-effects model?</p>
+                                <p>A regression model that includes both fixed effects (population-level parameters of interest) and random effects (terms that account for grouping or clustering in the data, such as repeated measures on the same subject).</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>Whenever your data has a hierarchical or nested structure &mdash; repeated measurements on the same patient, observations from multiple study sites, students within classrooms, or any design where observations within a group are more similar to each other than to observations in other groups.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded p-3 text-sm"><code>lmer(y ~ x + (1 | group), data = df)</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"When would you use a mixed-effects model instead of a standard linear model?"</p>
+                                <p>When data has a hierarchical or nested structure (repeated measures, multi-site studies, longitudinal designs) that violates the independence assumption of ordinary regression. Ignoring this structure inflates Type I error by underestimating standard errors. Mixed-effects models account for the within-group correlation by estimating group-level variance components.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>Use REML (the default) for unbiased variance estimates, but switch to ML (<code>REML = FALSE</code>) when comparing models with different fixed effects via likelihood ratio tests.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

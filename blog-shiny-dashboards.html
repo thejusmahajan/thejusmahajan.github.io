@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Clinical Dashboards with R Shiny - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">April 8, 2026</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Building Clinical Dashboards with R Shiny</h1>
+                    <p class="text-lg text-gray-600">Lessons from building an interactive quality metrics dashboard for the German DeGIR interventional radiology registry.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Why Shiny for Clinical Data?</h2>
+
+                    <p>For years, the DeGIR registry reporting workflow looked like this: run R scripts, generate static tables and plots, paste them into a Word document, export to PDF, email to clinics. Every quarter, the same manual process. Every quarter, someone would ask, "Can we filter this by region?" or "What if we look at just the last two years?" and the answer was always, "I will regenerate the report and send you a new PDF."</p>
+
+                    <p>Shiny changed that entirely. Instead of static reports, we built an interactive web application that lets clinicians and registry administrators explore the data themselves. Filter by clinic, time period, procedure type, patient demographics &mdash; all in real time, all without writing a single line of code on their end.</p>
+
+                    <p>The key advantage of Shiny over other dashboard tools (Tableau, Power BI) is that it is native R. The same dplyr pipelines, the same ggplot2 visualizations, the same statistical models that we use in our analysis scripts can be embedded directly into the dashboard. There is no translation layer, no data export step, no second tool to learn. If you can write R, you can build a Shiny app.</p>
+
+                    <p>The dashboard we built at HealthTwiSt now serves quality metrics &mdash; procedure volumes, complication rates, radiation dose distributions, outcome benchmarks &mdash; to over 300 German radiology clinics. Each clinic can log in and see their own performance compared to national benchmarks, updated every quarter when we refresh the underlying data.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The Reactive Programming Model</h2>
+
+                    <p>Shiny's programming model is different from standard R scripting, and this is where most people struggle initially. In a script, code runs top to bottom, once. In Shiny, code runs <em>reactively</em> &mdash; when an input changes, only the parts of the application that depend on that input are re-executed.</p>
+
+                    <p>The core structure of every Shiny app has two parts: the UI (what the user sees) and the server (the logic behind it):</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>library(shiny)
+
+ui &lt;- fluidPage(
+  titlePanel("DeGIR Quality Metrics"),
+
+  sidebarLayout(
+    sidebarPanel(
+      selectInput(
+        "clinic", "Select Clinic:",
+        choices = clinic_list
+      ),
+      dateRangeInput(
+        "date_range", "Time Period:",
+        start = "2023-01-01", end = Sys.Date()
+      ),
+      selectInput(
+        "metric", "Quality Metric:",
+        choices = c("Procedure Volume", "Complication Rate",
+                    "Radiation Dose", "Fluoroscopy Time")
+      )
+    ),
+
+    mainPanel(
+      plotOutput("trend_plot"),
+      tableOutput("summary_table")
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+  # Reactive expression: filtered data
+  # This re-runs ONLY when input$clinic or input$date_range changes
+  filtered_data &lt;- reactive({
+    registry_data %&gt;%
+      filter(
+        clinic_id == input$clinic,
+        procedure_date &gt;= input$date_range[1],
+        procedure_date &lt;= input$date_range[2]
+      )
+  })
+
+  # Render the trend plot
+  # This re-runs when filtered_data() or input$metric changes
+  output$trend_plot &lt;- renderPlot({
+    df &lt;- filtered_data()
+
+    ggplot(df, aes(x = procedure_date, y = .data[[input$metric]])) +
+      geom_line(color = "#0284c7", linewidth = 1) +
+      geom_smooth(method = "loess", se = TRUE, alpha = 0.2) +
+      labs(title = paste(input$metric, "Over Time"),
+           x = "Date", y = input$metric) +
+      theme_minimal(base_size = 14)
+  })
+
+  # Render the summary table
+  output$summary_table &lt;- renderTable({
+    filtered_data() %&gt;%
+      summarise(
+        `Total Procedures` = n(),
+        `Mean Age` = round(mean(age, na.rm = TRUE), 1),
+        `Complication Rate` = paste0(
+          round(mean(had_complication, na.rm = TRUE) * 100, 1), "%"
+        )
+      )
+  })
+}
+
+shinyApp(ui = ui, server = server)</code></pre>
+
+                    <p>The key concepts to understand:</p>
+
+                    <ul>
+                        <li><strong><code>reactive({})</code></strong> &mdash; Creates a reactive expression that caches its result. It only re-computes when its reactive dependencies (like <code>input$clinic</code>) change. Use this for expensive computations that multiple outputs share, like filtering a large dataset.</li>
+                        <li><strong><code>renderPlot({})</code> / <code>renderTable({})</code></strong> &mdash; Reactive endpoints that produce output. They automatically track which reactive values they use and re-render when those values change.</li>
+                        <li><strong><code>observe({})</code></strong> &mdash; Like <code>reactive({})</code>, but for side effects (logging, updating UI elements, writing to a database). It runs whenever its dependencies change but does not return a value.</li>
+                    </ul>
+
+                    <p>The mental model that helped me most: think of it as a spreadsheet. Cell B1 contains a formula that references A1. When you change A1, B1 automatically updates. Shiny works the same way &mdash; <code>input$clinic</code> is cell A1, <code>filtered_data()</code> is B1, and <code>output$trend_plot</code> is C1. Change the clinic dropdown, and the entire chain updates automatically.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Modern UI with bslib</h2>
+
+                    <p>The default Shiny UI looks dated. It uses Bootstrap 3 by default, and the stock widgets are functional but not particularly attractive. The <code>bslib</code> package modernizes everything by providing Bootstrap 5 components and a theming system.</p>
+
+                    <p>Here is how we structured the dashboard layout using bslib:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>library(bslib)
+
+ui &lt;- page_sidebar(
+  title = "DeGIR Quality Dashboard",
+  theme = bs_theme(
+    bootswatch = "flatly",
+    primary = "#0284c7",
+    base_font = font_google("Inter"),
+    heading_font = font_google("Inter")
+  ),
+
+  sidebar = sidebar(
+    title = "Filters",
+    selectInput("clinic", "Clinic:", choices = clinic_list),
+    dateRangeInput("date_range", "Period:",
+                   start = "2023-01-01", end = Sys.Date()),
+    hr(),
+    checkboxGroupInput("procedures", "Procedure Types:",
+                       choices = procedure_types,
+                       selected = procedure_types)
+  ),
+
+  # KPI row using value boxes
+  layout_columns(
+    value_box(
+      title = "Total Procedures",
+      value = textOutput("n_procedures"),
+      showcase = bsicons::bs_icon("clipboard2-pulse"),
+      theme = "primary"
+    ),
+    value_box(
+      title = "Complication Rate",
+      value = textOutput("complication_rate"),
+      showcase = bsicons::bs_icon("exclamation-triangle"),
+      theme = "warning"
+    ),
+    value_box(
+      title = "Mean Fluoroscopy Time",
+      value = textOutput("mean_fluoro"),
+      showcase = bsicons::bs_icon("stopwatch"),
+      theme = "info"
+    ),
+    col_widths = c(4, 4, 4)
+  ),
+
+  # Main content cards
+  layout_columns(
+    card(
+      card_header("Procedure Volume Trend"),
+      plotOutput("volume_plot", height = "350px")
+    ),
+    card(
+      card_header("Complication Rate by Type"),
+      plotOutput("complication_plot", height = "350px")
+    ),
+    col_widths = c(6, 6)
+  ),
+
+  card(
+    card_header("Detailed Procedure Data"),
+    DT::dataTableOutput("detail_table")
+  )
+)</code></pre>
+
+                    <p>The <code>value_box()</code> components are particularly useful for clinical dashboards. Clinicians want to see their key metrics at a glance &mdash; total volume, complication rate, average dose &mdash; before diving into detailed charts. The <code>card()</code> component provides a clean container with a header, and <code>layout_columns()</code> handles the responsive grid layout.</p>
+
+                    <p>The <code>bs_theme()</code> function lets you customize the entire look and feel. We used the "flatly" Bootswatch theme as a base, then overrode the primary color to match the DeGIR branding. The <code>font_google()</code> function pulls in web fonts directly.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Interactive Tables and Plots</h2>
+
+                    <p>Two packages dramatically improve the interactivity of a Shiny dashboard: <code>DT</code> for tables and <code>plotly</code> for plots.</p>
+
+                    <p><strong>DT::datatable()</strong> replaces the basic <code>renderTable()</code> with a fully interactive table widget:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>output$detail_table &lt;- DT::renderDataTable({
+  filtered_data() %&gt;%
+    select(
+      patient_id, procedure_date, procedure_type,
+      age, sex, complications, radiation_dose_mGy
+    ) %&gt;%
+    DT::datatable(
+      options = list(
+        pageLength = 15,
+        dom = "Bfrtip",         # B = Buttons, f = filter, r = processing,
+                                # t = table, i = info, p = pagination
+        buttons = c("csv", "excel", "pdf"),
+        scrollX = TRUE
+      ),
+      extensions = "Buttons",
+      filter = "top",           # Column-level filters
+      rownames = FALSE,
+      class = "compact stripe hover"
+    )
+})</code></pre>
+
+                    <p>This gives the user a searchable, sortable table with column-level filters and download buttons for CSV, Excel, and PDF. Clinicians loved the download buttons &mdash; they could filter the data to exactly what they needed, then export it for their own reports.</p>
+
+                    <p><strong>plotly::ggplotly()</strong> takes any ggplot2 plot and makes it interactive with hover tooltips, zoom, and pan:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>output$volume_plot &lt;- renderPlotly({
+  p &lt;- filtered_data() %&gt;%
+    count(month = floor_date(procedure_date, "month")) %&gt;%
+    ggplot(aes(x = month, y = n,
+               text = paste("Month:", format(month, "%B %Y"),
+                            "&lt;br&gt;Procedures:", n))) +
+    geom_col(fill = "#0284c7", alpha = 0.8) +
+    geom_smooth(method = "loess", se = FALSE,
+                color = "#f97316", linewidth = 1) +
+    labs(x = NULL, y = "Number of Procedures") +
+    theme_minimal(base_size = 13)
+
+  ggplotly(p, tooltip = "text") %&gt;%
+    layout(hoverlabel = list(bgcolor = "white")) %&gt;%
+    config(displayModeBar = TRUE,
+           modeBarButtonsToRemove = c("lasso2d", "select2d"))
+})</code></pre>
+
+                    <p>The <code>text</code> aesthetic in ggplot2 combined with <code>tooltip = "text"</code> in <code>ggplotly()</code> gives you full control over what appears in the hover tooltip. This is much cleaner than the default plotly tooltips, which tend to dump all aesthetics into the tooltip regardless of whether they are useful.</p>
+
+                    <p>One practical tip: <code>ggplotly()</code> does not handle every ggplot2 feature perfectly. Complex annotations, custom themes, and certain geoms can render oddly. For critical visualizations where the layout needs to be pixel-perfect, I sometimes use <code>plotly</code>'s native R API directly instead of converting from ggplot2. But for 90% of dashboard plots, <code>ggplotly()</code> works beautifully with minimal effort.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is Shiny?</p>
+                                <p>Shiny is an R package for building interactive web applications directly from R, without requiring HTML, CSS, or JavaScript knowledge. It uses a reactive programming model where outputs automatically update when inputs change.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>When stakeholders need to interactively explore data rather than receive static reports &mdash; especially for dashboards, data exploration tools, and applications where users need to filter, drill down, or customize visualizations on the fly.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded-lg p-3 text-sm overflow-x-auto"><code>shinyApp(
+  ui = fluidPage(
+    selectInput("x", "Choose:", choices),
+    plotOutput("plot")
+  ),
+  server = function(input, output) {
+    output$plot &lt;- renderPlot({ ... })
+  }
+)</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"What is reactivity in Shiny?"</p>
+                                <p>Reactivity is Shiny's automatic dependency tracking system. When a reactive input changes (like a dropdown selection), only the outputs and reactive expressions that depend on it are re-executed. This works like a spreadsheet: changing one cell automatically updates all dependent formulas, but cells that do not reference the changed cell remain untouched. The three building blocks are reactive sources (<code>input$*</code>), reactive conductors (<code>reactive({})</code>), and reactive endpoints (<code>render*({})</code>).</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>Use <code>reactive({})</code> for shared computations that return a value (like filtering a dataset used by multiple outputs), and <code>observe({})</code> for side effects (like logging or updating UI elements). Mixing these up is the most common source of bugs in Shiny applications.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

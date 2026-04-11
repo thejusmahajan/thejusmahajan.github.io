@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Scripts to R Packages: Refactoring the DeGIR Pipeline - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">March 20, 2026</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">From Scripts to R Packages: Refactoring the DeGIR Pipeline</h1>
+                    <p class="text-lg text-gray-600">How I turned a collection of analysis scripts into a proper R package during my internship at HealthTwiSt GmbH.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Why Package Your Code?</h2>
+
+                    <p>When I first started working on the DeGIR registry pipeline at HealthTwiSt, the codebase was a collection of R scripts. There was a <code>01_import.R</code>, a <code>02_clean.R</code>, a <code>03_analysis.R</code>, and so on. Each script sourced the previous one with <code>source("02_clean.R")</code>. It worked, in the sense that it produced correct output most of the time.</p>
+
+                    <p>But "most of the time" is not good enough when 300+ radiology clinics across Germany depend on your pipeline running correctly every quarter. Here is what went wrong with the script-based approach:</p>
+
+                    <ul>
+                        <li><strong>No versioning</strong> &mdash; When something broke, there was no way to tell which version of which script was running on the production server versus the development machine.</li>
+                        <li><strong>No testing</strong> &mdash; Changes to one helper function could silently break downstream calculations. We only discovered this when someone noticed the numbers looked wrong in a quarterly report.</li>
+                        <li><strong>Namespace pollution</strong> &mdash; Every script dumped its variables and functions into the global environment. A helper function called <code>clean()</code> in one script could collide with <code>clean()</code> from another package.</li>
+                        <li><strong>No documentation</strong> &mdash; "What does this function expect as input?" was a question answered by reading the source code, if you could find the right file.</li>
+                    </ul>
+
+                    <p>An R package solves all of these problems. It gives you a standard structure, automated documentation, unit tests, namespace isolation, and semantic versioning. The overhead of setting one up is maybe an afternoon &mdash; the return on that investment is enormous.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Package Structure</h2>
+
+                    <p>The standard R package layout is well-defined and enforced by <code>R CMD check</code>. Here is what our package directory looks like:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>degirtools/
+├── DESCRIPTION          # Package metadata, version, dependencies
+├── NAMESPACE            # Generated by roxygen2 — do not edit manually
+├── LICENSE
+├── R/
+│   ├── import.R         # Functions for reading raw registry exports
+│   ├── clean.R          # Data cleaning and validation functions
+│   ├── transform.R      # Derived variables (age, complication flags, etc.)
+│   ├── summarise.R      # Aggregation and summary table functions
+│   └── utils.R          # Internal helper functions
+├── man/                 # Generated documentation (from roxygen2)
+│   ├── import_registry.Rd
+│   ├── clean_dates.Rd
+│   └── ...
+├── tests/
+│   ├── testthat.R       # Test runner
+│   └── testthat/
+│       ├── test-clean.R
+│       ├── test-transform.R
+│       └── test-summarise.R
+├── inst/
+│   └── extdata/         # Sample data for examples and tests
+└── vignettes/
+    └── pipeline-overview.Rmd</code></pre>
+
+                    <p>Setting this up from scratch is straightforward with <code>usethis</code>:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code># Create the package skeleton
+usethis::create_package("degirtools")
+
+# Set up testing infrastructure
+usethis::use_testthat()
+
+# Add a license
+usethis::use_mit_license("HealthTwiSt GmbH")
+
+# Declare dependencies
+usethis::use_package("dplyr")
+usethis::use_package("tidyr")
+usethis::use_package("lubridate")
+usethis::use_package("readr")</code></pre>
+
+                    <p>The <code>DESCRIPTION</code> file is the heart of the package. It declares the package name, version, author, description, and &mdash; critically &mdash; its dependencies. When someone installs your package, R knows exactly which other packages it needs:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>Package: degirtools
+Title: Data Processing Pipeline for the DeGIR Registry
+Version: 1.2.0
+Authors@R:
+    person("Thejus", "Mahajan", email = "thejus@example.com",
+           role = c("aut", "cre"))
+Description: Provides functions for importing, cleaning, transforming,
+    and summarizing data from the German DeGIR interventional radiology
+    registry. Used for quarterly quality metric reporting.
+Imports:
+    dplyr (&gt;= 1.1.0),
+    tidyr,
+    lubridate,
+    readr,
+    rlang
+Suggests:
+    testthat (&gt;= 3.0.0),
+    knitr,
+    rmarkdown
+Config/testthat/edition: 3</code></pre>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Documentation with roxygen2</h2>
+
+                    <p>In the old script-based workflow, documentation meant comments at the top of a file that were perpetually out of date. With roxygen2, documentation lives directly above each function, and it generates the standard R help pages automatically.</p>
+
+                    <p>Here is a documented function from our package:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>#' Calculate patient age at time of procedure
+#'
+#' Computes age in years from birth date and procedure date,
+#' using 365.25 days per year to account for leap years.
+#' Returns NA if either date is missing.
+#'
+#' @param birth_date A Date vector of patient birth dates.
+#' @param procedure_date A Date vector of procedure dates.
+#'
+#' @return A numeric vector of ages in years.
+#'
+#' @export
+#'
+#' @examples
+#' calculate_age(
+#'   as.Date("1990-01-15"),
+#'   as.Date("2024-06-01")
+#' )
+calculate_age &lt;- function(birth_date, procedure_date) {
+  if (!inherits(birth_date, "Date") || !inherits(procedure_date, "Date")) {
+    rlang::abort("Both arguments must be Date objects.")
+  }
+  as.numeric(difftime(procedure_date, birth_date, units = "days")) / 365.25
+}</code></pre>
+
+                    <p>The key roxygen2 tags:</p>
+
+                    <ul>
+                        <li><strong><code>@param</code></strong> &mdash; Documents each function argument with its expected type and meaning.</li>
+                        <li><strong><code>@return</code></strong> &mdash; Describes what the function returns.</li>
+                        <li><strong><code>@export</code></strong> &mdash; Makes the function available to users of the package. Without this tag, the function is internal only.</li>
+                        <li><strong><code>@examples</code></strong> &mdash; Provides runnable examples that are checked during <code>R CMD check</code>.</li>
+                    </ul>
+
+                    <p>Running <code>devtools::document()</code> reads all the roxygen2 comments, generates the <code>.Rd</code> files in <code>man/</code>, and updates the <code>NAMESPACE</code> file with your exported functions. It takes about two seconds and keeps everything in sync.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Testing with testthat</h2>
+
+                    <p>Unit tests were the single biggest improvement in our workflow. Before tests, the only way to verify the pipeline was to run the entire thing and visually inspect the output. Now, every function has tests that run in seconds and catch regressions immediately.</p>
+
+                    <p>Here is a test file for the age calculation function:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code># tests/testthat/test-transform.R
+
+test_that("age calculation returns correct values", {
+  age &lt;- calculate_age(
+    as.Date("1990-01-01"),
+    as.Date("2024-01-01")
+  )
+  expect_equal(age, 34, tolerance = 0.01)
+})
+
+test_that("age calculation handles leap year birthdays", {
+  age &lt;- calculate_age(
+    as.Date("2000-02-29"),
+    as.Date("2024-02-29")
+  )
+  expect_equal(age, 24, tolerance = 0.01)
+})
+
+test_that("age calculation returns NA for missing dates", {
+  age &lt;- calculate_age(
+    as.Date(NA),
+    as.Date("2024-01-01")
+  )
+  expect_true(is.na(age))
+})
+
+test_that("age calculation rejects non-Date input", {
+  expect_error(
+    calculate_age("1990-01-01", "2024-01-01"),
+    "must be Date objects"
+  )
+})</code></pre>
+
+                    <p>The development workflow becomes a tight loop:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code># Write or modify a function
+# Write or modify its tests
+devtools::test()        # Run all tests (~5 seconds)
+devtools::document()    # Regenerate documentation
+devtools::check()       # Full R CMD check (before release)</code></pre>
+
+                    <p><code>devtools::test()</code> runs all tests and reports failures immediately. <code>devtools::check()</code> is the comprehensive check that CRAN would run &mdash; it checks documentation, examples, tests, and package structure. We run <code>check()</code> before every quarterly release; we run <code>test()</code> dozens of times a day during development.</p>
+
+                    <p>The investment in packaging paid off within the first quarter. A colleague modified a date parsing function without realizing it affected the age calculation downstream. The test suite caught it in seconds, before the change ever reached production. That single catch justified the entire effort.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is R package development?</p>
+                                <p>The practice of organizing R code into a standardized package structure with formal documentation, unit tests, namespace management, and dependency declarations, using tools like devtools, roxygen2, and testthat.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>When your R code is used repeatedly (especially by others or in production), when you need reproducibility guarantees, or when a project grows beyond a handful of scripts and requires proper testing and documentation.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded-lg p-3 text-sm overflow-x-auto"><code>devtools::document()  # Generate docs from roxygen2 comments
+devtools::test()      # Run all unit tests
+devtools::check()     # Full R CMD check</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"What are the benefits of packaging R code vs. sourcing scripts?"</p>
+                                <p>Packages provide namespace management (avoiding function name conflicts between packages), automated documentation generation via roxygen2, unit testing with testthat, semantic version control, explicit dependency declaration in the DESCRIPTION file, and easy distribution via <code>install.packages()</code> or <code>remotes::install_github()</code>. Scripts with <code>source()</code> offer none of these guarantees and quickly become unmaintainable as projects grow.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>The three-command workflow &mdash; <code>devtools::document()</code>, <code>devtools::test()</code>, <code>devtools::check()</code> &mdash; covers documentation, testing, and validation. Learn these three and you can develop R packages effectively.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

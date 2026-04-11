@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeGIR Dashboard | Dr. Thejus Mahajan</title>
+    <meta name="description" content="Interactive clinical quality metrics dashboard for the German DeGIR interventional radiology registry, built with R Shiny.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Blog</a>
+                <a href="dashboard.html" class="text-sky-600 font-semibold transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Page Header -->
+        <section class="container mx-auto px-6 pt-16 pb-8 text-center max-w-5xl">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
+                DeGIR Clinical Dashboard
+            </h1>
+            <p class="text-xl md:text-2xl text-sky-600 font-medium mb-4">
+                Interactive Quality Metrics for the German Interventional Radiology Registry
+            </p>
+            <p class="text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Built during my internship at HealthTwiSt GmbH using R Shiny, this dashboard visualizes
+                quality metrics from the DeGIR registry serving 300+ German radiology clinics.
+                Explore procedure volumes, complication rates, and clinic-level comparisons interactively.
+            </p>
+        </section>
+
+        <!-- Tech Tags -->
+        <section class="container mx-auto px-6 pb-8 max-w-5xl">
+            <div class="flex flex-wrap justify-center gap-2">
+                <span class="bg-sky-50 text-sky-700 text-sm font-medium px-3 py-1 rounded-full border border-sky-200">R Shiny</span>
+                <span class="bg-sky-50 text-sky-700 text-sm font-medium px-3 py-1 rounded-full border border-sky-200">plotly</span>
+                <span class="bg-sky-50 text-sky-700 text-sm font-medium px-3 py-1 rounded-full border border-sky-200">DT</span>
+                <span class="bg-sky-50 text-sky-700 text-sm font-medium px-3 py-1 rounded-full border border-sky-200">bslib</span>
+                <span class="bg-sky-50 text-sky-700 text-sm font-medium px-3 py-1 rounded-full border border-sky-200">dplyr</span>
+                <span class="bg-sky-50 text-sky-700 text-sm font-medium px-3 py-1 rounded-full border border-sky-200">ggplot2</span>
+            </div>
+        </section>
+
+        <!-- Embedded Shiny App -->
+        <section class="container mx-auto px-6 pb-16 max-w-6xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <iframe
+                    id="shiny-app"
+                    src="https://thejusmahajan.shinyapps.io/degir-dashboard/"
+                    class="w-full border-0"
+                    style="height: 800px;"
+                    loading="lazy"
+                    title="DeGIR Clinical Dashboard"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                ></iframe>
+            </div>
+            <p class="text-center text-gray-500 text-sm mt-4">
+                Having trouble viewing? <a href="https://thejusmahajan.shinyapps.io/degir-dashboard/" target="_blank" rel="noopener noreferrer" class="text-sky-600 hover:underline">Open the dashboard in a new tab</a>.
+            </p>
+        </section>
+
+        <!-- Context Section -->
+        <section class="container mx-auto px-6 pb-20 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">About This Project</h2>
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700 space-y-4">
+                    <p>
+                        The <strong>DeGIR</strong> (Deutsche Gesellschaft für Interventionelle Radiologie und minimal-invasive Therapie)
+                        registry collects procedural data from interventional radiology departments across Germany.
+                        During my internship at <strong>HealthTwiSt GmbH</strong>, I refactored the data processing pipeline
+                        and built this interactive dashboard to replace static quarterly PDF reports.
+                    </p>
+                    <p><strong>Key features:</strong></p>
+                    <ul class="list-disc pl-6 space-y-1">
+                        <li>Clinic-level filtering and comparison across all registered centers</li>
+                        <li>Time series visualization of procedure volumes and complication rates</li>
+                        <li>Interactive tables with search, sort, and CSV/Excel export</li>
+                        <li>KPI value boxes for at-a-glance quality metrics</li>
+                        <li>Responsive layout using bslib's modern Bootstrap 5 components</li>
+                    </ul>
+                    <p>
+                        <strong>Note:</strong> The data shown in this demo uses simulated values for patient privacy.
+                        The real dashboard connects to the live DeGIR registry database.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">
+                I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics. I would love to connect and discuss how my skills can contribute to your team.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com"
+                    class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">
+                    Email Me
+                </a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    LinkedIn
+                </a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    GitHub
+                </a>
+                <a href="https://scholar.google.com/citations?hl=en&user=PJkZwAwAAAAJ" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    Google Scholar
+                </a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -27,6 +27,7 @@
                 <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
                 <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
                 <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
                 <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
@@ -43,6 +44,7 @@
             <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
             <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
             <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
             <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
         </div>
     </header>
@@ -58,10 +60,189 @@
             </p>
         </section>
 
-        <!-- Blog Posts Container -->
+        <!-- Blog Posts Grid -->
         <section class="container mx-auto px-6 mb-16">
-            <div id="blog-posts-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-                <!-- Posts are dynamically loaded here by main.js -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+                <!-- Post 14: Shiny Dashboards — Apr 8, 2026 -->
+                <a href="blog-shiny-dashboards.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">April 8, 2026</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Building Clinical Dashboards with R Shiny</h3>
+                    <p class="text-gray-600 text-sm mb-3">Lessons from building an interactive quality metrics dashboard for the German DeGIR interventional radiology registry.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Shiny</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">plotly</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">DT</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">bslib</span>
+                    </div>
+                </a>
+
+                <!-- Post 13: R Packages — Mar 20, 2026 -->
+                <a href="blog-r-packages.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">March 20, 2026</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">From Scripts to R Packages: Refactoring the DeGIR Pipeline</h3>
+                    <p class="text-gray-600 text-sm mb-3">How I turned a collection of analysis scripts into a proper R package during my internship at HealthTwiSt GmbH.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">R</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">devtools</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">roxygen2</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">testthat</span>
+                    </div>
+                </a>
+
+                <!-- Post 12: Hepatitis Delta Pipeline — Feb 28, 2026 -->
+                <a href="blog-hepatitis-delta-pipeline.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">February 28, 2026</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Building a Reproducible Hepatitis Delta Virus Pipeline with Nextflow</h3>
+                    <p class="text-gray-600 text-sm mb-3">Key challenges and architectural decisions behind a Nextflow DSL2 pipeline for HDV genome analysis.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Nextflow</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Conda</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">MAFFT</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">NGS</span>
+                    </div>
+                </a>
+
+                <!-- Post 11: Nextflow DSL2 — Feb 12, 2026 -->
+                <a href="blog-nextflow-dsl2.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">February 12, 2026</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Why Moving to Nextflow DSL2 is Mandatory for Clinical Pipelines</h3>
+                    <p class="text-gray-600 text-sm mb-3">Why transitioning legacy scripts into Nextflow workflows with DSL2 modules is critical for reproducibility.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Nextflow</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">DSL2</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Docker</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">HPC</span>
+                    </div>
+                </a>
+
+                <!-- Post 10: Survival & PCA — Nov 15, 2025 -->
+                <a href="blog-survival-pca.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">November 15, 2025</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Applied Biostatistics: PCA and Survival Analysis in R</h3>
+                    <p class="text-gray-600 text-sm mb-3">Implementing PCA for high-dimensional data reduction and Kaplan-Meier estimators for clinical survival analysis.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">R</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">PCA</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">survival</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">survminer</span>
+                    </div>
+                </a>
+
+                <!-- Post 9: Bash & NCBI — Oct 10, 2025 -->
+                <a href="blog-bash-ncbi.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">October 10, 2025</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Command Line Core: Navigating NCBI & Biopython</h3>
+                    <p class="text-gray-600 text-sm mb-3">Using E-utilities and Biopython for programmatic retrieval and parsing of genomic data from NCBI databases.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Bash</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">E-utilities</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Biopython</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">NCBI</span>
+                    </div>
+                </a>
+
+                <!-- Post 8: SQL Order — Sep 30, 2025 -->
+                <a href="blog-sql-order.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">September 30, 2025</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">The Definitive Guide to SQL's Order of Operations</h3>
+                    <p class="text-gray-600 text-sm mb-3">Breaking down the logical processing order of SQL clauses and why it matters for writing correct queries.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">SQL</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">databases</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">query optimization</span>
+                    </div>
+                </a>
+
+                <!-- Post 7: Clinical Data Wrangling — Aug 18, 2025 -->
+                <a href="blog-clinical-data-wrangling.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">August 18, 2025</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Clinical Data Wrangling with dplyr and tidyr</h3>
+                    <p class="text-gray-600 text-sm mb-3">Real-world lessons from cleaning messy clinical registry data &mdash; the operations I use every single day.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">R</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">dplyr</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">tidyr</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">clinical data</span>
+                    </div>
+                </a>
+
+                <!-- Post 6: DESeq2 — May 6, 2025 -->
+                <a href="blog-deseq2.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">May 6, 2025</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Gene Expression Analysis with DESeq2: From Counts to Insights</h3>
+                    <p class="text-gray-600 text-sm mb-3">A walkthrough of differential gene expression analysis using DESeq2, from raw count matrices to volcano plots.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">R</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Bioconductor</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">DESeq2</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">RNA-seq</span>
+                    </div>
+                </a>
+
+                <!-- Post 5: BLAST — Feb 5, 2025 -->
+                <a href="blog-blast-alignment.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">February 5, 2025</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Understanding BLAST: Sequence Alignment from First Principles</h3>
+                    <p class="text-gray-600 text-sm mb-3">Breaking down the most-used bioinformatics tool &mdash; how BLAST finds similar sequences and what the E-value actually means.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">BLAST</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">NCBI</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">sequence alignment</span>
+                    </div>
+                </a>
+
+                <!-- Post 4: Mixed-Effects Models — Oct 8, 2024 -->
+                <a href="blog-mixed-effects.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">October 8, 2024</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Mixed-Effects Models in R: When Standard Regression Isn't Enough</h3>
+                    <p class="text-gray-600 text-sm mb-3">Why ecological and clinical data almost always violate independence assumptions, and how mixed-effects models save the day.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">R</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">lme4</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">biostatistics</span>
+                    </div>
+                </a>
+
+                <!-- Post 3: HPC SLURM — Jul 19, 2024 -->
+                <a href="blog-hpc-slurm.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">July 19, 2024</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">HPC Job Management: A Practical SLURM Guide</h3>
+                    <p class="text-gray-600 text-sm mb-3">Everything I wish I knew about SLURM when I started running ocean simulations on the DKRZ supercomputer.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Bash</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">SLURM</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">HPC</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">parallel computing</span>
+                    </div>
+                </a>
+
+                <!-- Post 2: ggplot2 Time Series — Apr 3, 2024 -->
+                <a href="blog-ggplot2-timeseries.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">April 3, 2024</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Visualizing Ecological Time Series with R and ggplot2</h3>
+                    <p class="text-gray-600 text-sm mb-3">Lessons from plotting multi-year plankton abundance data with the grammar of graphics.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">R</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">ggplot2</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">tidyverse</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">time series</span>
+                    </div>
+                </a>
+
+                <!-- Post 1: NetCDF & xarray — Jan 14, 2024 -->
+                <a href="blog-netcdf-xarray.html" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <p class="text-sky-600 text-sm font-medium mb-2">January 14, 2024</p>
+                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 transition-colors mb-2">Processing Large Scientific Datasets with Python and xarray</h3>
+                    <p class="text-gray-600 text-sm mb-3">How xarray and NetCDF transformed my approach to handling multi-dimensional ocean model output during my postdoc.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Python</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">xarray</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">NetCDF</span>
+                        <span class="bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-0.5 rounded-full">Dask</span>
+                    </div>
+                </a>
+
             </div>
         </section>
     </main>
@@ -97,21 +278,6 @@
         </div>
     </footer>
 
-    <!-- Blog Modal -->
-    <div id="blogModal" class="fixed inset-0 z-50 hidden flex flex-col items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col relative">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white flex-shrink-0 rounded-t-2xl">
-                <h2 id="blogModalTitle" class="text-2xl font-bold text-gray-900"></h2>
-                <button id="closeBlogModalButton" class="text-gray-400 hover:text-gray-600 text-3xl font-bold leading-none">&times;</button>
-            </div>
-            <div id="blogModalBody" class="p-8 overflow-y-auto flex-grow prose max-w-none text-gray-800">
-                <!-- Modal content populated by JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="blog.js"></script>
     <script src="js/main.js"></script>
 </body>
 

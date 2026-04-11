@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Large Scientific Datasets with Python and xarray - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">January 14, 2024</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Processing Large Scientific Datasets with Python and xarray</h1>
+                    <p class="text-lg text-gray-600">How xarray and NetCDF transformed my approach to handling multi-dimensional ocean model output during my postdoc.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <p>During my postdoc at the University of Hamburg, I spent a significant portion of my time working with output from the ICON-O ocean model. A single simulation run could produce hundreds of gigabytes of data spread across thousands of files, each containing variables like temperature, salinity, and current velocity resolved across three spatial dimensions and time. Early on, I made the mistake of trying to wrangle this data with plain NumPy arrays and manual index bookkeeping. It was error-prone and painful. Switching to xarray changed everything.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The NetCDF Data Model</h2>
+
+                    <p>NetCDF (Network Common Data Form) is the lingua franca of atmospheric and ocean sciences. Unlike a CSV or a raw binary dump, a NetCDF file is <strong>self-describing</strong>: it carries its own metadata. Each file contains <em>dimensions</em> (e.g., time, depth, latitude, longitude), <em>variables</em> (the actual data arrays bound to those dimensions), and <em>attributes</em> (metadata like units, long names, and coordinate reference information).</p>
+
+                    <p>A typical ocean model output file might have a structure like this:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># Inspecting a NetCDF file with ncdump (or Python)
+import xarray as xr
+
+ds = xr.open_dataset("ocean_output_2020.nc")
+print(ds)
+
+# Output:
+# &lt;xarray.Dataset&gt;
+# Dimensions:      (time: 365, depth: 40, lat: 180, lon: 360)
+# Coordinates:
+#   * time         (time) datetime64[ns] 2020-01-01 ... 2020-12-31
+#   * depth        (depth) float64 5.0 15.0 25.0 ... 4500.0 5000.0
+#   * lat          (lat) float64 -89.5 -88.5 ... 88.5 89.5
+#   * lon          (lon) float64 0.5 1.5 2.5 ... 358.5 359.5
+# Data variables:
+#     temperature  (time, depth, lat, lon) float32 ...
+#     salinity     (time, depth, lat, lon) float32 ...
+#     u_velocity   (time, depth, lat, lon) float32 ...
+#     v_velocity   (time, depth, lat, lon) float32 ...
+# Attributes:
+#     title:       ICON-O Global Ocean Simulation
+#     institution: Max Planck Institute for Meteorology
+#     history:     Created 2023-12-01</code></pre>
+
+                    <p>The beauty of this format is that the coordinates travel with the data. You never have to remember that index 12 along axis 1 corresponds to a depth of 200 meters -- the coordinate labels tell you directly. This is exactly the problem xarray was built to solve.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Working with xarray</h2>
+
+                    <p>xarray extends NumPy arrays with named dimensions and coordinate labels. Instead of writing <code>data[45, 3, :, :]</code> and hoping you got the axis order right, you write semantically meaningful selections. Here is a realistic workflow I used regularly when analyzing sea surface temperature patterns in the North Atlantic:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>import xarray as xr
+import matplotlib.pyplot as plt
+
+# Open the dataset
+ds = xr.open_dataset("ocean_output_2020.nc")
+
+# Select sea surface temperature (top depth layer)
+# .sel() uses label-based indexing -- no need to remember indices
+sst = ds["temperature"].sel(depth=5.0)
+
+# Extract a region: North Atlantic (40-65N, 60W-0E)
+north_atlantic_sst = sst.sel(
+    lat=slice(40, 65),
+    lon=slice(300, 360)  # 300-360 = 60W to 0E in 0-360 convention
+)
+
+# Compute monthly mean SST across the region
+monthly_mean = north_atlantic_sst.resample(time="1M").mean()
+
+# Compute the spatial average for a time series
+spatial_avg = monthly_mean.mean(dim=["lat", "lon"])
+
+# Plot the result
+spatial_avg.plot(figsize=(10, 4))
+plt.title("Monthly Mean SST - North Atlantic (2020)")
+plt.ylabel("Temperature (K)")
+plt.tight_layout()
+plt.savefig("north_atlantic_sst_2020.png", dpi=150)</code></pre>
+
+                    <p>Notice how every operation reads almost like plain English. The <code>.sel()</code> method selects by coordinate label, while <code>.isel()</code> selects by integer index if you need it. The <code>.resample()</code> method understands datetime coordinates natively, so computing monthly or seasonal averages is a one-liner. Compare this to the NumPy equivalent, where you would need to manually parse time stamps, compute bin edges, and loop over months -- all while carefully tracking axis positions.</p>
+
+                    <p>Another pattern I used constantly was computing anomalies relative to a climatological mean:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># Compute the climatological monthly mean (average January, average February, etc.)
+climatology = sst.groupby("time.month").mean(dim="time")
+
+# Compute anomalies by subtracting the climatology
+anomalies = sst.groupby("time.month") - climatology
+
+# Find the month and location of the strongest positive anomaly
+max_anomaly = anomalies.where(anomalies == anomalies.max(), drop=True)
+print(f"Max anomaly: {float(anomalies.max()):.2f} K")
+print(max_anomaly.coords)</code></pre>
+
+                    <p>The <code>.groupby("time.month")</code> operation automatically groups by calendar month and aligns the subtraction correctly. xarray handles the broadcasting behind the scenes. This kind of analysis, which is bread and butter in climate science, would require dozens of lines of careful index manipulation in raw NumPy.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Scaling with Dask</h2>
+
+                    <p>The single-file examples above work well when your data fits in memory. But ocean model output at high resolution can easily reach terabytes. During my work on the EERIE project, we dealt with ICON-O output at roughly 10 km horizontal resolution -- each time step was several gigabytes, and a multi-year simulation filled an entire tape archive.</p>
+
+                    <p>The solution is <strong>lazy loading with Dask</strong>. By passing a <code>chunks</code> argument to xarray, the data is not loaded into memory until you explicitly request a computation. Instead, xarray builds a task graph that Dask executes in parallel:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>import xarray as xr
+
+# Open ALL NetCDF files matching a glob pattern
+# chunks={"time": 100} means: load 100 time steps per chunk
+ds = xr.open_mfdataset(
+    "/work/bm1344/ocean_output/run_*/ocean_*.nc",
+    chunks={"time": 100},
+    parallel=True,
+    combine="by_coords"
+)
+
+print(ds["temperature"])
+# This prints immediately -- no data has been loaded yet
+# &lt;xarray.DataArray 'temperature' (time: 36500, depth: 40, lat: 1800, lon: 3600)&gt;
+# dask.array&lt;shape=(36500, 40, 1800, 3600), dtype=float32, chunksize=(100, 40, 1800, 3600)&gt;
+
+# Compute the 100-year mean SST -- Dask processes this in chunks
+mean_sst = ds["temperature"].sel(depth=5.0).mean(dim="time")
+
+# .compute() triggers the actual parallel computation
+result = mean_sst.compute()
+result.to_netcdf("mean_sst_100yr.nc")</code></pre>
+
+                    <p>The key insight is that <code>open_mfdataset</code> with chunking turns your entire multi-file dataset into a single virtual array. You write the same xarray code as before, but under the hood Dask distributes the work across all available CPU cores (or across a SLURM cluster via <code>dask-jobqueue</code>). The <code>.compute()</code> call at the end is the only point where data actually flows through memory. This pattern let me process datasets that were orders of magnitude larger than my workstation's RAM without changing my analysis code at all.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is xarray?</p>
+                                <p>xarray is a Python library that extends NumPy arrays with named dimensions and coordinate labels, making it natural to work with multi-dimensional scientific datasets stored in formats like NetCDF.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>Whenever you work with multi-dimensional labeled data -- climate model output, satellite imagery, time series of gridded observations -- especially when the data is stored in NetCDF or HDF5 format and may not fit in memory.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded p-3 text-sm"><code>ds = xr.open_mfdataset("*.nc", chunks={"time": 100})</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"How do you handle datasets that don't fit in memory?"</p>
+                                <p>Use Dask-backed xarray with chunked loading. By specifying a <code>chunks</code> parameter when opening datasets, xarray creates lazy arrays that are only computed on demand. Dask parallelizes the computation across chunks, so you can process terabyte-scale data on a machine with only a few gigabytes of RAM.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>xarray's power comes from <strong>label-based indexing</strong>: <code>.sel(depth=200, time="2020-06")</code> is both more readable and less error-prone than <code>data[150, 8, :, :]</code>. Named dimensions eliminate an entire class of axis-ordering bugs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

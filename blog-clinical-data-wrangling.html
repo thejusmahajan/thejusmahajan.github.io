@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Data Wrangling with dplyr and tidyr - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">August 18, 2025</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Clinical Data Wrangling with dplyr and tidyr</h1>
+                    <p class="text-lg text-gray-600">Real-world lessons from cleaning messy clinical registry data &mdash; the operations I use every single day.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">The Reality of Clinical Data</h2>
+
+                    <p>If you have ever opened a freshly exported clinical dataset and found it perfectly structured, with consistent date formats, no duplicates, and every missing value neatly coded as <code>NA</code> &mdash; I envy you. In my experience working with the German DeGIR interventional radiology registry, the reality is far messier.</p>
+
+                    <p>Here is what a typical raw export looks like in practice:</p>
+
+                    <ul>
+                        <li><strong>Inconsistent date formats</strong> &mdash; Some clinics submit dates as <code>DD.MM.YYYY</code> (the German standard), others as <code>YYYY-MM-DD</code>, and occasionally you get <code>MM/DD/YYYY</code> from a system that was configured for US locale.</li>
+                        <li><strong>Duplicated patient records</strong> &mdash; The same procedure appearing twice because a clinic submitted corrections without flagging the original entry for deletion.</li>
+                        <li><strong>Creative missing value encoding</strong> &mdash; Missing values coded as <code>-999</code>, <code>-1</code>, the string <code>"N/A"</code>, <code>"n.a."</code>, <code>"nicht angegeben"</code>, or simply an empty string that R reads as <code>""</code> rather than <code>NA</code>.</li>
+                        <li><strong>Wide-format tables</strong> &mdash; Complication data spread across columns like <code>complication_1</code>, <code>complication_2</code>, <code>complication_3</code>, when what you actually need for analysis is a long-format table with one row per complication.</li>
+                    </ul>
+
+                    <p>The tidyverse &mdash; specifically <code>dplyr</code> and <code>tidyr</code> &mdash; is how I handle all of this. Not because it is trendy, but because the pipe-based syntax maps directly onto how you think about data transformations: "take this dataset, then filter it, then create new columns, then group and summarize."</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Essential dplyr Operations</h2>
+
+                    <p>The core of any clinical data pipeline is a chain of <code>dplyr</code> verbs. Here is a realistic pipeline that I might run to produce a quarterly summary of procedure volumes and patient demographics by clinic:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>library(dplyr)
+
+quarterly_summary &lt;- registry_data %&gt;%
+  # Remove rows where the procedure date is missing entirely
+  filter(!is.na(procedure_date)) %&gt;%
+
+  # Standardize the date column (handles mixed formats)
+  mutate(
+    procedure_date = lubridate::parse_date_time(
+      procedure_date, orders = c("dmy", "ymd", "mdy")
+    ),
+    birth_date = lubridate::parse_date_time(
+      birth_date, orders = c("dmy", "ymd", "mdy")
+    )
+  ) %&gt;%
+
+  # Calculate age at time of procedure
+  mutate(
+    age = as.numeric(
+      difftime(procedure_date, birth_date, units = "days")
+    ) / 365.25,
+    year = lubridate::year(procedure_date),
+    quarter = lubridate::quarter(procedure_date)
+  ) %&gt;%
+
+  # Exclude biologically implausible ages
+  filter(age &gt;= 0, age &lt;= 120) %&gt;%
+
+  # Summarize by clinic, year, and quarter
+  group_by(clinic_id, year, quarter) %&gt;%
+  summarise(
+    n_procedures = n(),
+    mean_age = mean(age, na.rm = TRUE),
+    median_age = median(age, na.rm = TRUE),
+    pct_female = mean(sex == "F", na.rm = TRUE) * 100,
+    .groups = "drop"
+  )</code></pre>
+
+                    <p>Let me walk through the key verbs:</p>
+
+                    <ul>
+                        <li><strong><code>filter()</code></strong> &mdash; Keeps only rows that match a condition. The first filter removes records without procedure dates; the second removes implausible ages. In clinical data, you always want to be explicit about what you are excluding and why.</li>
+                        <li><strong><code>mutate()</code></strong> &mdash; Creates or modifies columns. Here we parse dates into a consistent format, compute patient age, and extract year and quarter from the procedure date.</li>
+                        <li><strong><code>group_by()</code></strong> &mdash; Defines the grouping structure for subsequent operations. After this call, every summarise, mutate, or filter operates within each group independently.</li>
+                        <li><strong><code>summarise()</code></strong> &mdash; Collapses each group into a single summary row. The <code>.groups = "drop"</code> argument avoids the common gotcha where grouped tibbles cause unexpected behavior downstream.</li>
+                    </ul>
+
+                    <p>One thing I have learned the hard way: always use <code>na.rm = TRUE</code> in summary functions when working with clinical data. A single <code>NA</code> in your age column will make <code>mean(age)</code> return <code>NA</code> for the entire group, and you will spend twenty minutes wondering why your summary table is full of missing values.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Reshaping with tidyr</h2>
+
+                    <p>Clinical registries love wide-format data. It makes sense from a data entry perspective &mdash; one row per patient, with columns for each possible complication. But for analysis, you almost always need long format.</p>
+
+                    <p>Consider a dataset where complications are stored like this:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code># Wide format (as received from the registry)
+# patient_id | complication_1 | complication_2 | complication_3
+# 001        | bleeding       | infection      | NA
+# 002        | NA             | NA             | NA
+# 003        | thrombosis     | NA             | NA</code></pre>
+
+                    <p>To analyze complication rates, you need to pivot this to long format:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code>complications_long &lt;- registry_data %&gt;%
+  pivot_longer(
+    cols = starts_with("complication_"),
+    names_to = "complication_slot",
+    values_to = "complication_type",
+    values_drop_na = TRUE
+  )
+
+# Result:
+# patient_id | complication_slot | complication_type
+# 001        | complication_1    | bleeding
+# 001        | complication_2    | infection
+# 003        | complication_1    | thrombosis</code></pre>
+
+                    <p>The <code>values_drop_na = TRUE</code> argument is critical here &mdash; without it, you would keep all the <code>NA</code> rows, which represent the absence of a complication rather than a missing value. Patient 002 had no complications; we do not want three <code>NA</code> rows for them.</p>
+
+                    <p>Going the other direction with <code>pivot_wider()</code> is useful when you need to create summary tables for reports:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code># Create a cross-tabulation of complications by clinic
+complication_summary &lt;- complications_long %&gt;%
+  count(clinic_id, complication_type) %&gt;%
+  pivot_wider(
+    names_from = complication_type,
+    values_from = n,
+    values_fill = 0
+  )</code></pre>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Handling Missing Data</h2>
+
+                    <p>This is where clinical data work diverges most sharply from generic data science. In a Kaggle competition, you might impute missing values or drop incomplete rows without a second thought. In a clinical registry, every missing value has meaning, and how you handle it can affect the validity of your entire analysis.</p>
+
+                    <p>The tidyr package gives you a few key tools:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-5 overflow-x-auto text-sm leading-relaxed"><code># First: recode all the creative missing value indicators to proper NA
+cleaned &lt;- registry_data %&gt;%
+  mutate(across(everything(), ~case_when(
+    . %in% c("-999", "-1", "N/A", "n.a.", "nicht angegeben", "") ~ NA_character_,
+    TRUE ~ as.character(.)
+  )))
+
+# Replace NA with a specific value (e.g., for indicator variables)
+cleaned &lt;- cleaned %&gt;%
+  replace_na(list(
+    complications_reported = "no",
+    follow_up_completed = "unknown"
+  ))
+
+# Document missingness BEFORE dropping
+missing_report &lt;- cleaned %&gt;%
+  summarise(across(everything(), ~sum(is.na(.)))) %&gt;%
+  pivot_longer(everything(),
+    names_to = "variable",
+    values_to = "n_missing"
+  ) %&gt;%
+  mutate(pct_missing = n_missing / nrow(cleaned) * 100) %&gt;%
+  filter(n_missing &gt; 0) %&gt;%
+  arrange(desc(pct_missing))
+
+# Only THEN drop rows for your specific analysis
+analysis_set &lt;- cleaned %&gt;%
+  drop_na(procedure_date, birth_date, sex)  # explicit about which vars</code></pre>
+
+                    <p>The rule I follow: <strong>never use <code>drop_na()</code> without first generating a missingness report</strong>. You need to know how many rows you are losing and from which variables. If 40% of your records are missing follow-up data, that is not a data cleaning problem &mdash; that is a finding about the registry's data collection process, and it belongs in your report.</p>
+
+                    <p>I also avoid using <code>drop_na()</code> without arguments (which drops any row with any missing value in any column). In a dataset with 50 columns, this can silently eliminate the majority of your data. Always specify which columns are required for your particular analysis.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is dplyr/tidyr?</p>
+                                <p>dplyr is an R package for data manipulation using a grammar of composable verbs (filter, mutate, group_by, summarise); tidyr is its companion for reshaping data between wide and long formats.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>Whenever you need to clean, transform, reshape, or summarize tabular data in R &mdash; especially clinical datasets with messy formats, missing values, and grouped structures that require aggregation.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded-lg p-3 text-sm overflow-x-auto"><code>df %&gt;%
+  group_by(group) %&gt;%
+  summarise(n = n(), mean = mean(x, na.rm = TRUE))</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"What is the difference between pivot_longer() and pivot_wider()?"</p>
+                                <p><code>pivot_longer()</code> converts columns into rows (wide to long format), while <code>pivot_wider()</code> converts rows into columns (long to wide format). Long format is usually needed for ggplot2 visualizations and statistical modeling, where each observation should be its own row. Wide format is more natural for human-readable summary tables and data entry forms.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>Never silently drop missing clinical data. Always generate a missingness report before using <code>drop_na()</code>, and always specify which columns are required rather than dropping rows with any missing value.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

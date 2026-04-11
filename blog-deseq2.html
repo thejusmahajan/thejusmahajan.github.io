@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gene Expression Analysis with DESeq2: From Counts to Insights - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">May 6, 2025</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Gene Expression Analysis with DESeq2: From Counts to Insights</h1>
+                    <p class="text-lg text-gray-600">A walkthrough of differential gene expression analysis using DESeq2, from raw count matrices to volcano plots.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The RNA-seq Analysis Pipeline</h2>
+
+                    <p>RNA-seq has become the standard method for measuring genome-wide gene expression. The typical analysis pipeline looks like this:</p>
+
+                    <ol class="list-decimal pl-6 space-y-2">
+                        <li><strong>Raw reads</strong> &mdash; FASTQ files from the sequencer</li>
+                        <li><strong>Quality control</strong> &mdash; adapter trimming, quality filtering (FastQC, Trimmomatic)</li>
+                        <li><strong>Alignment</strong> &mdash; mapping reads to a reference genome (STAR, HISAT2)</li>
+                        <li><strong>Quantification</strong> &mdash; counting reads per gene (featureCounts, HTSeq)</li>
+                        <li><strong>Count matrix</strong> &mdash; a genes-by-samples matrix of integer counts</li>
+                        <li><strong>Differential expression</strong> &mdash; statistical testing for differences between conditions</li>
+                    </ol>
+
+                    <p>DESeq2, developed by Love, Huber, and Anders (2014), handles that last step. It takes the raw count matrix as input &mdash; not TPM, not FPKM, not normalized values. This is important because DESeq2 performs its own normalization internally, and feeding it pre-normalized data will produce incorrect results.</p>
+
+                    <p>Coming from a physics background where data is often continuous and approximately normal, working with count data required a genuine shift in thinking. Counts are discrete, non-negative, and their variance scales with their mean in ways that normal distributions cannot capture. DESeq2 is built around a statistical framework that respects these properties.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Setting Up DESeq2</h2>
+
+                    <p>The workflow in R is remarkably concise for how much statistical machinery is operating under the hood. You need two inputs: a count matrix (genes as rows, samples as columns) and a metadata table describing the experimental conditions for each sample.</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code>library(DESeq2)
+
+# counts: integer matrix of raw read counts (genes x samples)
+# metadata: data frame with sample info, must include the design variable
+# Rows of metadata must match columns of counts
+
+dds <- DESeqDataSetFromMatrix(
+  countData = counts,
+  colData   = metadata,
+  design    = ~ condition
+)
+
+# Optional: pre-filter low-count genes to speed up computation
+keep <- rowSums(counts(dds)) >= 10
+dds  <- dds[keep, ]
+
+# Run the full DESeq2 pipeline in a single command
+# This performs: estimation of size factors, estimation of
+# dispersions, and negative binomial GLM fitting + Wald test
+dds <- DESeq(dds)
+
+# Extract results for a specific contrast
+res <- results(dds, contrast = c("condition", "treated", "control"))
+
+# View the top differentially expressed genes
+res_ordered <- res[order(res$padj), ]
+head(res_ordered)</code></pre>
+
+                    <p>The <code>design = ~ condition</code> formula tells DESeq2 that you want to test for differences between levels of the "condition" variable. For more complex designs (e.g., including batch effects), you can extend this: <code>design = ~ batch + condition</code>. The variable of interest should always be the last term in the formula.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Understanding the Statistics</h2>
+
+                    <p>DESeq2 models the read counts using a <strong>negative binomial (NB) distribution</strong>, which is parameterized by a mean and a dispersion. This is the key statistical choice that makes it appropriate for RNA-seq data.</p>
+
+                    <p>Why not a simpler model? If read counts followed a Poisson distribution, the variance would equal the mean. In practice, RNA-seq data is <strong>overdispersed</strong>: the variance consistently exceeds the mean, due to biological variability between replicates. The negative binomial distribution adds a dispersion parameter that captures this extra variability. You can think of it as: Poisson handles the technical (sampling) noise, and the dispersion parameter handles the biological noise on top of that.</p>
+
+                    <p>DESeq2 performs several sophisticated steps internally:</p>
+
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Size factor estimation</strong> &mdash; normalizes for differences in sequencing depth between samples using the median-of-ratios method. This is more robust than simple total-count normalization because it is not skewed by highly expressed genes.</li>
+                        <li><strong>Dispersion estimation</strong> &mdash; estimates a gene-wise dispersion, then shrinks these estimates toward a fitted trend line. This "information sharing" across genes stabilizes estimates for genes with few replicates, which is almost always the case in practice.</li>
+                        <li><strong>Log2 fold change shrinkage</strong> &mdash; optionally shrinks LFC estimates for genes with low counts or high dispersion, producing more reliable rankings.</li>
+                    </ul>
+
+                    <p>The results table contains several key columns:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code># Key columns in the results table:
+# baseMean        - average normalized count across all samples
+# log2FoldChange  - estimated effect size (treated vs control)
+# lfcSE           - standard error of the LFC estimate
+# stat            - Wald test statistic (LFC / lfcSE)
+# pvalue          - raw p-value from the Wald test
+# padj            - Benjamini-Hochberg adjusted p-value (FDR)
+
+# Summary of results at FDR < 0.05
+summary(res, alpha = 0.05)</code></pre>
+
+                    <p>The <code>padj</code> column is the one you should use for determining significance. It controls the false discovery rate (FDR) using the Benjamini-Hochberg procedure. A typical threshold is <code>padj &lt; 0.05</code>, meaning you accept that up to 5% of your "significant" genes may be false positives.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Visualization</h2>
+
+                    <p>Good visualizations are essential for both quality control and communicating results. DESeq2 and ggplot2 together provide a powerful toolkit:</p>
+
+                    <p><strong>MA plot</strong> &mdash; shows the relationship between mean expression and fold change. Most genes should cluster around LFC = 0, with significant genes highlighted:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code># Built-in MA plot
+plotMA(res, ylim = c(-5, 5), alpha = 0.05)
+
+# Points in blue are significant at padj < 0.05
+# The X-axis is mean normalized counts (log scale)
+# The Y-axis is log2 fold change</code></pre>
+
+                    <p><strong>Volcano plot</strong> &mdash; perhaps the most iconic RNA-seq visualization. It plots statistical significance against fold change magnitude, making it easy to identify genes that are both highly significant and strongly differentially expressed:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code>library(ggplot2)
+
+res_df <- as.data.frame(res)
+res_df$significant <- ifelse(
+  res_df$padj < 0.05 & abs(res_df$log2FoldChange) > 1,
+  "Significant", "Not significant"
+)
+
+ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj),
+                   color = significant)) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  scale_color_manual(values = c("grey60", "firebrick3")) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dashed", color = "grey40") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "grey40") +
+  labs(x = "Log2 Fold Change", y = "-Log10 Adjusted P-value",
+       title = "Volcano Plot: Treated vs Control") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")</code></pre>
+
+                    <p><strong>Heatmap of top DE genes</strong> &mdash; shows expression patterns across samples for the most significant genes, useful for spotting sample clustering and expression patterns:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code>library(pheatmap)
+
+# Use variance-stabilized counts for visualization
+vsd <- vst(dds, blind = FALSE)
+
+# Select top 30 DE genes by adjusted p-value
+top_genes <- head(rownames(res_ordered), 30)
+mat <- assay(vsd)[top_genes, ]
+
+# Z-score normalize rows for visualization
+mat_z <- t(scale(t(mat)))
+
+pheatmap(mat_z,
+         annotation_col = metadata["condition"],
+         clustering_distance_rows = "correlation",
+         clustering_distance_cols = "correlation",
+         fontsize_row = 8,
+         main = "Top 30 Differentially Expressed Genes")</code></pre>
+
+                    <p>One important note: always use variance-stabilized or rlog-transformed counts for visualization and clustering &mdash; never raw counts. The <code>vst()</code> transformation stabilizes variance across the range of mean values, making distances between samples meaningful for PCA, heatmaps, and other exploratory analyses.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is DESeq2?</p>
+                                <p>A Bioconductor R package for differential gene expression analysis of RNA-seq count data. It uses a negative binomial generalized linear model with shrinkage estimation of dispersions and fold changes.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>When you have a raw count matrix from an RNA-seq experiment and need to identify genes that are differentially expressed between experimental conditions (e.g., treated vs. control, disease vs. healthy), while properly controlling for multiple testing.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded p-3 text-sm"><code>dds <- DESeq(dds)
+res <- results(dds)</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"Why does DESeq2 use a negative binomial distribution instead of a normal distribution for RNA-seq data?"</p>
+                                <p>RNA-seq count data is discrete and overdispersed &mdash; the variance exceeds the mean, which violates the Poisson assumption (variance = mean) and certainly cannot be captured by a normal distribution. The negative binomial distribution includes an extra dispersion parameter that models this biological overdispersion. DESeq2 further stabilizes dispersion estimates by sharing information across genes, which is critical when sample sizes are small.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>Always use raw counts as input to DESeq2, never TPM or FPKM. The package performs its own normalization (median-of-ratios method), and pre-normalized data will produce incorrect statistical results.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

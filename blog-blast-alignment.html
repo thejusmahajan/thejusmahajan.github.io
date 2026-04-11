@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding BLAST: Sequence Alignment from First Principles - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">February 5, 2025</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Understanding BLAST: Sequence Alignment from First Principles</h1>
+                    <p class="text-lg text-gray-600">Breaking down the most-used bioinformatics tool &mdash; how BLAST finds similar sequences and what the E-value actually means.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Why Sequence Alignment Matters</h2>
+
+                    <p>One of the foundational principles of molecular biology is that <strong>sequence determines structure, and structure determines function</strong>. If two proteins share significant sequence similarity, they almost certainly share a common ancestor, and there is a strong likelihood they perform related functions. This is homology inference, and it is the backbone of a remarkable amount of modern biology.</p>
+
+                    <p>In practice, this means that when you sequence a new gene or protein, the first thing you do is search it against known databases to find similar sequences. This approach drives functional annotation of newly sequenced genomes, identification of conserved domains, evolutionary and phylogenetic analysis, and clinical interpretation of genetic variants. The tool that makes all of this computationally feasible is BLAST &mdash; the Basic Local Alignment Search Tool, first published by Altschul et al. in 1990 and still one of the most cited papers in all of science.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">How BLAST Works (Simplified)</h2>
+
+                    <p>The "gold standard" for local sequence alignment is the Smith-Waterman algorithm, which uses dynamic programming to find the optimal local alignment between two sequences. It is guaranteed to find the best alignment, but it runs in O(mn) time where m and n are the sequence lengths. Searching a query against millions of database sequences this way would take an impractical amount of time.</p>
+
+                    <p>BLAST solves this with a heuristic three-stage approach that sacrifices a small amount of sensitivity for massive gains in speed:</p>
+
+                    <p><strong>Stage 1: Seeding.</strong> The query sequence is broken into overlapping words of length k (default k=11 for nucleotide, k=3 for protein). For protein searches, BLAST also generates "neighborhood words" &mdash; words that score above a threshold when compared to the query word using a substitution matrix like BLOSUM62. These seeds form the initial search targets.</p>
+
+                    <p><strong>Stage 2: Extension.</strong> When a seed matches a location in the database, BLAST extends the alignment in both directions from the seed. In modern BLAST (BLAST+), this uses a two-hit approach: extension is only triggered when two seeds on the same diagonal fall within a certain distance of each other, which dramatically reduces false extensions. Extension continues as long as the cumulative alignment score does not drop more than a threshold X below the best score seen so far.</p>
+
+                    <p><strong>Stage 3: Evaluation.</strong> High-scoring segment pairs (HSPs) that survive extension are evaluated statistically. BLAST computes a raw alignment score, converts it to a bit score (normalized and database-independent), and calculates an E-value based on the Karlin-Altschul statistics for local alignment scores. The E-value depends on the database size, so the same alignment will have different E-values when searched against databases of different sizes.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Reading BLAST Output</h2>
+
+                    <p>Understanding BLAST output is critical. The three numbers you should always look at are:</p>
+
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>E-value</strong> (Expect value): The number of alignments with this score or better that you would expect to see by chance in a database of this size. An E-value of 1e-50 means you would expect to see a hit this good by chance once in 10<sup>50</sup> searches. Lower is better. A common threshold for "significant" homology is E &lt; 1e-5, though this depends on the application.</li>
+                        <li><strong>Bit score</strong>: A normalized version of the raw alignment score that is independent of the scoring system and database size. Higher is better. Bit scores allow comparison across different searches.</li>
+                        <li><strong>Percent identity</strong>: The fraction of aligned positions that are identical. Useful but can be misleading without considering alignment length &mdash; a 100% identity over 20 residues is far less meaningful than 60% identity over 300 residues.</li>
+                    </ul>
+
+                    <p>A typical command-line BLAST search looks like this:</p>
+
+                    <pre class="bg-gray-900 text-green-300 rounded-lg p-4 overflow-x-auto text-sm"><code># Nucleotide BLAST against the nt database
+# -outfmt 6 gives tabular output (easy to parse programmatically)
+blastn -query my_seq.fasta -db nt -out results.txt -evalue 1e-5 -outfmt 6
+
+# Tabular output columns (outfmt 6 default):
+# qseqid sseqid pident length mismatch gapopen
+# qstart qend sstart send evalue bitscore</code></pre>
+
+                    <p>The tabular format (<code>-outfmt 6</code>) is particularly useful for downstream processing in R or Python, since each hit is a single tab-delimited row. For quick exploration, the default output (<code>-outfmt 0</code>) provides a more human-readable report with pairwise alignments.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">BLAST Flavors</h2>
+
+                    <p>BLAST comes in several variants, each designed for a different combination of query and database sequence types:</p>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm border border-gray-200 rounded-lg">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Program</th>
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Query</th>
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Database</th>
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-900">Use case</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-gray-100">
+                                    <td class="px-4 py-2 font-mono">blastn</td>
+                                    <td class="px-4 py-2">Nucleotide</td>
+                                    <td class="px-4 py-2">Nucleotide</td>
+                                    <td class="px-4 py-2">Finding similar DNA/RNA sequences</td>
+                                </tr>
+                                <tr class="border-t border-gray-100">
+                                    <td class="px-4 py-2 font-mono">blastp</td>
+                                    <td class="px-4 py-2">Protein</td>
+                                    <td class="px-4 py-2">Protein</td>
+                                    <td class="px-4 py-2">Finding homologous proteins</td>
+                                </tr>
+                                <tr class="border-t border-gray-100">
+                                    <td class="px-4 py-2 font-mono">blastx</td>
+                                    <td class="px-4 py-2">Nucleotide (translated)</td>
+                                    <td class="px-4 py-2">Protein</td>
+                                    <td class="px-4 py-2">Searching a DNA sequence against protein DB; useful for ESTs or novel transcripts</td>
+                                </tr>
+                                <tr class="border-t border-gray-100">
+                                    <td class="px-4 py-2 font-mono">tblastn</td>
+                                    <td class="px-4 py-2">Protein</td>
+                                    <td class="px-4 py-2">Nucleotide (translated)</td>
+                                    <td class="px-4 py-2">Searching a protein against a nucleotide DB; finding unannotated coding regions</td>
+                                </tr>
+                                <tr class="border-t border-gray-100">
+                                    <td class="px-4 py-2 font-mono">tblastx</td>
+                                    <td class="px-4 py-2">Nucleotide (translated)</td>
+                                    <td class="px-4 py-2">Nucleotide (translated)</td>
+                                    <td class="px-4 py-2">Comparing translations of both; computationally expensive, used for distantly related organisms</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="mt-4">The general rule of thumb: <strong>protein-level comparisons are more sensitive than nucleotide comparisons</strong> for detecting distant homology, because the genetic code is degenerate &mdash; many nucleotide changes are synonymous at the protein level. If you are looking for conserved function across distantly related organisms, use <code>blastp</code> or <code>blastx</code> rather than <code>blastn</code>.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is BLAST?</p>
+                                <p>The Basic Local Alignment Search Tool &mdash; a heuristic algorithm that finds regions of local similarity between a query sequence and a database of sequences, using a seed-and-extend strategy that is orders of magnitude faster than optimal dynamic programming methods like Smith-Waterman.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>Whenever you need to identify what a sequence is, find homologous genes or proteins in other organisms, annotate newly assembled genomes, or assess whether a variant falls in a conserved region. It is typically the first analysis step after sequencing.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded p-3 text-sm"><code>blastn -query seq.fa -db nt -evalue 1e-5 -outfmt 6</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"What does the E-value in BLAST output mean?"</p>
+                                <p>The E-value (Expect value) is the expected number of alignments with that score or better that would occur by chance in a database of that size. It depends on the query length, database size, and scoring parameters. A lower E-value indicates a more statistically significant hit. An E-value of 1e-5 means you would expect to see one hit this good by chance in every 100,000 random searches.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>Protein-level comparisons (blastp, blastx) are more sensitive than nucleotide comparisons (blastn) for detecting distant homology, because synonymous codon changes erode nucleotide similarity while preserving amino acid identity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

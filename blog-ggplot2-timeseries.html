@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizing Ecological Time Series with R and ggplot2 - Dr. Thejus Mahajan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="dashboard.html" class="text-gray-600 hover:text-sky-600 font-medium transition">DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="dashboard.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">April 3, 2024</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Visualizing Ecological Time Series with R and ggplot2</h1>
+                    <p class="text-lg text-gray-600">Lessons from plotting multi-year plankton abundance data with the grammar of graphics.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <p>One of the most rewarding parts of my postdoc work in marine ecosystem modeling was the visualization stage -- the moment when months of simulation data finally resolves into a clear picture. For this, I relied almost entirely on R's ggplot2 package. Coming from a background where I had cobbled together matplotlib figures with endless <code>ax.set_xlim()</code> calls, ggplot2's declarative approach felt like a revelation. In this post, I want to walk through how I built publication-quality time series plots for plankton abundance data, and why the grammar of graphics philosophy makes such a difference for exploratory scientific visualization.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The Grammar of Graphics Philosophy</h2>
+
+                    <p>ggplot2 is built on Leland Wilkinson's <em>Grammar of Graphics</em>, which decomposes every plot into independent, composable components: <strong>data</strong>, <strong>aesthetic mappings</strong> (which variables map to which visual properties), <strong>geometric objects</strong> (points, lines, bars), <strong>scales</strong> (how data values translate to visual values), <strong>facets</strong> (subplots by category), and <strong>themes</strong> (visual styling). Rather than calling a monolithic "line plot" function with dozens of arguments, you assemble a plot from these layers using the <code>+</code> operator.</p>
+
+                    <p>This matters in practice because scientific visualization is inherently iterative. You start with a rough plot, notice something interesting, and want to quickly add a smoothing line, split by species, or change the color scale. With ggplot2, each of those changes is a single line addition rather than a structural rewrite of your plotting code.</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># The core idea: a plot is data + aesthetics + geometry
+library(ggplot2)
+
+# These three lines define a complete plot
+ggplot(data = plankton_df,           # 1. Data
+       aes(x = date, y = abundance,  # 2. Aesthetic mapping
+           color = species)) +
+  geom_line()                        # 3. Geometry</code></pre>
+
+                    <p>Everything else -- scales, labels, facets, themes -- is added incrementally on top of this foundation.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Building a Time Series Plot Step by Step</h2>
+
+                    <p>Let me walk through a realistic example. During my postdoc, I worked with simulated phytoplankton abundance data from the ICON-O/HAMOCC biogeochemical model. The dataset contained daily concentrations of several plankton functional types across multiple years. Here is how I would build up the visualization layer by layer:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>library(tidyverse)
+library(lubridate)
+
+# Load and prepare the data
+plankton_df &lt;- read_csv("hamocc_plankton_output.csv") %&gt;%
+  mutate(date = ymd(date)) %&gt;%
+  filter(date &gt;= "2015-01-01", date &lt;= "2020-12-31")
+
+# Step 1: Basic time series -- just lines
+p &lt;- ggplot(plankton_df, aes(x = date, y = abundance, color = species)) +
+  geom_line(alpha = 0.7, linewidth = 0.5)
+
+# Step 2: Proper date axis formatting
+p &lt;- p +
+  scale_x_date(
+    date_breaks = "1 year",
+    date_labels = "%Y",
+    expand = expansion(mult = 0.02)
+  ) +
+  scale_y_continuous(labels = scales::scientific)
+
+# Step 3: Clean theme and labels
+p &lt;- p +
+  labs(
+    title = "Phytoplankton Abundance in the North Sea (2015-2020)",
+    subtitle = "Daily concentrations from HAMOCC biogeochemical model output",
+    x = NULL,
+    y = expression(paste("Abundance (cells ", L^{-1}, ")")),
+    color = "Functional Type"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom",
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold")
+  )
+
+# Step 4: Split into panels by species for clarity
+p &lt;- p +
+  facet_wrap(~ species, scales = "free_y", ncol = 1)
+
+ggsave("plankton_timeseries.png", p, width = 10, height = 12, dpi = 300)</code></pre>
+
+                    <p>Each step adds exactly one conceptual layer. The <code>facet_wrap(~ species, scales = "free_y")</code> call is particularly important for ecological data: different plankton functional types can vary by orders of magnitude in abundance, so allowing each panel to have its own y-axis scale prevents the dominant species from squashing the others into flat lines. The <code>ncol = 1</code> argument stacks the panels vertically, which makes it easy to compare the timing of blooms across species even when their magnitudes differ.</p>
+
+                    <p>For presentations, I often added a vertical reference line to mark specific events, like the onset of a simulated heatwave:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># Add an annotation for a marine heatwave event
+p + geom_vline(
+    xintercept = as.Date("2018-07-01"),
+    linetype = "dashed", color = "firebrick", linewidth = 0.8
+  ) +
+  annotate("text", x = as.Date("2018-08-15"), y = Inf,
+           label = "MHW onset", vjust = 1.5, color = "firebrick",
+           fontface = "italic", size = 3.5)</code></pre>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Smoothing and Trend Lines</h2>
+
+                    <p>Raw daily plankton data is noisy. Strong seasonal cycles, interannual variability, and model spinup artifacts can make it hard to see the underlying trend. ggplot2 makes it trivial to overlay a smoothed trend line with <code>geom_smooth()</code>:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># LOESS smoothing -- ideal for non-linear ecological trends
+ggplot(plankton_df %&gt;% filter(species == "Diatoms"),
+       aes(x = date, y = abundance)) +
+  geom_line(color = "steelblue", alpha = 0.4, linewidth = 0.3) +
+  geom_smooth(
+    method = "loess",
+    span = 0.15,         # Controls smoothness: lower = more local
+    color = "darkblue",
+    fill = "lightblue",
+    alpha = 0.3
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  labs(
+    title = "Diatom Abundance with LOESS Trend",
+    x = NULL,
+    y = expression(paste("Abundance (cells ", L^{-1}, ")"))
+  ) +
+  theme_minimal(base_size = 13)</code></pre>
+
+                    <p>I chose LOESS (Locally Estimated Scatterplot Smoothing) over a simple linear regression for a specific reason: ecological time series are almost never linear. Plankton populations exhibit strong seasonal blooms (typically a spring bloom driven by light and nutrient availability, sometimes a secondary autumn bloom), and these periodic patterns would be completely missed by a straight line. LOESS fits a local polynomial at each point, weighted by neighboring observations, so it naturally captures the seasonal envelope while smoothing out day-to-day noise.</p>
+
+                    <p>The <code>span</code> parameter controls the trade-off between smoothness and fidelity. A span of 0.15 means each local fit uses roughly 15% of the data, which for a 6-year daily dataset corresponds to about 11 months -- enough to capture the seasonal pattern without overfitting to individual weeks. If you increase the span to 0.5 or higher, the curve smooths over the seasons entirely and shows only the multi-year trend. Choosing the right span is a scientific judgment call, not just a statistical one: it depends on what temporal scale you care about.</p>
+
+                    <p>For comparing smoothed trends across multiple species simultaneously, I combined LOESS with faceting:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code># Compare seasonal patterns across functional types
+ggplot(plankton_df, aes(x = date, y = abundance)) +
+  geom_line(aes(color = species), alpha = 0.3, linewidth = 0.3) +
+  geom_smooth(aes(color = species, fill = species),
+              method = "loess", span = 0.1, alpha = 0.2) +
+  facet_wrap(~ species, scales = "free_y", ncol = 2) +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none") +
+  labs(title = "Seasonal Patterns by Plankton Functional Type",
+       x = NULL,
+       y = expression(paste("Abundance (cells ", L^{-1}, ")")))</code></pre>
+
+                    <p>This kind of multi-panel exploratory figure, which would take considerable effort to build from scratch in most plotting libraries, comes together in ggplot2 with remarkable ease. It is one of the reasons R remains my go-to for statistical visualization, even when the rest of my pipeline is in Python.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is ggplot2?</p>
+                                <p>ggplot2 is an R package for data visualization based on the Grammar of Graphics, where plots are built by composing independent layers -- data, aesthetic mappings, geometric objects, scales, facets, and themes.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">When would you use it?</p>
+                                <p>For any statistical or scientific visualization in R, especially exploratory plots where you need to iterate quickly -- changing color mappings, adding facets, overlaying trend lines -- without rewriting your code from scratch.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key function to remember:</p>
+                                <pre class="bg-white rounded p-3 text-sm"><code>ggplot(df, aes(x, y)) + geom_line()</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"What is the grammar of graphics?"</p>
+                                <p>It is a data visualization philosophy where plots are constructed from composable, independent layers: <strong>data</strong> (the dataset), <strong>aesthetics</strong> (mappings from variables to visual properties like position, color, size), <strong>geometries</strong> (the visual marks -- points, lines, bars), <strong>scales</strong> (how data values map to visual values), <strong>facets</strong> (subplots by categorical variables), and <strong>themes</strong> (non-data visual styling). This decomposition makes plots modular and easy to modify incrementally.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>The <code>+</code> operator in ggplot2 is not just syntax sugar -- it reflects the core design principle that every visual element is an independent layer. You can save a base plot to a variable and add layers conditionally, making it easy to build reusable plotting functions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>
