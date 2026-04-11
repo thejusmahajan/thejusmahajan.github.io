@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Experience - Dr. Thejus Mahajan</title>
+    <title>Experience | Dr. Thejus Mahajan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-
-<body class="bg-[#07080a] text-[#e6e6fa] flex flex-col min-h-screen">
-
-    <header
-        class="sticky top-4 mt-4 mx-auto w-[95%] max-w-6xl bg-[#0a0c10]/70 backdrop-blur-lg border border-white/10/50 rounded-full shadow-lg z-50 transition-all duration-300">
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-[#e6e6fa]">Dr. Thejus Mahajan</a>
-            <div class="hidden md:flex space-x-6">
-                <a href="index.html" class="text-[#c5c5c5] hover:text-sky-600 transition">About</a>
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
                 <a href="experience.html" class="text-sky-600 font-semibold transition">Experience</a>
-                <a href="skills.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Skills</a>
-                <a href="projects.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Projects</a>
-                <a href="blog.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Blog</a>
-                <a href="mailto:thejusmahajanmarrat@gmail.com"
-                    class="text-[#c5c5c5] hover:text-sky-600 transition">Contact</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Blog</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
             </div>
-            <button id="mobile-menu-button" class="md:hidden flex items-center">
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
@@ -35,152 +30,240 @@
                 </svg>
             </button>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="index.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">About</a>
-            <a href="experience.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Experience</a>
-            <a href="skills.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Skills</a>
-            <a href="projects.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Projects</a>
-            <a href="blog.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Blog</a>
-            <a href="mailto:thejusmahajanmarrat@gmail.com"
-                class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Contact</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Blog</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12 flex-grow">
-        <section id="experience" class="py-16 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title">Experience</h2>
-                <div class="space-y-8 max-w-4xl mx-auto">
+    <main class="flex-grow pb-24">
+        <!-- Section 1: Page Header -->
+        <section class="container mx-auto px-6 pt-20 pb-16 text-center max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
+                Experience
+            </h1>
+            <p class="text-xl md:text-2xl text-sky-600 font-medium leading-relaxed">
+                A deliberate career transition from computational physics to clinical bioinformatics
+            </p>
+        </section>
 
-                    <div id="healthtwist"
-                        class="bg-[#0a0c10] p-6 rounded-lg shadow-sm border-l-4 border-sky-500 scroll-mt-24">
-                        <h3 class="text-xl font-bold text-[#e6e6fa]">Pipeline Engineering Intern</h3>
-                        <p class="text-sky-600 font-semibold">HealthTwiSt GmbH | Berlin</p>
-                        <p class="text-sm text-gray-400 mb-4">02/2026 - 04/2026</p>
-                        <ul class="list-disc list-inside text-[#c5c5c5] space-y-2">
-                            <li>Refactored the clinical DeGIR data processing pipeline in R (143,000 records, 1,920
-                                variables), maintaining sole responsibility for 2+ weeks during supervisor absence.</li>
-                            <li>Achieved a 26.5% codebase reduction by externalizing 257 hardcoded rules into 8 scalable
-                                CSV configurations.</li>
-                            <li>Authored 17 pages of interactive HTML documentation to dramatically improve onboarding
-                                and pipeline transparency.</li>
-                            <li>Identified 2 critical latent bugs within the registry logic through systematic analysis
-                                of edge cases.</li>
-                            <li>Engineered robust R functions, such as <code>grade_complication()</code>, to
-                                intelligently handle asymmetric clinical inputs and missing data parameters.</li>
+        <!-- Section 2: Professional Experience Timeline -->
+        <section class="container mx-auto px-6 max-w-4xl mb-20">
+            <div class="relative border-l-2 border-sky-600 pl-8 space-y-12">
+                
+                <!-- Entry 1: Internship -->
+                <div class="relative group">
+                    <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full bg-sky-600 border-4 border-gray-50 shadow"></span>
+                    <div class="bg-white rounded-xl shadow-lg border-2 border-sky-100 p-8 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl md:text-2xl font-bold text-gray-900">Internship — Clinical Data Analysis & ML in R</h3>
+                                <p class="text-lg text-sky-600 font-semibold mt-1">HealthTwiSt GmbH, Berlin</p>
+                            </div>
+                            <span class="inline-block bg-sky-50 text-sky-700 text-sm font-bold px-3 py-1 rounded-full mt-2 md:mt-0 whitespace-nowrap">
+                                February 2026 — April 2026
+                            </span>
+                        </div>
+                        <ul class="list-disc list-outside ml-5 text-gray-700 space-y-2 leading-relaxed">
+                            <li>Refactored a 1,834-line R data pipeline processing 143,000+ annual patient records from 300+ German radiology clinics (DeGIR registry)</li>
+                            <li>Reduced codebase by 26.5% while maintaining byte-identical output, verified with R's identical() function</li>
+                            <li>Extracted 257 hardcoded business rules into 8 configuration CSV files, enabling non-programmer rule editing</li>
+                            <li>Created the degirtools R package (9 functions) with roxygen2 documentation</li>
+                            <li>Built an interactive Shiny dashboard for clinical quality metrics visualization (plotly, DT, bslib)</li>
+                            <li>Wrote Tidymodels teaching materials replacing legacy caret framework for ML workflows</li>
                         </ul>
                     </div>
+                </div>
 
-                    <div class="bg-[#0a0c10] p-6 rounded-lg shadow-sm border-l-4 border-sky-500">
-                        <h3 class="text-xl font-bold text-[#e6e6fa]">Further Training - Bioinformatics & Biostatistics
-                        </h3>
-                        <p class="text-sky-600 font-semibold">CQ Beratung + Bildung GmbH | Berlin, Germany</p>
-                        <p class="text-sm text-gray-400 mb-4">08/2025 - 02/2026</p>
-                        <ul class="list-disc list-inside text-[#c5c5c5] space-y-1">
-                            <li>Programming methodology: Shell (BASH), Python (object-oriented), R.</li>
-                            <li>Bioinformatics databases (NCBI, Biopython, SQL) and sequence analysis.</li>
-                            <li>NGS analysis pipelines (Nextflow, Galaxy); structural bioinformatics.</li>
-                            <li>Clinical biostatistics (R/Bioconductor, ANOVA, PCA, HCA, survival analysis); GDPR/BDSG
-                                compliance.</li>
+                <!-- Entry 2: Further Training -->
+                <div class="relative group">
+                    <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full bg-white border-4 border-sky-600"></span>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900">Further Training — Bioinformatics & Biostatistics</h3>
+                                <p class="text-gray-600 font-medium mt-1">CQ Beratung + Bildung, Berlin</p>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-500 mt-2 md:mt-0 whitespace-nowrap">
+                                August 2025 — April 2026
+                            </span>
+                        </div>
+                        <ul class="list-disc list-outside ml-5 text-gray-700 space-y-2 leading-relaxed">
+                            <li>Intensive program covering Python, Bash scripting, SQL, and object-oriented programming</li>
+                            <li>Bioinformatics: sequence analysis, structural bioinformatics, NGS analysis (Nextflow, Galaxy)</li>
+                            <li>Biostatistics: ANOVA, PCA, hierarchical clustering, survival analysis using R/Bioconductor</li>
+                            <li>Hands-on work with real and simulated clinical patient datasets</li>
                         </ul>
                     </div>
+                </div>
 
-                    <div class="bg-[#0a0c10] p-6 rounded-lg shadow-sm border-l-4 border-sky-500">
-                        <h3 class="text-xl font-bold text-[#e6e6fa]">Guest Scientist</h3>
-                        <p class="text-sky-600 font-semibold">Helmholtz-Zentrum Hereon | Geesthacht, Germany</p>
-                        <p class="text-sm text-gray-400 mb-4">05/2025 - 10/2025</p>
-                        <p class="text-[#c5c5c5] italic mb-2">Computational Biologist &amp; Systems Modeler</p>
-                        <ul class="list-disc list-inside text-[#c5c5c5] space-y-1">
-                            <li>Spearheaded research modeling evolutionary processes in marine ecosystems.</li>
-                            <li>Applied advanced computational techniques to simulate long-term environmental impacts.
-                            </li>
+                <!-- Entry 3: Guest Scientist -->
+                <div class="relative group">
+                    <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full bg-white border-4 border-sky-600"></span>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900">Guest Scientist — Computational Biology & Ecosystem Modeling</h3>
+                                <p class="text-gray-600 font-medium mt-1">Helmholtz-Zentrum Hereon, Geesthacht</p>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-500 mt-2 md:mt-0 whitespace-nowrap">
+                                May 2025 — October 2025
+                            </span>
+                        </div>
+                        <ul class="list-disc list-outside ml-5 text-gray-700 space-y-2 leading-relaxed">
+                            <li>Modeled evolutionary processes in marine ecosystems using computational simulation techniques</li>
+                            <li>Continued collaboration on large-scale environmental data analysis</li>
                         </ul>
                     </div>
+                </div>
 
-                    <div class="bg-[#0a0c10] p-6 rounded-lg shadow-sm border-l-4 border-sky-500">
-                        <h3 class="text-xl font-bold text-[#e6e6fa]">Post-doctoral Scientist</h3>
-                        <p class="text-sky-600 font-semibold">University of Hamburg | Hamburg, Germany</p>
-                        <p class="text-sm text-gray-400 mb-4">08/2021 - 01/2025</p>
-                        <p class="text-[#c5c5c5] italic mb-2">Institute of Marine Ecosystem and Fisheries Sciences</p>
-                        <ul class="list-disc list-inside text-[#c5c5c5] space-y-1">
-                            <li><i>Elternzeit (Parental Leave) from 01/2024 to 12/2024.</i></li>
-                            <li>Developed the novel ``Cyanobacteria Life Cycle'' (CLC) model within the ERGOM framework
-                                for climate warming projections.</li>
-                            <li>Engineered models in Fortran and analyzed large NetCDF datasets using Python in Linux.
-                            </li>
-                            <li>Statistical analysis and visualization of ecological time-series data using R.</li>
+                <!-- Entry 4: Post-doctoral Scientist -->
+                <div class="relative group">
+                    <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full bg-white border-4 border-sky-600"></span>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900">Post-doctoral Scientist — Marine Ecosystem Modeling</h3>
+                                <p class="text-gray-600 font-medium mt-1">University of Hamburg, Institute of Marine Ecosystem and Fisheries Sciences</p>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-500 mt-2 md:mt-0 whitespace-nowrap">
+                                August 2021 — January 2025
+                            </span>
+                        </div>
+                        <ul class="list-disc list-outside ml-5 text-gray-700 space-y-2 leading-relaxed">
+                            <li>Developed the Cyanobacteria Life Cycle (CLC) model within the ERGOM biogeochemical framework</li>
+                            <li>Engineered simulation models in Fortran and analyzed large NetCDF datasets using Python</li>
+                            <li>Performed statistical analysis and visualization of ecological time-series data using R and ggplot2</li>
+                            <li>Managed multi-year hindcast and projection experiments on HPC clusters</li>
                         </ul>
                     </div>
+                </div>
 
-                    <div class="bg-[#0a0c10] p-6 rounded-lg shadow-sm border-l-4 border-sky-500">
-                        <h3 class="text-xl font-bold text-[#e6e6fa]">Physics Educator</h3>
-                        <p class="text-sky-600 font-semibold">Tutorwaves Solutions Inc / Freelance | Kerala, India</p>
-                        <p class="text-sm text-gray-400 mb-4">10/2018 - 03/2021</p>
-                        <p class="text-[#c5c5c5] mb-2">Prepared physics content for competitive examinations and coached
-                            state-level chess teams.</p>
-                    </div>
-
-                    <div class="bg-[#0a0c10] p-6 rounded-lg shadow-sm border-l-4 border-sky-500">
-                        <h3 class="text-xl font-bold text-[#e6e6fa]">Ph.D. Researcher in Astrochemistry</h3>
-                        <p class="text-sky-600 font-semibold">University of Paris-Saclay | Orsay, France</p>
-                        <p class="text-sm text-gray-400 mb-4">10/2015 - 09/2018</p>
-                        <p class="text-[#c5c5c5] italic mb-2">Led atomic collision experiments, analyzed data, and
-                            modeled outcomes.</p>
-                        <ul class="list-disc list-inside text-[#c5c5c5] space-y-1">
-                            <li>Acquired terabytes of scientific imaging data from a tandem particle accelerator.</li>
-                            <li>Applied image processing and clustering techniques (Python/C++) for heavy ion
-                                fragmentation dynamics.</li>
-                            <li>Authored 3 peer-reviewed articles.</li>
+                <!-- Entry 5: Ph.D. Researcher -->
+                <div class="relative group">
+                    <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full bg-white border-4 border-sky-600"></span>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-bold text-gray-900">Ph.D. Researcher — Astrochemistry</h3>
+                                <p class="text-gray-600 font-medium mt-1">Université Paris-Saclay, Institut des Sciences Moléculaires d'Orsay</p>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-500 mt-2 md:mt-0 whitespace-nowrap">
+                                October 2015 — September 2018
+                            </span>
+                        </div>
+                        <ul class="list-disc list-outside ml-5 text-gray-700 space-y-2 leading-relaxed">
+                            <li>Led particle collision experiments on a tandem accelerator, processing terabytes of experimental data</li>
+                            <li>Developed signal processing algorithms in C++ for noise cancellation and data conversion</li>
+                            <li>Built a molecular fragmentation model contributing to the KIDA astrochemistry database</li>
+                            <li>Published 5 peer-reviewed papers in Journal of Physics B and Astronomy & Astrophysics</li>
                         </ul>
                     </div>
+                </div>
 
+                <!-- Entry 6: Teaching & Mentoring -->
+                <div class="relative group">
+                    <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full bg-white border-4 border-gray-300"></span>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">Physics Instructor & Mentor</h3>
+                                <p class="text-gray-500 text-sm mt-1">Tutorwaves Solutions / Self-Employed, Kerala, India</p>
+                            </div>
+                            <span class="text-sm font-medium text-gray-400 mt-2 md:mt-0 whitespace-nowrap">
+                                February 2019 — March 2021
+                            </span>
+                        </div>
+                        <ul class="list-disc list-outside ml-5 text-gray-600 text-sm space-y-1">
+                            <li>Provided remote physics tutoring and exam preparation for graduate-level students</li>
+                            <li>Coached chess at the competitive level, developing strategic problem-solving skills</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 3: Education -->
+        <section class="container mx-auto px-6 max-w-4xl mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 border-b pb-2 border-gray-200">Education</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white shadow-sm hover:shadow-md transition-shadow rounded-xl p-6 border-t-4 border-sky-600">
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">Ph.D. in Astrochemistry</h3>
+                    <p class="text-sky-600 font-medium text-sm mb-1">Université Paris-Saclay, France</p>
+                    <p class="text-gray-500 text-sm">2015 – 2018</p>
+                </div>
+                <div class="bg-white shadow-sm hover:shadow-md transition-shadow rounded-xl p-6 border-t-4 border-sky-600">
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">M.Sc. in Physics</h3>
+                    <p class="text-sky-600 font-medium text-sm mb-1">National Institute of Technology Calicut, India</p>
+                    <p class="text-gray-700 font-semibold text-sm mb-1">CGPA: 8.2/10</p>
+                    <p class="text-gray-500 text-sm">2012 – 2015</p>
+                </div>
+                <div class="bg-white shadow-sm hover:shadow-md transition-shadow rounded-xl p-6 border-t-4 border-sky-600">
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">B.Sc. in Physics</h3>
+                    <p class="text-sky-600 font-medium text-sm mb-1">University of Calicut, India</p>
+                    <p class="text-gray-500 text-sm">2009 – 2012</p>
                 </div>
             </div>
         </section>
 
-        <section id="education" class="py-16">
-            <div class="container mx-auto px-6">
-                <h2 class="section-title">Education</h2>
-                <div class="grid md:grid-cols-3 gap-8 text-center">
-                    <div class="bg-[#0a0c10] p-6 rounded-lg shadow hover:shadow-md transition">
-                        <h3 class="font-bold text-lg text-[#e6e6fa]">Ph.D. in Astrochemistry</h3>
-                        <p class="text-sky-600">Université Paris-Saclay</p>
-                        <p class="text-sm text-gray-400">2015 - 2018 | France</p>
-                    </div>
-                    <div class="bg-[#0a0c10] p-6 rounded-lg shadow hover:shadow-md transition">
-                        <h3 class="font-bold text-lg text-[#e6e6fa]">M.Sc. in Physics</h3>
-                        <p class="text-sky-600">NIT Calicut</p>
-                        <p class="text-sm text-gray-400">2012 - 2015 | India</p>
-                    </div>
-                    <div class="bg-[#0a0c10] p-6 rounded-lg shadow hover:shadow-md transition">
-                        <h3 class="font-bold text-lg text-[#e6e6fa]">B.Sc. in Physics</h3>
-                        <p class="text-sky-600">University of Calicut</p>
-                        <p class="text-sm text-gray-400">2009 - 2012 | India</p>
-                    </div>
+        <!-- Section 4: Certifications & Training -->
+        <section class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-2 border-gray-200">Certifications & Training</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white border border-gray-100 shadow-sm rounded-lg p-5 text-center hover:shadow-md hover:border-sky-100 transition-all">
+                    <h4 class="font-bold text-gray-800 text-sm mb-1">Goethe-Zertifikat B1</h4>
+                    <p class="text-xs text-gray-600">Goethe-Institut, July 2025</p>
+                </div>
+                <div class="bg-white border border-gray-100 shadow-sm rounded-lg p-5 text-center hover:shadow-md hover:border-sky-100 transition-all">
+                    <h4 class="font-bold text-gray-800 text-sm mb-1">Leben in Deutschland Test</h4>
+                    <p class="text-xs text-gray-600">Passed</p>
+                </div>
+                <div class="bg-white border border-gray-100 shadow-sm rounded-lg p-5 text-center hover:shadow-md hover:border-sky-100 transition-all">
+                    <h4 class="font-bold text-gray-800 text-sm mb-1">HPC Training</h4>
+                    <p class="text-xs text-gray-600">Jülich Supercomputing Centre (JSC)</p>
+                </div>
+                <div class="bg-white border border-gray-100 shadow-sm rounded-lg p-5 text-center hover:shadow-md hover:border-sky-100 transition-all">
+                    <h4 class="font-bold text-gray-800 text-sm mb-1">MITx 7.00x</h4>
+                    <p class="text-xs text-gray-600">Introduction to Biology: The Secret of Life</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer id="contact" class="bg-[#07080a] text-white mt-auto">
-        <div class="container mx-auto px-6 py-12 text-center">
-            <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
-            <p class="mb-8 max-w-xl mx-auto">I'm currently seeking opportunities in bioinformatics and biostatistics.
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">
+                I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics. I would love to connect and discuss how my skills can contribute to your team.
             </p>
-            <div class="flex justify-center space-x-6">
-                <a href="mailto:thejusmahajanmarrat@gmail.com"
-                    class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">Email
-                    Me</a>
-                <a href="https://www.linkedin.com/in/thejusmahajan" target="_blank"
-                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">LinkedIn</a>
-                <a href="https://github.com/thejusmahajan" target="_blank"
-                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">GitHub</a>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com"
+                    class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">
+                    Email Me
+                </a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    LinkedIn
+                </a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    GitHub
+                </a>
+                <a href="https://scholar.google.com/citations?hl=en&user=PJkZwAwAAAAJ" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    Google Scholar
+                </a>
             </div>
-            <p class="mt-10 text-gray-400 text-sm">&copy; 2025 Thejus Mahajan. All Rights Reserved.</p>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
         </div>
     </footer>
-
     <script src="js/main.js"></script>
 </body>
-
 </html>

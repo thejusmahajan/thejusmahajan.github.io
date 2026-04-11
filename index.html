@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Thejus Mahajan - Computational Biologist & Data Scientist</title>
+    <title>Dr. Thejus Mahajan | Clinical Bioinformatics & Biostatistics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,22 +12,21 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="bg-[#07080a] text-[#e6e6fa] flex flex-col min-h-screen">
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
 
-    <header
-        class="sticky top-4 mt-4 mx-auto w-[95%] max-w-6xl bg-[#0a0c10]/70 backdrop-blur-lg border border-white/10/50 rounded-full shadow-lg z-50 transition-all duration-300">
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-[#e6e6fa]">Dr. Thejus Mahajan</a>
-            <div class="hidden md:flex space-x-6">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
                 <a href="index.html" class="text-sky-600 font-semibold transition">About</a>
-                <a href="experience.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Experience</a>
-                <a href="skills.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Skills</a>
-                <a href="projects.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Projects</a>
-                <a href="blog.html" class="text-[#c5c5c5] hover:text-sky-600 transition">Blog</a>
-                <a href="mailto:thejusmahajanmarrat@gmail.com"
-                    class="text-[#c5c5c5] hover:text-sky-600 transition">Contact</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Blog</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
             </div>
-            <button id="mobile-menu-button" class="md:hidden flex items-center">
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
@@ -35,386 +34,115 @@
                 </svg>
             </button>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="index.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">About</a>
-            <a href="experience.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Experience</a>
-            <a href="skills.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Skills</a>
-            <a href="projects.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Projects</a>
-            <a href="blog.html" class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Blog</a>
-            <a href="mailto:thejusmahajanmarrat@gmail.com"
-                class="block py-2 px-4 text-sm hover:bg-[#0a0c10]/10">Contact</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Blog</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
         </div>
     </header>
 
-    <main class="flex-grow bg-[#07080a]">
-        <!-- Premium Hero Section -->
-        <section class="relative bg-[#0a0c10] text-white border-b border-white/10 overflow-hidden py-20 lg:py-28">
-            <div class="absolute inset-0 bg-transparent"></div>
-            <!-- Metakorteks-style Viewport Glows -->
-            <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-sky-500/30 blur-[120px]">
-                </div>
-                <div class="absolute top-[20%] -right-[10%] w-[40%] h-[40%] rounded-full bg-[#3b82f6]/30 blur-[120px]">
-                </div>
-                <div
-                    class="absolute -bottom-[20%] left-[20%] w-[60%] h-[60%] rounded-full bg-purple-500/20 blur-[140px]">
-                </div>
-            </div>
-            <div class="container mx-auto px-6 relative z-10 text-center flex flex-col items-center">
-                <div
-                    class="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold tracking-wide border border-emerald-200 mb-8 shadow-sm">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Available for Bioinformatics Roles (All over Germany / Remote)</span>
-                </div>
-
-                <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6">
-                    Translating Terabytes into <br />
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-emerald-500">Biological
-                        Impact.</span>
-                </h1>
-
-                <p class="text-xl text-[#c5c5c5] max-w-3xl mx-auto leading-relaxed text-balance mb-10">
-                    Computational Biologist & Data Scientist specializing in
-                    <strong class="text-[#e6e6fa]">Nextflow</strong>,
-                    <strong class="text-[#e6e6fa]">Machine Learning</strong>, and <strong class="text-[#e6e6fa]">NGS
-                        Data Analysis</strong>. I architect robust,
-                    reproducible workflows to decode complex life science data.
-                </p>
-
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
-                    <a href="projects.html"
-                        class="w-full sm:w-auto px-8 py-4 bg-[#c5c5c5] border border-transparent text-[#07080a] hover:text-white hover:border-[#c5c5c5] font-bold rounded-2xl hover:bg-transparent hover:text-white hover:border-slate-900 transition-all duration-300 shadow-xl hover:shadow-2xl">
-                        Explore My Pipelines
-                    </a>
-                    <a href="mailto:thejusmahajanmarrat@gmail.com"
-                        class="w-full sm:w-auto px-8 py-4 bg-[#0a0c10] border border-white/20 text-[#e6e6fa] font-bold rounded-2xl hover:bg-[#07080a] hover:border-slate-400 transition-all duration-300 shadow-sm hover:shadow-md">
-                        Contact Me Directly
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Recruiter Highlights Strip (Stats) -->
-        <section class="relative z-20 -mt-10 mx-6 lg:mx-auto max-w-6xl">
-            <div
-                class="bg-[#0a0c10] rounded-2xl shadow-xl border border-white/10 p-8 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x divide-white/10">
-                <a href="experience.html#healthtwist"
-                    class="block px-2 group cursor-pointer transition-transform hover:-translate-y-1">
-                    <p class="text-4xl font-extrabold text-sky-600 mb-1 group-hover:text-sky-500 transition-colors">
-                        26.5%</p>
-                    <p
-                        class="text-sm text-gray-400 font-bold uppercase tracking-wider group-hover:text-[#e6e6fa] transition-colors">
-                        Code Reduction</p>
-                    <p class="text-xs text-slate-400 mt-2 group-hover:text-sky-600 transition-colors">View HealthTwiSt
-                        Details &rarr;</p>
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="container mx-auto px-6 pt-24 pb-20 text-center max-w-5xl">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
+                Dr. Thejus Mahajan
+            </h1>
+            <p class="text-2xl md:text-3xl text-sky-600 font-semibold mb-6">
+                Computational Scientist Transitioning to Clinical Bioinformatics & Biostatistics
+            </p>
+            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto mb-10 leading-relaxed">
+                PhD-level researcher with 10+ years in computational modeling, now trained in NGS analysis, applied biostatistics, and clinical data pipelines using R and Python.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="projects.html" class="w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-all duration-300">
+                    View My Projects
                 </a>
-                <div class="px-2">
-                    <p class="text-4xl font-extrabold text-sky-600 mb-1">143K</p>
-                    <p class="text-sm text-gray-400 font-bold uppercase tracking-wider">Clinical Records</p>
-                    <p class="text-xs text-slate-400 mt-2">Processed w/ byte-level checks</p>
-                </div>
-                <div class="px-2">
-                    <p class="text-4xl font-extrabold text-sky-600 mb-1">Ph.D.</p>
-                    <p class="text-sm text-gray-400 font-bold uppercase tracking-wider">Astrochemistry</p>
-                    <p class="text-xs text-slate-400 mt-2">Université Paris-Saclay</p>
-                </div>
-                <div class="px-2">
-                    <p class="text-4xl font-extrabold text-sky-600 mb-1">3+ Yrs</p>
-                    <p class="text-sm text-gray-400 font-bold uppercase tracking-wider">Systems Modeling</p>
-                    <p class="text-xs text-slate-400 mt-2">Fortran, R & NetCDF Analysis</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Core Capabilities Grid -->
-        <section class="py-24">
-            <div class="container mx-auto px-6 max-w-6xl">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl lg:text-4xl font-extrabold text-white">Core Bioinformatics Capabilities</h2>
-                    <p class="text-lg text-[#c5c5c5] mt-4 max-w-2xl mx-auto">Bridging the gap between strict software
-                        engineering principles and cutting-edge biological data analysis.</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Capability 1 -->
-                    <div
-                        class="bg-[#0a0c10] p-8 rounded-2xl border border-white/10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                        <div
-                            class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 mb-6 group-hover:bg-sky-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                                </path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Pipeline Engineering</h3>
-                        <p class="text-[#c5c5c5] leading-relaxed mb-4">
-                            Architecting scalable, reproducible NGS workflows using <strong
-                                class="text-[#e6e6fa]">Nextflow DSL2</strong> and <strong
-                                class="text-[#e6e6fa]">Bash</strong>. Extensive experience refactoring legacy clinical
-                            pipelines into robust, modular architectures.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">Nextflow</span>
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">Conda</span>
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">Bash</span>
-                        </div>
-                    </div>
-
-                    <!-- Capability 2 -->
-                    <div
-                        class="bg-[#0a0c10] p-8 rounded-2xl border border-white/10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                        <div
-                            class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                </path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Machine Learning & Stats</h3>
-                        <p class="text-[#c5c5c5] leading-relaxed mb-4">
-                            Applying predictive modeling using the <strong class="text-[#e6e6fa]">Tidymodels</strong>
-                            ecosystem in R (recipes, parsnip). Proficient in PCA, survival analysis, clustering, and
-                            evaluating model performance.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">R</span>
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">Tidymodels</span>
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">Biostatistics</span>
-                        </div>
-                    </div>
-
-                    <!-- Capability 3 -->
-                    <div
-                        class="bg-[#0a0c10] p-8 rounded-2xl border border-white/10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                        <div
-                            class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
-                                </path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">NGS Data Analysis</h3>
-                        <p class="text-[#c5c5c5] leading-relaxed mb-4">
-                            Deeply motivated to parse complex biological datasets. Utilizing <strong
-                                class="text-[#e6e6fa]">Python</strong>, <strong
-                                class="text-[#e6e6fa]">Bioconductor</strong>, and modern tools to build reproducible
-                            pipelines for viral genomics and sequence alignment.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">Python</span>
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">Bioconductor</span>
-                            <span
-                                class="px-2 py-1 bg-[#0a0c10]/10 text-[#e6e6fa] text-xs font-semibold rounded-md">Genomics</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Impact Case Studies -->
-        <section class="py-24 bg-[#07080a] border-t border-white/10">
-            <div class="container mx-auto px-6 max-w-6xl">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl lg:text-4xl font-extrabold text-white">Featured Case Studies</h2>
-                    <p class="text-lg text-[#c5c5c5] mt-4 max-w-2xl mx-auto">High-impact projects demonstrating robust
-                        pipeline engineering and reproducible data analysis.</p>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-10">
-                    <!-- Case Study 1: HealthTwiSt -->
-                    <div
-                        class="bg-[#0a0c10] rounded-2xl overflow-hidden shadow-lg border border-white/10 hover:shadow-xl transition-shadow flex flex-col group">
-                        <div class="h-3 bg-gradient-to-r from-sky-400 to-sky-600"></div>
-                        <div class="p-8 flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <h3 class="text-2xl font-bold text-white">Clinical Pipeline Refactoring</h3>
-                                <span
-                                    class="px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-xs font-bold uppercase tracking-wide">R
-                                    & Configs</span>
-                            </div>
-                            <p class="text-sky-600 font-semibold mb-6">HealthTwiSt GmbH</p>
-
-                            <div class="mb-5">
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Problem
-                                </h4>
-                                <p class="text-[#c5c5c5] text-sm leading-relaxed">A legacy monolithic R pipeline for
-                                    processing 143k clinical records was bloated with hardcoded rules, making it brittle
-                                    and difficult to onboard new team members.</p>
-                            </div>
-
-                            <div class="mb-5">
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Approach
-                                </h4>
-                                <p class="text-[#c5c5c5] text-sm leading-relaxed">Systematically decoupled logic from
-                                    data by extracting 257 clinical rules into 8 scalable CSV configurations. Engineered
-                                    robust handling functions like <code>grade_complication()</code> for asymmetric
-                                    inputs.</p>
-                            </div>
-
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Impact
-                                </h4>
-                                <ul class="text-[#c5c5c5] text-sm leading-relaxed list-disc list-inside space-y-1">
-                                    <li><strong>26.5% reduction</strong> in total codebase size.</li>
-                                    <li>Zero loss of functionality (verified via byte-level checks).</li>
-                                    <li>Identified and patched 2 critical latent bugs in registry logic.</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div
-                            class="p-6 bg-[#07080a] border-t border-white/10 mt-auto transition-colors group-hover:bg-sky-50">
-                            <a href="experience.html#healthtwist"
-                                class="text-sky-600 font-semibold hover:text-sky-700 flex items-center gap-2">Read Full
-                                Experience Details &rarr;</a>
-                        </div>
-                    </div>
-
-                    <!-- Case Study 2: Hepatitis Delta -->
-                    <div
-                        class="bg-[#0a0c10] rounded-2xl overflow-hidden shadow-lg border border-white/10 hover:shadow-xl transition-shadow flex flex-col group">
-                        <div class="h-3 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
-                        <div class="p-8 flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <h3 class="text-2xl font-bold text-white">Hepatitis Delta Virus Pipeline</h3>
-                                <span
-                                    class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wide">Nextflow
-                                    DSL2</span>
-                            </div>
-                            <p class="text-emerald-600 font-semibold mb-6">Open Source Project</p>
-
-                            <div class="mb-5">
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Problem
-                                </h4>
-                                <p class="text-[#c5c5c5] text-sm leading-relaxed">Analyzing 151 HDV genome sequence data
-                                    sequences manually is slow, error-prone, and suffers from the "works on my machine"
-                                    reproducibility problem endemic in bioinformatics.</p>
-                            </div>
-
-                            <div class="mb-5">
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Approach
-                                </h4>
-                                <p class="text-[#c5c5c5] text-sm leading-relaxed">Architected an end-to-end, automated
-                                    Nextflow DSL2 workflow integrating MAFFT and trimAl. Utilized Conda environments
-                                    natively within processes to guarantee exact tool versions on any compute node.</p>
-                            </div>
-
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The Impact
-                                </h4>
-                                <ul class="text-[#c5c5c5] text-sm leading-relaxed list-disc list-inside space-y-1">
-                                    <li>Achieved <strong>100% computational reproducibility</strong> across distributed
-                                        environments.</li>
-                                    <li>Automated phylogenetic signal enhancement via strict gap thresholds.</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div
-                            class="p-6 bg-[#07080a] border-t border-white/10 flex flex-wrap gap-6 mt-auto transition-colors group-hover:bg-emerald-50">
-                            <a href="https://github.com/thejusmahajan/Hepatitis-Delta-virus-Nextflow-pipeline"
-                                target="_blank"
-                                class="text-emerald-600 font-semibold hover:text-emerald-700 flex items-center gap-2">View
-                                Code on GitHub &rarr;</a>
-                            <a href="blog.html#hepatitis-delta-pipeline"
-                                class="text-[#c5c5c5] font-semibold hover:text-[#e6e6fa] flex items-center gap-2">Read
-                                Tech Write-up &rarr;</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center mt-12">
-                    <a href="projects.html"
-                        class="inline-flex items-center px-8 py-3 border-2 border-white/20 text-[#c5c5c5] font-semibold rounded-lg hover:border-slate-800 hover:text-white transition-colors">
-                        View All Projects
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Narrative Section -->
-        <section id="about" class="py-24 bg-[#0a0c10] border-t border-white/10">
-            <div class="container mx-auto px-6 max-w-5xl">
-                <div class="flex flex-col md:flex-row items-center gap-16">
-                    <div class="md:w-1/3 relative">
-                        <div class="absolute inset-0 bg-sky-100 rounded-full transform translate-x-4 translate-y-4">
-                        </div>
-                        <img src="images/faceshot_tilted_01.png" alt="Thejus Mahajan"
-                            class="relative z-10 rounded-full shadow-2xl border-4 border-white object-cover aspect-square">
-                    </div>
-                    <div class="md:w-2/3">
-                        <h2 class="text-3xl font-bold text-white mb-6">The Professional Journey</h2>
-                        <p class="text-lg leading-relaxed text-[#c5c5c5] mb-6">
-                            With a Ph.D. in Astrochemistry, my foundation is built on analyzing terabytes of raw
-                            particle data, performing heavy noise cancellation in C++, and modeling physical dynamics.
-                            Recognizing the immense potential of computational tech in biology, I fully pivoted into
-                            bioinformatics.
-                        </p>
-                        <p class="text-lg leading-relaxed text-[#c5c5c5] mb-8">
-                            Today, I am actively refactoring a major clinical pipeline at HealthTwiSt GmbH, while
-                            eagerly targeting impactful roles across Germany. I bring the deep rigor of
-                            physics, the precision of a pipeline engineer, and the analytical depth required to tackle
-                            today's most challenging single-cell biological datasets.
-                        </p>
-                        <a href="experience.html"
-                            class="inline-flex items-center space-x-2 px-8 py-3 bg-slate-900 border border-transparent hover:bg-transparent hover:text-white hover:border-slate-900 text-white font-semibold rounded-2xl transition-all duration-300 shadow-md hover:shadow-xl">
-                            <span>View Full Experience Timeline</span>
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Publications Section -->
-        <section class="py-16 bg-[#0a0c10] border-y border-white/10">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl font-bold text-white mb-6">Publications & Academic Impact</h2>
-                <p class="text-lg text-[#c5c5c5] max-w-2xl mx-auto mb-8 leading-relaxed">
-                    My doctoral research in Astrochemistry at the Université Paris-Saclay resulted in <strong>3
-                        peer-reviewed articles</strong> in high-impact journals, demonstrating my ability to conduct
-                    rigorous scientific research, analyze massive raw datasets, and communicate complex findings.
-                </p>
-                <a href="https://scholar.google.com/citations?user=PJkZwAwAAAAJ" target="_blank"
-                    class="inline-flex items-center gap-2 px-8 py-3 bg-slate-900 border border-transparent hover:bg-transparent hover:text-white hover:border-slate-900 text-white font-semibold rounded-2xl transition-all duration-300 shadow-md hover:shadow-xl">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-12a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-1c-1.16 0-2.31.25-3.37.75l-4-3.5 7.37-6.52 7.38 6.52-4 3.5c-1.06-.5-2.21-.75-3.38-.75z" />
-                    </svg>
-                    View My Google Scholar Profile
+                <a href="assets/Thejus_Mahajan_CV.pdf" class="w-full sm:w-auto bg-transparent border-2 border-gray-700 text-gray-700 hover:bg-gray-100 hover:text-gray-900 font-semibold py-3 px-8 rounded-lg transition-all duration-300">
+                    Download CV
                 </a>
             </div>
         </section>
 
+        <!-- Key Highlights Section -->
+        <section class="container mx-auto px-6 py-12 max-w-6xl">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white shadow-sm rounded-xl p-6 border-t-4 border-sky-600 hover:shadow-md transition-shadow">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">5 Publications</h3>
+                    <p class="text-sm text-gray-600 leading-snug">Peer-reviewed research in physics, astrochemistry, and ecology</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white shadow-sm rounded-xl p-6 border-t-4 border-sky-600 hover:shadow-md transition-shadow">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">300+ Clinics</h3>
+                    <p class="text-sm text-gray-600 leading-snug">Refactored medical data pipeline serving the German DeGIR registry</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white shadow-sm rounded-xl p-6 border-t-4 border-sky-600 hover:shadow-md transition-shadow">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">10+ Years</h3>
+                    <p class="text-sm text-gray-600 leading-snug">Experience in computational modeling and large-scale data analysis</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-white shadow-sm rounded-xl p-6 border-t-4 border-sky-600 hover:shadow-md transition-shadow">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">R + Python</h3>
+                    <p class="text-sm text-gray-600 leading-snug">Proficient in Bioconductor, Tidymodels, scikit-learn, Pandas, ggplot2</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Summary (About Me) -->
+        <section class="container mx-auto px-6 py-20 max-w-5xl">
+            <div class="bg-white shadow-sm rounded-2xl overflow-hidden p-8 md:p-12 border border-gray-100">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
+                        <img src="images/faceshot_tilted_01.png" alt="Dr. Thejus Mahajan" class="w-full h-full object-cover rounded-full shadow-lg border-4 border-white">
+                    </div>
+                    <div class="text-gray-700 text-lg leading-relaxed space-y-6">
+                        <p>
+                            I am a computational scientist with a Ph.D. in Astrochemistry (Université Paris-Saclay) and 3.5 years of post-doctoral research in marine ecosystem modeling at the University of Hamburg. After building deep expertise in statistical modeling, large-scale data analysis (terabytes), and scientific computing with R, Python, Fortran, and C++, I made a deliberate career transition into clinical bioinformatics and biostatistics.
+                        </p>
+                        <p>
+                            I recently completed intensive training in bioinformatics and biostatistics (CQ Beratung + Bildung, Berlin), covering NGS analysis, sequence alignment, SQL, and applied biostatistics with clinical datasets. During my internship at HealthTwiSt GmbH, I refactored a medical data pipeline used by 300+ German radiology clinics and built an interactive Shiny dashboard for clinical quality metrics.
+                        </p>
+                        <p>
+                            I am now seeking a position in clinical biostatistics, bioinformatics, or health data science where I can apply my computational skills to research that directly impacts patient outcomes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer id="contact" class="bg-[#07080a] text-white mt-auto">
-        <div class="container mx-auto px-6 py-12 text-center">
-            <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
-            <p class="mb-8 max-w-xl mx-auto">I'm currently seeking opportunities in bioinformatics and biostatistics.
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">
+                I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics. I would love to connect and discuss how my skills can contribute to your team.
             </p>
-            <div class="flex justify-center space-x-6">
-                <a href="mailto:thejusmahajanmarrat@gmail.com"
-                    class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">Email
-                    Me</a>
-                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank"
-                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">LinkedIn</a>
-                <a href="https://github.com/thejusmahajan" target="_blank"
-                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300">GitHub</a>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejusmahajan@gmail.com"
+                    class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">
+                    Email Me
+                </a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    LinkedIn
+                </a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    GitHub
+                </a>
+                <a href="https://scholar.google.com/citations?hl=en&user=PJkZwAwAAAAJ" target="_blank" rel="noopener noreferrer"
+                    class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                    Google Scholar
+                </a>
             </div>
-            <p class="mt-10 text-gray-400 text-sm">&copy; 2025 Thejus Mahajan. All Rights Reserved.</p>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
         </div>
     </footer>
 
