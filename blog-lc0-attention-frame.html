@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mirror in the Machine: Debugging Attention Extraction from a Chess Transformer - Dr. Thejus Mahajan</title>
+    <meta name="description" content="How a coordinate-frame error silently mirrored half of every attention map extracted from a 15-layer neural network, why no test caught it, and how it was found.">
+    <meta property="og:image" content="images/faceshot_tilted_01.png">
+    <meta name="keywords" content="mechanistic interpretability, PyTorch, transformer attention, forward hooks, ONNX, neural networks, Leela Chess Zero, machine learning">
+    <meta name="author" content="Dr. Thejus Mahajan">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 relative">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-gray-900 tracking-tight">Thejus Mahajan</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-sky-600 font-medium transition">About</a>
+                <a href="experience.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Experience</a>
+                <a href="skills.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Skills</a>
+                <a href="projects.html" class="text-gray-600 hover:text-sky-600 font-medium transition">Projects</a>
+                <a href="blog.html" class="text-sky-600 font-semibold transition">Blog</a>
+                <a href="https://thejusmahajan.shinyapps.io/degir-dashboard/" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-sky-600 font-medium transition">Live DeGIR Dashboard</a>
+                <a href="#contact" class="text-gray-600 hover:text-sky-600 font-medium transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <a href="index.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">About</a>
+            <a href="experience.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Experience</a>
+            <a href="skills.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Skills</a>
+            <a href="projects.html" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Projects</a>
+            <a href="blog.html" class="block py-4 px-6 text-base font-medium text-sky-600 bg-gray-50">Blog</a>
+            <a href="https://thejusmahajan.shinyapps.io/degir-dashboard/" target="_blank" rel="noopener noreferrer" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Live DeGIR Dashboard</a>
+            <a href="#contact" class="block py-4 px-6 text-base font-medium text-gray-700 hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-20">
+        <article class="container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <header class="mb-10 text-center">
+                    <p class="text-sky-600 font-medium mb-2">August 15, 2026</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">The Mirror in the Machine: Debugging Attention Extraction from a Chess Transformer</h1>
+                    <p class="text-lg text-gray-600">A coordinate-frame error silently reflected half of every attention map I pulled out of a 15-layer neural network. Nothing crashed, no test failed, and the output looked exactly like insight.</p>
+                </header>
+
+                <div class="prose prose-lg prose-sky max-w-none text-gray-700">
+
+                    <p>When you read activations out of a neural network, you are translating between two coordinate systems: the one the network thinks in, and the one you think in. If those two disagree and nothing crashes, you get a plausible picture of nothing.</p>
+
+                    <p>This post is a short account of exactly that bug -- how it hid, what it cost, and how it was eventually caught. The subject is <strong>BT3</strong>, a Leela Chess Zero network: a 15-layer transformer with 24 attention heads per layer. It treats each of the 64 board squares as a token, so every head produces a 64&times;64 attention matrix.</p>
+
+                    <p>I have spent most of my career on ocean models and clinical data pipelines, not neural networks. But this turned out to be a bug I recognised immediately once I saw it, because it is the same failure mode as a sign convention flipped in a biogeochemical model. That is really why I am writing it up.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Reading attention out of BT3</h2>
+
+                    <p>The network ships as ONNX. Converted into a PyTorch module tree, its encoder blocks appear as named submodules -- <code>module.encoder{i}/mha/QK/softmax</code> for <em>i</em> = 0 to 14. Extraction is then just a matter of hooks: register a forward hook on each of the fifteen, run a single forward pass, and let the hooks capture the post-softmax attention tensors on the way through.</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>attention_tensors = []
+
+def hook_fn(module, inp, out):
+    t = out[0] if isinstance(out, (tuple, list)) else out
+    attention_tensors.append(t.detach())
+
+hooks = [
+    mod.register_forward_hook(hook_fn)
+    for name, mod in model.named_modules()
+    if name in attn_module_names          # the 15 QK/softmax modules
+]
+
+with torch.no_grad():
+    model(input_tensor)                   # one pass; hooks do the rest
+
+for h in hooks:
+    h.remove()
+
+# each captured tensor: [batch, heads, 64, 64]
+stacked = torch.stack(attention_tensors)</code></pre>
+
+                    <p>Averaging over layers, heads and queries collapses all of that into a single number per square: <em>how much attention this square receives</em>. Project it back onto a chessboard and you have a picture of where the network is looking.</p>
+
+                    <p>That final step -- "project it back onto a board" -- is the entire bug.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The bug</h2>
+
+                    <p>Leela does not encode the board the way you read it. It encodes it <strong>from the perspective of the side to move</strong>. In a white-to-move position, internal token 0 is a1. In a black-to-move position, the board is flipped first, so internal token 0 is the square <em>Black</em> sees in that corner.</p>
+
+                    <p>The original mapping did this:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>for i in range(64):
+    sq = f"{files[i % 8]}{ranks[i // 8]}"   # i = 0 -&gt; a1, always
+    saliency_map[sq] = saliency_vec[i]</code></pre>
+
+                    <p>Index 0 is a1. Always. Which is correct exactly half of the time.</p>
+
+                    <p>For every black-to-move position, the resulting heatmap was <strong>reflected through the horizontal axis</strong> -- a1 became a8, e4 became e5, h2 became h7. The fix evaluates the mirrored position and maps the ranks back explicitly:</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>eval_fen = board.mirror().fen() if board.turn == chess.BLACK else board.fen()
+
+# ... forward pass, hooks, aggregation ...
+
+if is_black:
+    saliency_map = {sq[0] + str(9 - int(sq[1])): v
+                    for sq, v in saliency_map.items()}</code></pre>
+
+                    <p>Measured across 55 black-to-move positions, the mean per-square residual between the buggy map and the rank-flipped corrected map is <strong>0.0003</strong> on a [0, 1] scale. The two are the same map, reflected. That number is the bug's signature.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Why it survived so long</h2>
+
+                    <p>Nothing about the broken output looks broken.</p>
+
+                    <p>The heatmaps were smooth and plausible. Attention concentrated in a few places and fell off elsewhere, producing exactly the sort of image you nod at and move on from. There was no exception, no NaN, no failing test. A unit test that compares the map against itself passes regardless of which frame it is in. Every value was in range and every square existed.</p>
+
+                    <p>It was also correct half the time. White-to-move positions were right throughout, so any spot-check that happened to land on one confirmed the code was working.</p>
+
+                    <p>This is the characteristic shape of a coordinate-frame error, and it is not remotely specific to machine learning. It is the same failure as a sign convention inverted in an ocean model, or a genomic interval that is 1-based in one file format and 0-based in the next: the pipeline runs, the output has the right shape and the right magnitude, and it is quietly about a different thing than you believe. Unit tests cannot help, because the units are all correct.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">What it cost, in one position</h2>
+
+                    <p>The position below is from a real game of mine -- <a href="https://lichess.org/1Wvn4QYp" target="_blank" rel="noopener noreferrer" class="text-sky-600 hover:underline">lichess.org/1Wvn4QYp</a>, a Center Game, with Black to move on move 19.</p>
+
+                    <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>1k1r4/1pp3pp/8/1Nnn3q/2P2pbB/P4N2/4BPPP/R3K2R b KQ - 1 19</code></pre>
+
+                    <p>White's king is still sitting on e1 with both rooks undeveloped on a1 and h1. Black's king is on b8 behind the b7 and c7 pawns, with a queen on h5, two knights on the c5 and d5 outposts, and a bishop on g4. The whole game turns on whether White's uncastled king survives.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8 not-prose">
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                            <p class="text-sm font-semibold text-gray-900 mb-1">Corrected &mdash; absolute frame</p>
+                            <p class="text-xs text-gray-500 mb-3">6 of 6 top squares occupied</p>
+                            <img src="images/bt3_attention_corrected.svg" alt="BT3 attention in the corrected absolute frame, concentrated on e1, h1, a1, b7, e2 and b8" class="w-full h-auto rounded">
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                            <p class="text-sm font-semibold text-gray-900 mb-1">Buggy &mdash; side-to-move frame</p>
+                            <p class="text-xs text-gray-500 mb-3">0 of 6 top squares occupied</p>
+                            <img src="images/bt3_attention_mirrored.svg" alt="The same BT3 attention mirrored, concentrated on the empty squares e8, h8, a8, b2, e7 and b1" class="w-full h-auto rounded">
+                        </div>
+                    </div>
+
+                    <p>Both boards are shown from Black's side, and the heat is attention received, computed from the same captured tensors. Here are the six most-attended squares in each frame:</p>
+
+                    <div class="overflow-x-auto my-6 not-prose">
+                        <table class="w-full text-sm border-collapse">
+                            <thead>
+                                <tr class="border-b-2 border-gray-200">
+                                    <th class="text-left py-2 pr-4 font-semibold text-gray-900">Corrected</th>
+                                    <th class="text-left py-2 pr-4 font-semibold text-gray-900">Occupant</th>
+                                    <th class="text-left py-2 pr-4 font-semibold text-gray-900">Buggy</th>
+                                    <th class="text-left py-2 font-semibold text-gray-900">Occupant</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700">
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">e1 &middot; 1.000</td><td class="py-2 pr-4">White king</td><td class="py-2 pr-4 font-mono">e8 &middot; 1.000</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">h1 &middot; 0.799</td><td class="py-2 pr-4">White rook</td><td class="py-2 pr-4 font-mono">h8 &middot; 0.799</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">a1 &middot; 0.726</td><td class="py-2 pr-4">White rook</td><td class="py-2 pr-4 font-mono">a8 &middot; 0.726</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">b7 &middot; 0.689</td><td class="py-2 pr-4">Black pawn</td><td class="py-2 pr-4 font-mono">b2 &middot; 0.689</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">e2 &middot; 0.624</td><td class="py-2 pr-4">White bishop</td><td class="py-2 pr-4 font-mono">e7 &middot; 0.624</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr><td class="py-2 pr-4 font-mono">b8 &middot; 0.594</td><td class="py-2 pr-4">Black king</td><td class="py-2 pr-4 font-mono">b1 &middot; 0.595</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>The corrected map lands on both kings, the two rooks that have not yet connected, and the pawn shielding the black king. In a position whose entire question is king safety, that is precisely the right set of squares to care about.</p>
+
+                    <p>The broken map is a confident claim that a 15-layer transformer is devoting its peak attention to six squares with nothing whatsoever on them. Stated in words it is obviously absurd. Rendered as a smooth orange heatmap, it looked like insight.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">How it was actually caught</h2>
+
+                    <p>Not by a test. By asking a question the code could not answer for itself: <em>if this network is any good, its attention ought to land on squares that matter -- so does it?</em></p>
+
+                    <p>For white-to-move positions it plainly did. For black-to-move positions the attention kept landing on empty squares in Black's own camp, while the game was being decided in White's. A single position could easily be noise. But the pattern held across every black-to-move position I looked at, and the mirror symmetry between the two sets was the tell.</p>
+
+                    <p>The general form of that check is worth stating, because it travels well beyond chess: <strong>hold the model fixed and vary the thing your code treats as incidental.</strong> Here the incidental thing was whose turn it was. If a representation you have extracted changes character when you flip a variable that should not matter -- or fails to change when it should -- the bug is in your extraction, not in the model.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The fix, and its boundary</h2>
+
+                    <p>The correction did not replace the old function. It sits alongside it. <code>saliency()</code> is the original, frame-relative, retained and explicitly documented as unsafe for position analysis. <code>saliency_absolute(fen)</code> is the corrected version, right for both sides, and everything downstream is required to call it.</p>
+
+                    <p>Two functions with an explicit boundary beat one function with a comment attached. The old behaviour stays reachable for anyone who genuinely wants the network's own frame, and the name of the safe one states what it guarantees. A batched variant applies the same correction to <em>N</em> positions in a single forward pass.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">What this is, and what it isn't</h2>
+
+                    <p>This is activation capture -- reading internal attention weights via forward hooks, the same mechanism libraries like TransformerLens expose for interpretability work. It is not gradient saliency; there is no backward pass anywhere in it.</p>
+
+                    <p>It is also not causal. Nothing here ablates a head, patches an activation, or demonstrates that the attention on e1 is <em>load-bearing</em> for the network's evaluation. Attention weights are correlational evidence about what a model attends to, not proof of what it uses. That distinction is worth keeping sharp, because the obvious next experiment is to test it directly: ablate the heads carrying the king-square attention and see whether the evaluation actually moves.</p>
+
+                    <p>That is the experiment this bug was blocking. Half the data was mirrored, so no intervention result would have meant anything at all.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The transferable part</h2>
+
+                    <p>The interesting content of this bug is not chess. It is that a model-analysis pipeline can be wrong in a way that is invisible to every automated check you would normally think to write, and the only thing standing between you and a confident false result is domain reasoning about whether the output actually makes sense.</p>
+
+                    <p>Which is the same discipline as any other kind of scientific computing. Do not trust a number because it has the right shape and the right units. Trust it when you understand the mechanism that produced it.</p>
+
+                    <!-- Interview Quick Review -->
+                    <div class="mt-12 border-t-2 border-sky-100 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Interview Quick Review</h2>
+                        <div class="bg-sky-50 rounded-xl p-6 space-y-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">What is a forward hook?</p>
+                                <p>A callback registered on a PyTorch module that fires whenever that module produces an output during a forward pass. It gives you the intermediate tensor without modifying the model or the forward code -- the standard way to capture activations for interpretability work.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Why does the reference frame matter?</p>
+                                <p>Many networks canonicalise their input -- chess engines encode from the side-to-move's view, vision models normalise orientation, sequence models re-index. Any activation you extract lives in the network's frame, not yours. If you do not convert it back explicitly, you are plotting the right numbers on the wrong axes.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Key snippet to remember:</p>
+                                <pre class="bg-white rounded p-3 text-sm"><code>h = module.register_forward_hook(fn)   # capture
+...                                    # forward pass
+h.remove()                             # always clean up</code></pre>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Common interview question:</p>
+                                <p class="italic">"Tell me about a bug that was hard to find."</p>
+                                <p>This one, because it produced no error signal at all. It was correct for half the inputs, plausible for the other half, and no unit test could catch it -- the values were all in range and all in the right units. It was found by reasoning about whether the model's behaviour made domain sense, then confirmed quantitatively: a 0.0003 mean residual against the rank-flipped map proved the two were the same data, mirrored.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">One thing to remember:</p>
+                                <p>Attention weights show what a model <strong>attends to</strong>, not what it <strong>uses</strong>. Establishing that a component is load-bearing requires an intervention -- ablation or activation patching -- not a heatmap.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="blog.html" class="text-sky-600 font-semibold hover:underline text-lg">&larr; Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="mb-10 text-gray-300 text-lg">I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <a href="mailto:thejus.mahajan@uni-hamburg.de" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-8 rounded-lg shadow-sm transition-colors duration-300">Email Me</a>
+                <a href="https://www.linkedin.com/in/thejusmahajan/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">LinkedIn</a>
+                <a href="https://www.xing.com/profile/Thejus_Mahajan/web_profiles?nwt_nav=profile_icon" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">Xing</a>
+                <a href="https://github.com/thejusmahajan" target="_blank" rel="noopener noreferrer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">GitHub</a>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">&copy; 2026 Thejus Mahajan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>
