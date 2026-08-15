@@ -114,7 +114,7 @@ if is_black:
     saliency_map = {sq[0] + str(9 - int(sq[1])): v
                     for sq, v in saliency_map.items()}</code></pre>
 
-                    <p>Measured across 55 black-to-move positions, the mean per-square residual between the buggy map and the rank-flipped corrected map is <strong>0.0003</strong> on a [0, 1] scale. The two are the same map, reflected. That number is the bug's signature.</p>
+                    <p>Measured across 40 black-to-move positions, the mean per-square residual between the buggy map and the rank-flipped corrected map is <strong>0.0003</strong> on a [0, 1] scale (median 0.0002, max 0.0007). The two are the same map, reflected. That number is the bug's signature.</p>
 
                     <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Why it survived so long</h2>
 
@@ -138,12 +138,12 @@ if is_black:
                         <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
                             <p class="text-sm font-semibold text-gray-900 mb-1">Corrected &mdash; absolute frame</p>
                             <p class="text-xs text-gray-500 mb-3">6 of 6 top squares occupied</p>
-                            <img src="images/bt3_attention_corrected.svg" alt="BT3 attention in the corrected absolute frame, concentrated on e1, h1, a1, b7, e2 and b8" class="w-full h-auto rounded">
+                            <img src="images/bt3_attention_corrected.svg" alt="BT3 attention in the corrected absolute frame, concentrated on h5, b8, d8, f3, d5 and e2" class="w-full h-auto rounded">
                         </div>
                         <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
                             <p class="text-sm font-semibold text-gray-900 mb-1">Buggy &mdash; side-to-move frame</p>
-                            <p class="text-xs text-gray-500 mb-3">0 of 6 top squares occupied</p>
-                            <img src="images/bt3_attention_mirrored.svg" alt="The same BT3 attention mirrored, concentrated on the empty squares e8, h8, a8, b2, e7 and b1" class="w-full h-auto rounded">
+                            <p class="text-xs text-gray-500 mb-3">1 of 6 top squares occupied</p>
+                            <img src="images/bt3_attention_mirrored.svg" alt="The same BT3 attention mirrored, concentrated on h4 and the empty squares b1, d1, f6, d4 and e7" class="w-full h-auto rounded">
                         </div>
                     </div>
 
@@ -160,25 +160,39 @@ if is_black:
                                 </tr>
                             </thead>
                             <tbody class="text-gray-700">
-                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">e1 &middot; 1.000</td><td class="py-2 pr-4">White king</td><td class="py-2 pr-4 font-mono">e8 &middot; 1.000</td><td class="py-2 italic text-gray-400">empty</td></tr>
-                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">h1 &middot; 0.799</td><td class="py-2 pr-4">White rook</td><td class="py-2 pr-4 font-mono">h8 &middot; 0.799</td><td class="py-2 italic text-gray-400">empty</td></tr>
-                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">a1 &middot; 0.726</td><td class="py-2 pr-4">White rook</td><td class="py-2 pr-4 font-mono">a8 &middot; 0.726</td><td class="py-2 italic text-gray-400">empty</td></tr>
-                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">b7 &middot; 0.689</td><td class="py-2 pr-4">Black pawn</td><td class="py-2 pr-4 font-mono">b2 &middot; 0.689</td><td class="py-2 italic text-gray-400">empty</td></tr>
-                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">e2 &middot; 0.624</td><td class="py-2 pr-4">White bishop</td><td class="py-2 pr-4 font-mono">e7 &middot; 0.624</td><td class="py-2 italic text-gray-400">empty</td></tr>
-                                <tr><td class="py-2 pr-4 font-mono">b8 &middot; 0.594</td><td class="py-2 pr-4">Black king</td><td class="py-2 pr-4 font-mono">b1 &middot; 0.595</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">h5 &middot; 1.000</td><td class="py-2 pr-4">Black queen</td><td class="py-2 pr-4 font-mono">h4 &middot; 1.000</td><td class="py-2">White bishop</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">b8 &middot; 0.864</td><td class="py-2 pr-4">Black king</td><td class="py-2 pr-4 font-mono">b1 &middot; 0.865</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">d8 &middot; 0.859</td><td class="py-2 pr-4">Black rook</td><td class="py-2 pr-4 font-mono">d1 &middot; 0.859</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">f3 &middot; 0.765</td><td class="py-2 pr-4">White knight <span class="text-gray-400">(pinned)</span></td><td class="py-2 pr-4 font-mono">f6 &middot; 0.766</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr class="border-b border-gray-100"><td class="py-2 pr-4 font-mono">d5 &middot; 0.748</td><td class="py-2 pr-4">Black knight</td><td class="py-2 pr-4 font-mono">d4 &middot; 0.749</td><td class="py-2 italic text-gray-400">empty</td></tr>
+                                <tr><td class="py-2 pr-4 font-mono">e2 &middot; 0.670</td><td class="py-2 pr-4">White bishop</td><td class="py-2 pr-4 font-mono">e7 &middot; 0.670</td><td class="py-2 italic text-gray-400">empty</td></tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <p>The corrected map lands on both kings, the two rooks that have not yet connected, and the pawn shielding the black king. In a position whose entire question is king safety, that is precisely the right set of squares to care about.</p>
+                    <p>The corrected map lands on the queen leading the attack, the king it is aimed at, the rook about to join it, and &mdash; pointedly &mdash; on both ends of the pin down the e2/f3 diagonal, where Black's bishop on g4 pins the knight on f3.</p>
 
-                    <p>The broken map is a confident claim that a 15-layer transformer is devoting its peak attention to six squares with nothing whatsoever on them. Stated in words it is obviously absurd. Rendered as a smooth orange heatmap, it looked like insight.</p>
+                    <p>The broken map is a confident claim that a 15-layer transformer is devoting its peak attention to squares with nothing whatsoever on them. Stated in words it is obviously absurd. Rendered as a smooth orange heatmap, it looked like insight.</p>
+
+                    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">The second bug, which writing this up found</h2>
+
+                    <p>An earlier version of this post carried different figures. They were wrong, and the way they were wrong is worth more than the original finding.</p>
+
+                    <p>BT3's input is not a board. It is <strong>112 planes</strong>, of which roughly 84 encode the previous eight positions. The extraction code built its input from a bare FEN, so every one of those history planes was empty &mdash; the network was being handed something it never sees in play.</p>
+
+                    <p>The tell came from the value head. Across 20 midgame positions it returned <code>value = -1.000</code> with <code>wdl = [0, 0, 1]</code> &mdash; total, certain loss &mdash; for positions that were nothing of the kind, while the LC0 binary running <em>the same weights</em> returned sharp, sensible evaluations. The starting position looked perfectly fine, because its true history genuinely is empty. That coincidence is what let this survive as long as it did.</p>
+
+                    <p>Fixing it moved the attention maps by 0.11 to 0.20 per square, with only one to three of the top five squares surviving. That is two orders of magnitude larger than the frame bug's own signature, and it invalidated figures I had already published.</p>
+
+                    <p>There is a trap inside the fix as well. <code>Board.mirror()</code> returns a board with an <strong>empty move stack</strong>, so mirroring a black-to-move position into the white-to-move frame silently discards the history a second time. The mirrored frame has to be rebuilt by replaying mirrored moves.</p>
+
+                    <p>The frame finding survives all of this untouched: both maps come from a single forward pass, so the reflection between them is a fact about coordinates, not about input quality. Re-measured on properly fed inputs, the residual is still 0.0003. But the <em>reading</em> of those old figures &mdash; which squares the network cared about &mdash; described a degenerate forward pass.</p>
 
                     <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">How it was actually caught</h2>
 
                     <p>Not by a test. By asking a question the code could not answer for itself: <em>if this network is any good, its attention ought to land on squares that matter -- so does it?</em></p>
 
-                    <p>For white-to-move positions it plainly did. For black-to-move positions the attention kept landing on empty squares in Black's own camp, while the game was being decided in White's. A single position could easily be noise. But the pattern held across every black-to-move position I looked at, and the mirror symmetry between the two sets was the tell.</p>
+                    <p>For white-to-move positions it plainly did. For black-to-move positions the attention kept landing on empty squares, while the pieces actually deciding the game went unattended. A single position could easily be noise. But the pattern held across every black-to-move position I looked at, and the mirror symmetry between the two sets was the tell.</p>
 
                     <p>The general form of that check is worth stating, because it travels well beyond chess: <strong>hold the model fixed and vary the thing your code treats as incidental.</strong> Here the incidental thing was whose turn it was. If a representation you have extracted changes character when you flip a variable that should not matter -- or fails to change when it should -- the bug is in your extraction, not in the model.</p>
 
