@@ -55,8 +55,34 @@
                 Projects
             </h1>
             <p class="text-xl md:text-2xl text-sky-600 font-medium">
-                Applied work in clinical data analysis, biostatistics, and computational modeling
+                Applied work in environmental modelling, machine learning, and scientific data engineering
             </p>
+        </section>
+
+        <!-- Featured Project: Marine Ecosystem Modelling -->
+        <section class="container mx-auto px-6 mb-16 max-w-6xl">
+            <div class="bg-white rounded-2xl shadow-lg border-t-4 border-sky-600 p-8 md:p-10">
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Marine Ecosystem Modelling &mdash; a Lagrangian individual-based model of trait evolution</h2>
+                        <h3 class="text-lg font-medium text-gray-600">University of Hamburg, Institute of Marine Ecosystem and Fisheries Sciences &middot; Helmholtz-Zentrum Hereon</h3>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        Built a Lagrangian individual-based model of phytoplankton trait evolution — an NPZD water column in which the population is carried as super-individual agents that mutate and are selected on optimal growth temperature — and applied it to the cyanobacteria life cycle. Ported its legacy Fortran/OpenMP engine to JAX so the particle loop could run on GPUs. Engineered simulation models in Fortran and analysed large NetCDF datasets in Python. Performed statistical analysis and visualisation of ecological time-series data in R and ggplot2, and managed multi-year hindcast and projection experiments on HPC clusters, validated against observational data. Continued as a guest scientist at Helmholtz-Zentrum Hereon, Geesthacht, in 2025.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">Fortran</span>
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">GOTM-FABM</span>
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">Python</span>
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">NetCDF</span>
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">xarray</span>
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">R</span>
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">ggplot2</span>
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">HPC</span>
+                        <span class="px-3 py-1 bg-sky-50 text-sky-700 text-sm font-medium rounded-full">Individual-based modelling</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Featured Project -->
@@ -133,9 +159,9 @@
                     </div>
                 </div>
 
-                <!-- Project: Neural network interpretability -->
+                <!-- Project: transformer attention analysis -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col hover:shadow-md transition-shadow">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Neural Network Interpretability for Chess Engines</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Attention Analysis in a Chess Transformer</h3>
                     <p class="text-gray-600 mb-4 flex-grow">
                         Independent research extracting the internal attention of a 15-layer transformer (Leela Chess Zero BT3) via PyTorch forward hooks on ONNX-converted weights. Diagnosed and fixed a reference-frame defect that had silently mirrored every attention map for half of all positions. Full-stack research tool in FastAPI and React.
                     </p>
@@ -143,7 +169,7 @@
                         <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">PyTorch</span>
                         <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">ONNX</span>
                         <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">Transformers</span>
-                        <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">Interpretability</span>
+                        <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">Attention analysis</span>
                         <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">FastAPI</span>
                         <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">React</span>
                     </div>
@@ -154,21 +180,6 @@
                     </div>
                 </div>
 
-                <!-- Project 3 -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col hover:shadow-md transition-shadow">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Cyanobacteria Life Cycle Model</h3>
-                    <p class="text-gray-600 mb-4 flex-grow">
-                        Developed a novel computational model for cyanobacteria population dynamics within the ERGOM biogeochemical framework. Performed multi-year hindcast simulations validated against observational data.
-                    </p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">Fortran</span>
-                        <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">Python</span>
-                        <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">R</span>
-                        <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">GOTM-FABM</span>
-                        <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">NetCDF</span>
-                        <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-medium rounded-md">HPC</span>
-                    </div>
-                </div>
 
                 <!-- Project 4 -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col hover:shadow-md transition-shadow">
@@ -233,7 +244,7 @@
         <div class="container mx-auto px-6 text-center max-w-4xl">
             <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
             <p class="mb-10 text-gray-300 text-lg">
-                I am currently seeking opportunities to apply my expertise in clinical biostatistics and bioinformatics. I would love to connect and discuss how my skills can contribute to your team.
+                I am a computational scientist in Hamburg — physics, environmental modelling, bioinformatics and clinical data — looking for roles across Germany in scientific computing, data engineering or machine learning. German work authorisation; available immediately. I would be glad to connect and discuss where I could be useful.
             </p>
             <div class="flex flex-wrap justify-center gap-4 mb-12">
                 <a href="mailto:thejus.mahajan@uni-hamburg.de"
