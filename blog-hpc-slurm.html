@@ -48,12 +48,12 @@
                 <header class="mb-10 text-center">
                     <p class="text-sky-600 font-medium mb-2">July 19, 2024</p>
                     <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">HPC Job Management: A Practical SLURM Guide</h1>
-                    <p class="text-lg text-gray-600">Everything I wish I knew about SLURM when I started running ocean simulations on the DKRZ supercomputer.</p>
+                    <p class="text-lg text-gray-600">Everything I wish I knew about SLURM when I started running ocean simulations on an HPC cluster.</p>
                 </header>
 
                 <div class="prose prose-lg prose-sky max-w-none text-gray-700">
 
-                    <p>When I joined the marine ecosystem modeling group at the University of Hamburg, my first task was to run a suite of ICON-O ocean simulations on Levante, the supercomputer at the German Climate Computing Centre (DKRZ). I had used Linux extensively during my PhD in astrochemistry, but I had never worked with a job scheduler before. I naively tried to run my model interactively on a login node and was promptly (and rightly) sent a warning email by the system administrators. That was my introduction to SLURM.</p>
+                    <p>When I joined the marine ecosystem modeling group at the University of Hamburg, my first task was to run marine ecosystem simulations on an HPC cluster. I had used Linux extensively during my PhD in astrochemistry, but I had never worked with a job scheduler before. I naively tried to run my model interactively on a login node and was promptly (and rightly) sent a warning email by the system administrators. That was my introduction to SLURM.</p>
 
                     <p>SLURM (Simple Linux Utility for Resource Management) is the job scheduler that governs access to computational resources on most modern HPC clusters. You do not run programs directly; instead, you submit job scripts that describe what resources you need and what commands to execute. SLURM then queues your job and dispatches it to available compute nodes when your turn comes. This post covers the practical patterns I use daily.</p>
 
@@ -88,10 +88,10 @@ srun ./icon_ocean</code></pre>
                     <p>Let me break down the key directives:</p>
 
                     <ul>
-                        <li><code>--partition=compute</code> selects which pool of nodes to use. On Levante, <code>compute</code> is the standard partition; <code>gpu</code> would be for GPU-accelerated workloads.</li>
+                        <li><code>--partition=compute</code> selects which pool of nodes to use. On many clusters, <code>compute</code> is the standard partition; <code>gpu</code> would be for GPU-accelerated workloads.</li>
                         <li><code>--nodes=4</code> and <code>--ntasks-per-node=128</code> request 4 nodes with 128 MPI tasks each, for a total of 512 MPI ranks. This is how parallel ocean models scale across hundreds of processors.</li>
                         <li><code>--time=08:00:00</code> sets a wall-clock limit of 8 hours. If your job exceeds this, SLURM kills it. Always estimate generously but not absurdly -- over-requesting time reduces your scheduling priority.</li>
-                        <li><code>--mem=0</code> is a DKRZ-specific convention meaning "use all available memory on the node." On other clusters, you might specify <code>--mem=240G</code> explicitly.</li>
+                        <li><code>--mem=0</code> is a site-specific convention on some clusters, meaning "use all available memory on the node." On other clusters, you might specify <code>--mem=240G</code> explicitly.</li>
                         <li><code>%j</code> in the output filename expands to the job ID, so each run gets its own log file.</li>
                     </ul>
 

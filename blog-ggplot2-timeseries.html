@@ -74,7 +74,7 @@ ggplot(data = plankton_df,           # 1. Data
 
                     <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Building a Time Series Plot Step by Step</h2>
 
-                    <p>Let me walk through a realistic example. During my postdoc, I worked with simulated phytoplankton abundance data from the ICON-O/HAMOCC biogeochemical model. The dataset contained daily concentrations of several plankton functional types across multiple years. Here is how I would build up the visualization layer by layer:</p>
+                    <p>Let me walk through a realistic example. During my postdoc I worked with simulated phytoplankton abundance data from biogeochemical model output. The dataset contained daily concentrations of several plankton functional types across multiple years. Here is how I would build up the visualization layer by layer:</p>
 
                     <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code>library(tidyverse)
 library(lubridate)
@@ -101,7 +101,7 @@ p &lt;- p +
 p &lt;- p +
   labs(
     title = "Phytoplankton Abundance in the North Sea (2015-2020)",
-    subtitle = "Daily concentrations from HAMOCC biogeochemical model output",
+    subtitle = "Daily concentrations from biogeochemical model output",
     x = NULL,
     y = expression(paste("Abundance (cells ", L^{-1}, ")")),
     color = "Functional Type"
