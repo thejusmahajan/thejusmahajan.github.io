@@ -80,7 +80,7 @@ ggplot(data = plankton_df,           # 1. Data
 library(lubridate)
 
 # Load and prepare the data
-plankton_df &lt;- read_csv("hamocc_plankton_output.csv") %&gt;%
+plankton_df &lt;- read_csv("plankton_output.csv") %&gt;%
   mutate(date = ymd(date)) %&gt;%
   filter(date &gt;= "2015-01-01", date &lt;= "2020-12-31")
 
