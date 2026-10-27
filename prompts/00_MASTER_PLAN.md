@@ -17,7 +17,6 @@
 2. **DeGIR Dashboard** — Interactive Shiny app (R) visualizing interventional radiology quality metrics. Modular architecture (6 tabs), bilingual (DE/EN), plotly charts, benchmark comparisons. GitHub: thejusmahajan/degir-dashboard
 3. **Tidymodels Teaching Script** — Teaching material replacing caret with tidymodels for ML workflows. GitHub: thejusmahajan/Introduction_to_Tidymodels
 4. **Cyanobacteria Life Cycle Model** — Developed the CLC model within ERGOM framework. Fortran + Python + R for ecological time-series analysis.
-5. **Simulacrum Cancer Data Analysis** — Biostatistical analysis of synthetic NHS cancer data (demographics, tumour sites, staging)
 6. **Trees of Berlin** — Urban forestry data analysis for climate resilience
 7. **PhD: Molecular Fragmentation Model** — C++ signal processing, particle collision experiments, KIDA database contributions
 

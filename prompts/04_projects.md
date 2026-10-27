@@ -68,11 +68,6 @@ Below the featured project, show the remaining projects in a 2-column grid on de
 
 Here are the projects to include, in this order:
 
-**Project 2: Simulacrum Cancer Data Analysis**
-- Description: "Biostatistical analysis of the Simulacrum v2.1.0 synthetic cancer dataset from England's National Disease Registration Service. Explored patient demographics, tumour site distributions, and staging patterns."
-- Tech: R, ggplot2, dplyr, Biostatistics
-- Link: "View Analysis" → simulacrum-analysis.html
-
 **Project 3: Cyanobacteria Life Cycle Model**
 - Description: "Developed a novel computational model for cyanobacteria population dynamics within the ERGOM biogeochemical framework. Performed multi-year hindcast simulations validated against observational data."
 - Tech: Fortran, Python, R, GOTM-FABM, NetCDF, HPC
